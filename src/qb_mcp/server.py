@@ -5,15 +5,30 @@ import sys
 from collections.abc import Awaitable, Callable
 from functools import wraps
 from pathlib import Path
-from typing import Any
+from datetime import date
+from typing import Any, Literal
 
 from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
 from qb_mcp.errors import QBError
-from qb_mcp.qbxml import query
+from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
+from qb_mcp.reports import parse_report
 from qb_mcp.transport import Transport
+
+JobReport = Literal[
+    "job_profitability_summary",
+    "job_profitability_detail",
+    "job_estimates_vs_actuals_summary",
+    "job_estimates_vs_actuals_detail",
+]
+JOB_REPORT_TYPES: dict[str, str] = {
+    "job_profitability_summary": "JobProfitabilitySummary",
+    "job_profitability_detail": "JobProfitabilityDetail",
+    "job_estimates_vs_actuals_summary": "JobEstimatesVsActualsSummary",
+    "job_estimates_vs_actuals_detail": "JobEstimatesVsActualsDetail",
+}
 
 INSTRUCTIONS = (
     "Read-only Lookups against the QuickBooks Desktop Company File that is open on this PC. "
@@ -69,6 +84,28 @@ def build_server(transport: Transport) -> MCPServer:
             "address": company.get("Address", {}),
             "fiscal_year_start_month": company.get("FirstMonthFiscalYear"),
         }
+
+    @mcp.tool()
+    @user_facing_errors
+    async def run_job_report(
+        report: JobReport,
+        from_date: date,
+        to_date: date,
+        customer_job: str | None = None,
+    ) -> dict[str, Any]:
+        """Run a QuickBooks job report (profitability, or estimates vs. actuals; summary or detail)
+        for a date range, optionally limited to one Customer:Job (e.g. "Acme:Main St Paving") or a
+        customer and all its jobs (e.g. "Acme"). Returns the report's column titles and its rows:
+        each row has a `kind` (header, data, subtotal, total), a `label`, the full `name` when the
+        row is for a customer/job/item, and `values` keyed by column title. Empty report -> no rows."""
+        children = [
+            el("JobReportType", JOB_REPORT_TYPES[report]),
+            el("ReportPeriod", None, el("FromReportDate", from_date.isoformat()), el("ToReportDate", to_date.isoformat())),
+        ]
+        if customer_job:
+            children.append(el("ReportEntityFilter", None, el("FullNameWithChildren", customer_job)))
+        (rs,) = await qb.lookup(query("JobReportQueryRq", *children))
+        return parse_report(rs.records[0] if rs.records else None)
 
     return mcp
 

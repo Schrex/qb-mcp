@@ -50,11 +50,15 @@ class QueryResult:
 
 
 def to_data(element: ET.Element) -> Any:
-    """Leaf -> text; otherwise a dict of children, with repeated (or REPEATED) tags as lists."""
-    if len(element) == 0:
+    """Leaf -> text; otherwise a dict of children, with repeated (or REPEATED) tags as lists.
+
+    Attributes (report rows/columns carry their values in them) become keys of
+    the dict; a leaf with attributes becomes a dict of just its attributes.
+    """
+    if len(element) == 0 and not element.attrib:
         return (element.text or "").strip()
     counts = Counter(child.tag for child in element)
-    data: dict[str, Any] = {}
+    data: dict[str, Any] = dict(element.attrib)
     for child in element:
         value = to_data(child)
         if counts[child.tag] > 1 or child.tag in REPEATED:

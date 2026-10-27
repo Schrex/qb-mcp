@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<JobReportQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ReportRet>
+<ReportTitle>Job Profitability Detail</ReportTitle>
+<ReportSubtitle>January 2030</ReportSubtitle>
+<ReportBasis>Accrual</ReportBasis>
+<NumRows>0</NumRows>
+<NumColumns>2</NumColumns>
+<NumColTitleRows>1</NumColTitleRows>
+<ColDesc colID="1" dataType="STRTYPE">
+<ColTitle titleRow="1" />
+<ColType>Label</ColType>
+</ColDesc>
+<ColDesc colID="2" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Cost" />
+<ColType>Amount</ColType>
+</ColDesc>
+</ReportRet>
+</JobReportQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
