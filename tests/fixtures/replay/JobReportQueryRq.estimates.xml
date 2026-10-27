@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<JobReportQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ReportRet>
+<ReportTitle>Job Estimates vs. Actuals Summary</ReportTitle>
+<ReportSubtitle>January 1 through December 31, 2024</ReportSubtitle>
+<ReportBasis>Accrual</ReportBasis>
+<NumRows>1</NumRows>
+<NumColumns>7</NumColumns>
+<NumColTitleRows>2</NumColTitleRows>
+<ColDesc colID="1" dataType="STRTYPE">
+<ColTitle titleRow="1" />
+<ColTitle titleRow="2" />
+<ColType>Label</ColType>
+</ColDesc>
+<ColDesc colID="2" dataType="AMTTYPE">
+<ColTitle titleRow="2" value="Cost" />
+<ColTitle titleRow="1" value="Est." />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="3" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Cost" />
+<ColTitle titleRow="2" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="4" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="($) Diff." />
+<ColType>AmountDifference</ColType>
+</ColDesc>
+<ColDesc colID="5" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Est. Revenue" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="6" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Revenue" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="7" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="($) Diff." />
+<ColType>AmountDifference</ColType>
+</ColDesc>
+<ReportData>
+<DataRow rowNumber="1">
+<RowData rowType="customer" value="Abercrombie, Kristy:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="2000.00" />
+<ColData colID="3" value="2520.00" />
+<ColData colID="4" value="520.00" />
+<ColData colID="6" value="3111.28" />
+<ColData colID="7" />
+</DataRow>
+</ReportData>
+</ReportRet>
+</JobReportQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
