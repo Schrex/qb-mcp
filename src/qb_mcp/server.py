@@ -12,6 +12,7 @@ from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
 from qb_mcp.errors import QBError
+from qb_mcp.guard import parse_query_element
 from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
 from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
@@ -123,6 +124,19 @@ def build_server(transport: Transport) -> MCPServer:
             children.append(el("ReportEntityFilter", None, el("FullNameWithChildren", customer_job)))
         (rs,) = await qb.lookup(query("JobReportQueryRq", *children))
         return parse_report(rs.records[0] if rs.records else None)
+
+    @mcp.tool()
+    @user_facing_errors
+    async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> dict[str, Any]:
+        """Run one raw qbXML query. Prefer the dedicated tools; use this only for questions they
+        don't cover (invoices, checks, purchase orders, bills, ...).
+        `query` is exactly one `*QueryRq` element (qbXML 13.0 schema, children in schema order),
+        without the <?xml?>/<QBXML>/<QBXMLMsgsRq> envelope, e.g.
+        `<InvoiceQueryRq><MaxReturned>101</MaxReturned><TxnDateRangeFilter><FromTxnDate>2026-01-01</FromTxnDate></TxnDateRangeFilter></InvoiceQueryRq>`.
+        Include MaxReturned (limit + 1) on transaction queries. Anything other than a single query
+        element is refused. Returns the `*Ret` records (sensitive fields removed), capped at `limit`."""
+        (rs,) = await qb.lookup(parse_query_element(query))
+        return capped(rs.records, limit)
 
     return mcp
 

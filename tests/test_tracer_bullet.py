@@ -118,6 +118,18 @@ async def test_query_mixed_with_a_write_is_refused(replay):
     assert replay.sent == []
 
 
+async def test_write_nested_inside_a_query_is_refused(replay):
+    nested = (
+        '<?xml version="1.0"?><QBXML><QBXMLMsgsRq onError="stopOnError">'
+        '<InvoiceQueryRq requestID="1"><InvoiceAddRq><InvoiceAdd/></InvoiceAddRq></InvoiceQueryRq>'
+        "</QBXMLMsgsRq></QBXML>"
+    )
+
+    with pytest.raises(ReadOnlyViolation, match="InvoiceAddRq"):
+        await QuickBooks(replay).send(nested)
+    assert replay.sent == []
+
+
 # --- Replay schema validation ----------------------------------------------
 
 
