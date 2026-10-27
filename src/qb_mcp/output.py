@@ -1,11 +1,11 @@
 """What every tool result passes through: sensitive-field stripping and the result cap.
 
 - Stripping: `SENSITIVE_ELEMENTS` (tax IDs, bank account numbers, card data)
-  are dropped, with their whole subtree, at any depth by `responses.to_data`,
-  which every QuickBooks response passes through (`QuickBooks.send`), so no
-  tool (list, report, run_query) ever sees them. Report columns, whose values
-  are attributes, are dropped by title (`reports.drop_sensitive_columns`). `redact(data)` applies the same
-  deny-list to already-converted data, for output built any other way.
+  and `SENSITIVE_CHILDREN` are dropped, with their whole subtree, by
+  `responses.to_data`, which every QuickBooks response passes through
+  (`QuickBooks.send`), so no tool (list, report, run_query) ever sees them.
+  Report columns, whose values are attributes, are dropped by title
+  (`reports.drop_sensitive_columns`).
 - Result cap: ask QuickBooks for `fetch_limit(limit)` records (one more than
   `limit`), then `capped(records, limit)` keeps `limit` and says whether more exist.
 """
@@ -54,15 +54,6 @@ SENSITIVE_CHILDREN: dict[str, frozenset[str]] = {
 
 def is_sensitive(tag: str, parent: str) -> bool:
     return tag in SENSITIVE_ELEMENTS or tag in SENSITIVE_CHILDREN.get(parent, ())
-
-
-def redact(data: Any) -> Any:
-    """Copy of `data` with every `SENSITIVE_ELEMENTS` key removed at any depth."""
-    if isinstance(data, dict):
-        return {k: redact(v) for k, v in data.items() if k not in SENSITIVE_ELEMENTS}
-    if isinstance(data, list):
-        return [redact(v) for v in data]
-    return data
 
 
 DEFAULT_LIMIT = 100

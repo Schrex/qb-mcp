@@ -62,5 +62,4 @@ class QuickBooksStatusError(QBError):
     def __init__(self, request_type: str, code: int, message: str):
         self.request_type = request_type
         self.code = code
-        self.status_message = message
         super().__init__(f"QuickBooks returned error {code} for {request_type}: {message}")

@@ -9,7 +9,6 @@ imported lazily, on that thread, so this module imports anywhere.
 
 import asyncio
 import logging
-import threading
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, TypeVar
@@ -32,6 +31,8 @@ _DIALOG = (
 )
 _BUSY = "QuickBooks is busy or still starting up. Wait a moment, then try again."
 _SAME_USER = "QuickBooks must be open as the same Windows user as Claude, and not as administrator."
+_SDK_MISSING = "QuickBooks' SDK components are missing or not installed correctly."
+_NOT_REGISTERED = "QuickBooks' request processor isn't registered on this PC."
 
 # HRESULT -> (cause, extra hint). Codes from Intuit's SDK error list; some
 # runtime mappings are unverified on real QuickBooks (see ticket #3 notes).
@@ -52,11 +53,11 @@ _HRESULTS: dict[int, tuple[TransportFailure, str]] = {
     0x8004041B: (TransportFailure.OTHER, _BUSY),
     0x8004041C: (TransportFailure.OTHER, _BUSY),
     0x80040424: (TransportFailure.OTHER, _BUSY),
-    0x80040401: (TransportFailure.OTHER, "QuickBooks' SDK components are missing or not installed correctly."),
-    0x80040405: (TransportFailure.OTHER, "QuickBooks' SDK components are missing or not installed correctly."),
-    0x80040407: (TransportFailure.OTHER, "QuickBooks' SDK components are missing or not installed correctly."),
-    0x800401F3: (TransportFailure.OTHER, "QuickBooks' request processor isn't registered on this PC."),
-    0x80040154: (TransportFailure.OTHER, "QuickBooks' request processor isn't registered on this PC."),
+    0x80040401: (TransportFailure.OTHER, _SDK_MISSING),
+    0x80040405: (TransportFailure.OTHER, _SDK_MISSING),
+    0x80040407: (TransportFailure.OTHER, _SDK_MISSING),
+    0x800401F3: (TransportFailure.OTHER, _NOT_REGISTERED),
+    0x80040154: (TransportFailure.OTHER, _NOT_REGISTERED),
 }
 
 
@@ -101,14 +102,12 @@ class Win32Com:
 
 
 class ComTransport:
-    def __init__(self, app_name: str = APP_NAME, timeout: float = DEFAULT_TIMEOUT, com: Any = None):
-        self.app_name = app_name
+    def __init__(self, timeout: float = DEFAULT_TIMEOUT, com: Any = None):
         self.timeout = timeout
         self._com = com or Win32Com()
         self._executor = ThreadPoolExecutor(
             max_workers=1, thread_name_prefix="qb-com", initializer=self._com.co_initialize
         )
-        self.thread_ids: set[int] = set()  # threads COM work ran on (diagnostics/tests)
 
     # --- Transport -----------------------------------------------------
     async def send(self, request: str) -> str:
@@ -129,7 +128,6 @@ class ComTransport:
 
     def _in_session(self, work: Callable[[Any, str], T]) -> T:
         """Runs on the COM thread: connect, begin session, work, always clean up."""
-        self.thread_ids.add(threading.get_ident())
         com_error = self._com.com_error
 
         def cleanup(step: Callable[[], Any]) -> None:
@@ -140,7 +138,7 @@ class ComTransport:
 
         try:
             rp = self._com.dispatch()
-            rp.OpenConnection2("", self.app_name, LOCAL_QBD)
+            rp.OpenConnection2("", APP_NAME, LOCAL_QBD)
             try:
                 ticket = rp.BeginSession("", FILE_MODE_DO_NOT_CARE)
                 try:

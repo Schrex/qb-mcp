@@ -5,7 +5,6 @@ import json
 
 import pytest
 
-from qb_mcp.output import redact
 from qb_mcp.qbxml import query
 from qb_mcp.quickbooks import QuickBooks
 
@@ -36,12 +35,6 @@ async def test_sensitive_elements_are_stripped_at_any_depth_from_every_lookup(re
     customer = results[0].records[0]
     assert customer["DataExtRet"][0]["Deeper"] == {"Kept": "visible"}
     assert customer["AccountNumber"] == "CUST-42"  # chart/account numbers are not sensitive
-
-
-def test_redact_strips_sensitive_keys_from_data_built_outside_a_lookup():
-    data = {"rows": [{"Vendor": "Patton", "Extra": {"VendorTaxIdent": "94-1234567", "BankNumber": "1"}}]}
-
-    assert redact(data) == {"rows": [{"Vendor": "Patton", "Extra": {}}]}
 
 
 # A Vendor's AccountNumber can be a credit-card number (e.g. an Amex "vendor").

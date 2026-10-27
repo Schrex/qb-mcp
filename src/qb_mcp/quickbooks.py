@@ -49,8 +49,7 @@ class QuickBooks:
     async def send(self, request: str) -> list[QueryResult]:
         """Send a complete qbXML document (also the path for a generic query tool)."""
         try:
-            ensure_read_only(request)
-            log.info("request %s", _request_types(request))
+            log.info("request %s", ", ".join(ensure_read_only(request)))
             response = await self.transport.send(request)
             try:
                 results = parse_response(response)
@@ -90,8 +89,3 @@ class QuickBooks:
     def _record(self, e: QBError) -> None:
         log.error("%s: %s", type(e).__name__, e)
         self.last_error = LastError(str(e), datetime.now(UTC))
-
-
-def _request_types(request: str) -> str:
-    root = ET.fromstring(request.encode("utf-8"))
-    return ", ".join(rq.tag for msgs in root for rq in msgs)

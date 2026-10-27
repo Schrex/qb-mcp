@@ -6,8 +6,8 @@ import xml.etree.ElementTree as ET
 from qb_mcp.errors import ReadOnlyViolation
 
 
-def ensure_read_only(request: str) -> None:
-    """Raise `ReadOnlyViolation` unless every request element is a `*QueryRq`."""
+def ensure_read_only(request: str) -> list[str]:
+    """Raise `ReadOnlyViolation` unless every request element is a `*QueryRq`; returns their tags."""
     if "<!DOCTYPE" in request.upper():
         raise ReadOnlyViolation("Refused: qbXML requests may not contain a DOCTYPE.")
     try:
@@ -28,6 +28,7 @@ def ensure_read_only(request: str) -> None:
             "Refused: this server is read-only and only sends *QueryRq requests; "
             f"got {', '.join(disallowed)}."
         )
+    return [rq.tag for rq in requests]
 
 
 QUERY_TAG = re.compile(r"[A-Z][A-Za-z0-9]*QueryRq")
