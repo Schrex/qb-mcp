@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<BillQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="2">
+<BillRet>
+<TxnID>1A3F-1704915600</TxnID>
+<TxnNumber>3412</TxnNumber>
+<VendorRef><ListID>80000005-1197759347</ListID><FullName>Patton Hardware Supplies</FullName></VendorRef>
+<APAccountRef><ListID>80000019-1197756960</ListID><FullName>Accounts Payable</FullName></APAccountRef>
+<TxnDate>2024-01-10</TxnDate>
+<DueDate>2024-02-09</DueDate>
+<AmountDue>1325.40</AmountDue>
+<RefNumber>INV-88213</RefNumber>
+<Memo>Bathroom materials</Memo>
+<IsPaid>false</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>1A41-1704915600</TxnLineID>
+<AccountRef><ListID>8000004A-1197757020</ListID><FullName>Job Expenses:Permits and Licenses</FullName></AccountRef>
+<Amount>125.40</Amount>
+<Memo>Delivery fee</Memo>
+<CustomerRef><ListID>80000003-1197756930</ListID><FullName>Abercrombie, Kristy:Remodel Bathroom</FullName></CustomerRef>
+<ClassRef><ListID>80000001-1197756760</ListID><FullName>Remodel</FullName></ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+<ItemLineRet>
+<TxnLineID>1A42-1704915600</TxnLineID>
+<ItemRef><ListID>80000030-1197757300</ListID><FullName>Lumber:Trim</FullName></ItemRef>
+<Desc>Trim lumber</Desc>
+<Quantity>40</Quantity>
+<Cost>15.00</Cost>
+<Amount>600.00</Amount>
+<CustomerRef><ListID>80000003-1197756930</ListID><FullName>Abercrombie, Kristy:Remodel Bathroom</FullName></CustomerRef>
+<ClassRef><ListID>80000001-1197756760</ListID><FullName>Remodel</FullName></ClassRef>
+<BillableStatus>Billable</BillableStatus>
+</ItemLineRet>
+<ItemGroupLineRet>
+<TxnLineID>1A43-1704915600</TxnLineID>
+<ItemGroupRef><ListID>80000040-1197757400</ListID><FullName>Door Kit</FullName></ItemGroupRef>
+<Desc>Interior door kit</Desc>
+<Quantity>1</Quantity>
+<TotalAmount>600.00</TotalAmount>
+<ItemLineRet>
+<TxnLineID>1A44-1704915600</TxnLineID>
+<ItemRef><ListID>80000031-1197757310</ListID><FullName>Doors:Interior</FullName></ItemRef>
+<Desc>Interior door</Desc>
+<Quantity>1</Quantity>
+<Cost>600.00</Cost>
+<Amount>600.00</Amount>
+<CustomerRef><ListID>80000004-1197756940</ListID><FullName>Cook, Brian:Kitchen</FullName></CustomerRef>
+<BillableStatus>HasBeenBilled</BillableStatus>
+</ItemLineRet>
+</ItemGroupLineRet>
+<OpenAmount>1325.40</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>1B10-1706000000</TxnID>
+<TxnNumber>3420</TxnNumber>
+<VendorRef><ListID>80000006-1197759350</ListID><FullName>Timberloft Lumber</FullName></VendorRef>
+<TxnDate>2024-01-22</TxnDate>
+<DueDate>2024-02-21</DueDate>
+<AmountDue>480.00</AmountDue>
+<RefNumber>TL-5521</RefNumber>
+<IsPaid>true</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>1B11-1706000000</TxnLineID>
+<AccountRef><ListID>8000004B-1197757030</ListID><FullName>Job Expenses:Job Materials</FullName></AccountRef>
+<Amount>480.00</Amount>
+<CustomerRef><ListID>80000004-1197756940</ListID><FullName>Cook, Brian:Kitchen</FullName></CustomerRef>
+<BillableStatus>Billable</BillableStatus>
+</ExpenseLineRet>
+<OpenAmount>0.00</OpenAmount>
+</BillRet>
+</BillQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
