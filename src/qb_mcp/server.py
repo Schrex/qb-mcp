@@ -1,6 +1,7 @@
 """MCP surface. `build_server(transport)` registers every tool over one Transport."""
 
 import os
+import re
 import sys
 from collections.abc import Awaitable, Callable
 from functools import wraps
@@ -12,6 +13,7 @@ from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
 from qb_mcp.errors import QBError
+from qb_mcp.logs import configure_logging
 from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
 from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
@@ -30,6 +32,25 @@ JOB_REPORT_TYPES: dict[str, str] = {
     "job_estimates_vs_actuals_summary": "JobEstimatesVsActualsSummary",
     "job_estimates_vs_actuals_detail": "JobEstimatesVsActualsDetail",
 }
+
+AccountType = Literal[
+    "AccountsPayable",
+    "AccountsReceivable",
+    "Bank",
+    "CostOfGoodsSold",
+    "CreditCard",
+    "Equity",
+    "Expense",
+    "FixedAsset",
+    "Income",
+    "LongTermLiability",
+    "NonPosting",
+    "OtherAsset",
+    "OtherCurrentAsset",
+    "OtherCurrentLiability",
+    "OtherExpense",
+    "OtherIncome",
+]
 
 INSTRUCTIONS = (
     "Read-only Lookups against the QuickBooks Desktop Company File that is open on this PC. "
@@ -57,12 +78,12 @@ def build_server(transport: Transport) -> MCPServer:
     @mcp.tool()
     async def qb_status() -> dict[str, Any]:
         """Check the QuickBooks connection: whether QuickBooks is reachable, its product and version,
-        the qbXML versions it supports, and which Company File is open."""
+        the qbXML versions it supports, which Company File is open, and the last error (and when)."""
         try:
             host_rs, company_rs = await qb.lookup(query("HostQueryRq"), query("CompanyQueryRq"))
             company_file = await qb.company_file()
         except QBError as e:
-            return {"reachable": False, "error": str(e)}
+            return {"reachable": False, "error": str(e), "last_error": qb.last_error.as_dict()}
         host, company = host_rs.records[0], company_rs.records[0]
         return {
             "reachable": True,
@@ -71,6 +92,7 @@ def build_server(transport: Transport) -> MCPServer:
             "supported_qbxml_versions": host["SupportedQBXMLVersion"],
             "company_name": company["CompanyName"],
             "company_file": company_file,
+            "last_error": qb.last_error and qb.last_error.as_dict(),
         }
 
     @mcp.tool()
@@ -96,10 +118,7 @@ def build_server(transport: Transport) -> MCPServer:
         """List Vendors with name, active flag, balance and contact basics.
         Optional: `name_contains` (case-insensitive substring), `status` (default active), `limit` (default 100);
         if more Vendors match than `limit`, `more_available` is true."""
-        filters = [el("MaxReturned", fetch_limit(limit)), el("ActiveStatus", ACTIVE_STATUS[status])]
-        if name_contains:
-            filters.append(el("NameFilter", None, el("MatchCriterion", "Contains"), el("Name", name_contains)))
-        (vendor_rs,) = await qb.lookup(query("VendorQueryRq", *filters))
+        (vendor_rs,) = await qb.lookup(query("VendorQueryRq", *_list_filters(name_contains, status, limit)))
         return capped([_vendor(v) for v in vendor_rs.records], limit)
 
     @mcp.tool()
@@ -164,6 +183,52 @@ def build_server(transport: Transport) -> MCPServer:
 
     @mcp.tool()
     @user_facing_errors
+    async def list_customer_jobs(
+        name_contains: str | None = None,
+        status: Literal["active", "inactive", "all"] = "active",
+        limit: int = DEFAULT_LIMIT,
+    ) -> dict[str, Any]:
+        """List customers and their Customer:Jobs. Each has its full `name` ("Customer:Job" for a job),
+        `kind` ("customer" or "job"), `parent`, `job_status`, own `balance` and `total_balance`
+        (including its jobs). Optional: `name_contains` (case-insensitive substring),
+        `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
+        (customer_rs,) = await qb.lookup(query("CustomerQueryRq", *_list_filters(name_contains, status, limit)))
+        return capped([_customer_job(c) for c in customer_rs.records], limit)
+
+    @mcp.tool()
+    @user_facing_errors
+    async def list_items(
+        name_contains: str | None = None,
+        status: Literal["active", "inactive", "all"] = "active",
+        limit: int = DEFAULT_LIMIT,
+    ) -> dict[str, Any]:
+        """List Items of every kind (service, inventory, non_inventory, other_charge, discount, group, ...),
+        each with its full `name`, `kind`, purchase `description`, `cost` and `expense_account`
+        (COGS account for inventory items). Optional: `name_contains` (case-insensitive substring),
+        `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
+        (item_rs,) = await qb.lookup(query("ItemQueryRq", *_list_filters(name_contains, status, limit)))
+        return capped([_item(tag, i) for tag, i in item_rs.rets], limit)
+
+    @mcp.tool()
+    @user_facing_errors
+    async def list_accounts(
+        account_type: AccountType | None = None,
+        name_contains: str | None = None,
+        status: Literal["active", "inactive", "all"] = "active",
+        limit: int = DEFAULT_LIMIT,
+    ) -> dict[str, Any]:
+        """List chart-of-accounts Accounts with full `name`, `account_type`, `account_number`,
+        own `balance` and `total_balance` (including subaccounts). Optional: `account_type`
+        (e.g. Expense, CostOfGoodsSold, Bank), `name_contains` (case-insensitive substring),
+        `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
+        filters = _list_filters(name_contains, status, limit)
+        if account_type:
+            filters.append(el("AccountType", account_type))
+        (account_rs,) = await qb.lookup(query("AccountQueryRq", *filters))
+        return capped([_account(a) for a in account_rs.records], limit)
+
+    @mcp.tool()
+    @user_facing_errors
     async def run_job_report(
         report: JobReport,
         from_date: date,
@@ -191,6 +256,76 @@ ACTIVE_STATUS = {"active": "ActiveOnly", "inactive": "InactiveOnly", "all": "All
 PAID_STATUS = {"paid": "PaidOnly", "unpaid": "NotPaidOnly", "all": "All"}
 
 
+def _list_filters(name_contains: str | None, status: str, limit: int) -> list[Any]:
+    """Shared list-query filter group, in schema order: MaxReturned, ActiveStatus, NameFilter."""
+    filters = [el("MaxReturned", fetch_limit(limit)), el("ActiveStatus", ACTIVE_STATUS[status])]
+    if name_contains:
+        filters.append(el("NameFilter", None, el("MatchCriterion", "Contains"), el("Name", name_contains)))
+    return filters
+
+
+def _ref_name(ref: Any) -> str | None:
+    return ref.get("FullName") if isinstance(ref, dict) else None
+
+
+def _customer_job(c: dict[str, Any]) -> dict[str, Any]:
+    parent = _ref_name(c.get("ParentRef"))
+    return {
+        "name": c.get("FullName") or c.get("Name"),
+        "kind": "job" if parent else "customer",
+        "parent": parent,
+        "is_active": c.get("IsActive") == "true",
+        "job_status": c.get("JobStatus"),
+        "balance": c.get("Balance"),
+        "total_balance": c.get("TotalBalance"),
+        "job_description": c.get("JobDesc"),
+    }
+
+
+def _item_kind(tag: str) -> str:
+    """`ItemNonInventoryRet` -> `non_inventory`."""
+    words = re.findall(r"[A-Z][a-z]*", tag.removeprefix("Item").removesuffix("Ret"))
+    return "_".join(w.lower() for w in words)
+
+
+def _first(*values: Any) -> Any:
+    return next((v for v in values if v not in (None, "")), None)
+
+
+def _item(tag: str, i: dict[str, Any]) -> dict[str, Any]:
+    """Description/cost/expense account live in different places per Item kind:
+    one-way items under `SalesOrPurchase`, two-way under `SalesAndPurchase`,
+    inventory/fixed-asset at the top level."""
+    sop = i.get("SalesOrPurchase") or {}
+    sap = i.get("SalesAndPurchase") or {}
+    return {
+        "name": i.get("FullName") or i.get("Name"),
+        "kind": _item_kind(tag),
+        "is_active": i.get("IsActive") == "true",
+        "description": _first(sap.get("PurchaseDesc"), sop.get("Desc"), i.get("PurchaseDesc"), i.get("ItemDesc")),
+        "cost": _first(
+            sap.get("PurchaseCost"), sop.get("Price"), sop.get("PricePercent"), i.get("PurchaseCost"),
+            i.get("DiscountRate"), i.get("DiscountRatePercent"),
+        ),
+        "expense_account": _first(
+            _ref_name(sap.get("ExpenseAccountRef")), _ref_name(sop.get("AccountRef")),
+            _ref_name(i.get("COGSAccountRef")), _ref_name(i.get("AssetAccountRef")), _ref_name(i.get("AccountRef")),
+        ),
+    }
+
+
+def _account(a: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "name": a.get("FullName") or a.get("Name"),
+        "account_type": a.get("AccountType"),
+        "account_number": a.get("AccountNumber"),
+        "is_active": a.get("IsActive") == "true",
+        "description": a.get("Desc"),
+        "balance": a.get("Balance"),
+        "total_balance": a.get("TotalBalance"),
+    }
+
+
 def _vendor(v: dict[str, Any]) -> dict[str, Any]:
     return {
         "name": v.get("Name"),
@@ -216,7 +351,7 @@ def _bill_matches(
     txn_date = date.fromisoformat(b["TxnDate"])
     if (from_date and txn_date < from_date) or (to_date and txn_date > to_date):
         return False
-    if vendor and (_name(b.get("VendorRef")) or "").casefold() != vendor.casefold():
+    if vendor and (_ref_name(b.get("VendorRef")) or "").casefold() != vendor.casefold():
         return False
     is_paid = b.get("IsPaid") == "true"
     return paid_status == "all" or is_paid == (paid_status == "paid")
@@ -240,21 +375,17 @@ def _charged_to(bills: list[dict[str, Any]], customer_job: str) -> list[dict[str
     return out
 
 
-def _name(ref: Any) -> str | None:
-    return ref.get("FullName") if isinstance(ref, dict) else None
-
-
 def _line_job_fields(line: dict[str, Any]) -> dict[str, Any]:
     return {
-        "customer_job": _name(line.get("CustomerRef")),
-        "class": _name(line.get("ClassRef")),
+        "customer_job": _ref_name(line.get("CustomerRef")),
+        "class": _ref_name(line.get("ClassRef")),
         "billable_status": line.get("BillableStatus"),
     }
 
 
 def _expense_line(line: dict[str, Any]) -> dict[str, Any]:
     return {
-        "account": _name(line.get("AccountRef")),
+        "account": _ref_name(line.get("AccountRef")),
         "amount": line.get("Amount"),
         "memo": line.get("Memo"),
         **_line_job_fields(line),
@@ -263,7 +394,7 @@ def _expense_line(line: dict[str, Any]) -> dict[str, Any]:
 
 def _item_line(line: dict[str, Any]) -> dict[str, Any]:
     return {
-        "item": _name(line.get("ItemRef")),
+        "item": _ref_name(line.get("ItemRef")),
         "description": line.get("Desc"),
         "quantity": line.get("Quantity"),
         "cost": line.get("Cost"),
@@ -274,7 +405,7 @@ def _item_line(line: dict[str, Any]) -> dict[str, Any]:
 
 def _bill(b: dict[str, Any], include_lines: bool = True) -> dict[str, Any]:
     header = {
-        "vendor": _name(b.get("VendorRef")),
+        "vendor": _ref_name(b.get("VendorRef")),
         "ref_number": b.get("RefNumber"),
         "date": b.get("TxnDate"),
         "due_date": b.get("DueDate"),
@@ -306,10 +437,14 @@ def default_transport() -> Transport:
             "QB_MCP_REPLAY_DIR", Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "replay"
         )
         return ReplayTransport(Path(fixtures), company_file="(replay)")
-    from qb_mcp.transports.com import ComTransport  # ticket #3
+    from qb_mcp.transports.com import ComTransport
 
     return ComTransport()
 
 
 def main() -> None:
+    try:
+        configure_logging()
+    except OSError as e:  # never let logging stop the server
+        print(f"qb-mcp: log file disabled ({e})", file=sys.stderr)
     build_server(default_transport()).run()

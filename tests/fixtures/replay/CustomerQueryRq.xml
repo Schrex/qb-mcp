@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<CustomerQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="3" iteratorRemainingCount="12" iteratorID="{a1b2c3d4-0000-4000-8000-000000000002}">
+<CustomerRet>
+<ListID>80000001-1197756850</ListID>
+<TimeCreated>2007-12-15T14:14:10-08:00</TimeCreated>
+<TimeModified>2023-10-02T09:30:00-08:00</TimeModified>
+<EditSequence>1696264200</EditSequence>
+<Name>Abercrombie, Kristy</Name>
+<FullName>Abercrombie, Kristy</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<FirstName>Kristy</FirstName>
+<LastName>Abercrombie</LastName>
+<BillAddress>
+<Addr1>Kristy Abercrombie</Addr1>
+<Addr2>5647 Cypress Hill Rd</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</BillAddress>
+<Phone>415-555-6579</Phone>
+<Contact>Kristy Abercrombie</Contact>
+<CustomerTypeRef>
+<ListID>80000001-1197756788</ListID>
+<FullName>Residential</FullName>
+</CustomerTypeRef>
+<TermsRef>
+<ListID>80000002-1197756904</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<Balance>0.00</Balance>
+<TotalBalance>7633.28</TotalBalance>
+<ResaleNumber>SR-998877</ResaleNumber>
+<AccountNumber>1001</AccountNumber>
+<CreditCardInfo>
+<CreditCardNumber>xxxxxxxxxxxx1111</CreditCardNumber>
+<ExpirationMonth>12</ExpirationMonth>
+<ExpirationYear>2027</ExpirationYear>
+<NameOnCard>Kristy Abercrombie</NameOnCard>
+<CreditCardAddress>5647 Cypress Hill Rd</CreditCardAddress>
+<CreditCardPostalCode>94326</CreditCardPostalCode>
+</CreditCardInfo>
+<JobStatus>None</JobStatus>
+<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000002-1197756894</ListID>
+<TimeCreated>2007-12-15T14:14:54-08:00</TimeCreated>
+<TimeModified>2023-10-02T09:31:00-08:00</TimeModified>
+<EditSequence>1696264260</EditSequence>
+<Name>Kitchen</Name>
+<FullName>Abercrombie, Kristy:Kitchen</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>80000001-1197756850</ListID>
+<FullName>Abercrombie, Kristy</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>Closed</JobStatus>
+<JobStartDate>2023-10-24</JobStartDate>
+<JobProjectedEndDate>2023-11-30</JobProjectedEndDate>
+<JobEndDate>2023-11-28</JobEndDate>
+<JobDesc>Kitchen remodel</JobDesc>
+<JobTypeRef>
+<ListID>80000003-1197756910</ListID>
+<FullName>Remodel</FullName>
+</JobTypeRef>
+<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000003-1197756930</ListID>
+<TimeCreated>2007-12-15T14:15:30-08:00</TimeCreated>
+<TimeModified>2024-01-08T11:00:00-08:00</TimeModified>
+<EditSequence>1704740400</EditSequence>
+<Name>Remodel Bathroom</Name>
+<FullName>Abercrombie, Kristy:Remodel Bathroom</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>80000001-1197756850</ListID>
+<FullName>Abercrombie, Kristy</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>7633.28</Balance>
+<TotalBalance>7633.28</TotalBalance>
+<JobStatus>InProgress</JobStatus>
+<JobStartDate>2024-01-08</JobStartDate>
+<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
+</CustomerRet>
+</CustomerQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

@@ -55,8 +55,8 @@ class ReplayTransport:
         """Answer `request_type` with fixture file `fixture` (name in fixtures_dir) instead of the default."""
         self._overrides[request_type] = fixture
 
-    def fail_with(self, error: TransportError) -> None:
-        """Make every call raise `error` (e.g. QuickBooks not running)."""
+    def fail_with(self, error: TransportError | None) -> None:
+        """Make every call raise `error` (e.g. QuickBooks not running); `None` recovers."""
         self._failure = error
 
     # --- Transport -----------------------------------------------------
