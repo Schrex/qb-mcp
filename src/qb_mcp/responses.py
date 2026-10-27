@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from qb_mcp.errors import QuickBooksStatusError
+from qb_mcp.output import SENSITIVE_ELEMENTS
 
 # Elements that are lists in the schema even when only one occurs. Extend as needed.
 REPEATED = frozenset(
@@ -50,12 +51,14 @@ class QueryResult:
 
 
 def to_data(element: ET.Element) -> Any:
-    """Leaf -> text; otherwise a dict of children, with repeated (or REPEATED) tags as lists."""
+    """Leaf -> text; otherwise a dict of children, with repeated (or REPEATED) tags as lists.
+    Sensitive elements (`output.SENSITIVE_ELEMENTS`) are dropped with their subtrees."""
+    children = [child for child in element if child.tag not in SENSITIVE_ELEMENTS]
     if len(element) == 0:
         return (element.text or "").strip()
-    counts = Counter(child.tag for child in element)
+    counts = Counter(child.tag for child in children)
     data: dict[str, Any] = {}
-    for child in element:
+    for child in children:
         value = to_data(child)
         if counts[child.tag] > 1 or child.tag in REPEATED:
             data.setdefault(child.tag, []).append(value)

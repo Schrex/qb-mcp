@@ -5,13 +5,14 @@ import sys
 from collections.abc import Awaitable, Callable
 from functools import wraps
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
 from qb_mcp.errors import QBError
-from qb_mcp.qbxml import query
+from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
+from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.transport import Transport
 
@@ -70,7 +71,40 @@ def build_server(transport: Transport) -> MCPServer:
             "fiscal_year_start_month": company.get("FirstMonthFiscalYear"),
         }
 
+    @mcp.tool()
+    @user_facing_errors
+    async def list_vendors(
+        name_contains: str | None = None,
+        status: Literal["active", "inactive", "all"] = "active",
+        limit: int = DEFAULT_LIMIT,
+    ) -> dict[str, Any]:
+        """List Vendors with name, active flag, balance and contact basics.
+        Optional: `name_contains` (case-insensitive substring), `status` (default active), `limit` (default 100);
+        if more Vendors match than `limit`, `more_available` is true."""
+        filters = [el("MaxReturned", fetch_limit(limit)), el("ActiveStatus", ACTIVE_STATUS[status])]
+        if name_contains:
+            filters.append(el("NameFilter", None, el("MatchCriterion", "Contains"), el("Name", name_contains)))
+        (vendor_rs,) = await qb.lookup(query("VendorQueryRq", *filters))
+        return capped([_vendor(v) for v in vendor_rs.records], limit)
+
     return mcp
+
+
+ACTIVE_STATUS = {"active": "ActiveOnly", "inactive": "InactiveOnly", "all": "All"}
+
+
+def _vendor(v: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "name": v.get("Name"),
+        "is_active": v.get("IsActive") == "true",
+        "balance": v.get("Balance"),
+        "company_name": v.get("CompanyName"),
+        "contact": v.get("Contact"),
+        "phone": v.get("Phone"),
+        "email": v.get("Email"),
+        "address": v.get("VendorAddress", {}),
+        "account_number": v.get("AccountNumber"),
+    }
 
 
 def default_transport() -> Transport:
