@@ -76,6 +76,8 @@ async def test_run_query_reports_schema_invalid_queries_clearly(call):
 async def test_run_query_description_steers_to_dedicated_tools(client):
     tool = next(t for t in (await client.list_tools()).tools if t.name == "run_query")
     assert "Prefer the dedicated tools" in tool.description
+    assert "qbXML 16.0" in tool.description
+    assert "bills" not in tool.description.lower()  # query_bills covers them
 
 
 # --- Refusals: nothing caller-supplied but one plain *QueryRq ever reaches QuickBooks ---

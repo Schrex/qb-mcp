@@ -263,8 +263,8 @@ def build_server(transport: Transport) -> MCPServer:
     @user_facing
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> dict[str, Any]:
         """Run one raw qbXML query. Prefer the dedicated tools; use this only for questions they
-        don't cover (invoices, checks, purchase orders, bills, ...).
-        `query` is exactly one `*QueryRq` element (qbXML 13.0 schema, children in schema order),
+        don't cover (invoices, checks, purchase orders, ...).
+        `query` is exactly one `*QueryRq` element (qbXML 16.0 schema, children in schema order),
         without the <?xml?>/<QBXML>/<QBXMLMsgsRq> envelope, e.g.
         `<InvoiceQueryRq><MaxReturned>101</MaxReturned><TxnDateRangeFilter><FromTxnDate>2026-01-01</FromTxnDate></TxnDateRangeFilter></InvoiceQueryRq>`.
         Include MaxReturned (limit + 1) on transaction queries. Anything other than a single query
