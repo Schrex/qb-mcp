@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<AccountQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="3">
+<AccountRet>
+<ListID>80000001-1197756700</ListID>
+<TimeCreated>2007-12-15T14:11:40-08:00</TimeCreated>
+<TimeModified>2023-12-31T17:00:00-08:00</TimeModified>
+<EditSequence>1704070800</EditSequence>
+<Name>Checking</Name>
+<FullName>Checking</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<AccountType>Bank</AccountType>
+<AccountNumber>10100</AccountNumber>
+<BankNumber>000123456789</BankNumber>
+<Desc>Operating account</Desc>
+<Balance>46969.10</Balance>
+<TotalBalance>46969.10</TotalBalance>
+<TaxLineInfoRet>
+<TaxLineID>0</TaxLineID>
+<TaxLineName>&lt;Unassigned&gt;</TaxLineName>
+</TaxLineInfoRet>
+<CashFlowClassification>NotApplicable</CashFlowClassification>
+</AccountRet>
+<AccountRet>
+<ListID>80000048-1197757010</ListID>
+<TimeCreated>2007-12-15T14:16:50-08:00</TimeCreated>
+<TimeModified>2007-12-15T14:16:50-08:00</TimeModified>
+<EditSequence>1197757010</EditSequence>
+<Name>Subcontractors</Name>
+<FullName>Job Expenses:Subcontractors</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>80000047-1197757008</ListID>
+<FullName>Job Expenses</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<AccountType>Expense</AccountType>
+<AccountNumber>54300</AccountNumber>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<CashFlowClassification>None</CashFlowClassification>
+</AccountRet>
+<AccountRet>
+<ListID>80000046-1197757005</ListID>
+<TimeCreated>2007-12-15T14:16:45-08:00</TimeCreated>
+<TimeModified>2007-12-15T14:16:45-08:00</TimeModified>
+<EditSequence>1197757005</EditSequence>
+<Name>Cost of Goods Sold</Name>
+<FullName>Cost of Goods Sold</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<AccountType>CostOfGoodsSold</AccountType>
+<SpecialAccountType>CostOfGoodsSold</SpecialAccountType>
+<AccountNumber>50100</AccountNumber>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<CashFlowClassification>None</CashFlowClassification>
+</AccountRet>
+</AccountQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
