@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<JobReportQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ReportRet>
+<ReportTitle>Job Profitability Summary</ReportTitle>
+<ReportSubtitle>January 1 through December 31, 2024</ReportSubtitle>
+<ReportBasis>Accrual</ReportBasis>
+<NumRows>5</NumRows>
+<NumColumns>4</NumColumns>
+<NumColTitleRows>1</NumColTitleRows>
+<ColDesc colID="1" dataType="STRTYPE">
+<ColTitle titleRow="1" />
+<ColType>Label</ColType>
+</ColDesc>
+<ColDesc colID="2" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Cost" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="3" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Revenue" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="4" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="($) Diff." />
+<ColType>AmountDifference</ColType>
+</ColDesc>
+<ReportData>
+<TextRow rowNumber="1" value="Abercrombie, Kristy" />
+<DataRow rowNumber="2">
+<RowData rowType="customer" value="Abercrombie, Kristy:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="2520.00" />
+<ColData colID="3" value="3111.28" />
+<ColData colID="4" value="591.28" />
+</DataRow>
+<DataRow rowNumber="3">
+<RowData rowType="customer" value="Abercrombie, Kristy:Remodel Bathroom" />
+<ColData colID="1" value="Remodel Bathroom" />
+<ColData colID="2" value="5600.00" />
+<ColData colID="3" value="7633.28" />
+<ColData colID="4" value="2033.28" />
+</DataRow>
+<SubtotalRow rowNumber="4">
+<RowData rowType="customer" value="Abercrombie, Kristy" />
+<ColData colID="1" value="Total Abercrombie, Kristy" />
+<ColData colID="2" value="8120.00" />
+<ColData colID="3" value="10744.56" />
+<ColData colID="4" value="2624.56" />
+</SubtotalRow>
+<TotalRow rowNumber="5">
+<ColData colID="1" value="TOTAL" />
+<ColData colID="2" value="8120.00" />
+<ColData colID="3" value="10744.56" />
+<ColData colID="4" value="2624.56" />
+</TotalRow>
+</ReportData>
+</ReportRet>
+</JobReportQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

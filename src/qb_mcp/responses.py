@@ -52,12 +52,16 @@ class QueryResult:
 
 def to_data(element: ET.Element) -> Any:
     """Leaf -> text; otherwise a dict of children, with repeated (or REPEATED) tags as lists.
-    Sensitive elements (`output.SENSITIVE_ELEMENTS`) are dropped with their subtrees."""
-    children = [child for child in element if child.tag not in SENSITIVE_ELEMENTS]
-    if len(element) == 0:
+
+    Attributes (report rows/columns carry their values in them) become keys of
+    the dict; a leaf with attributes becomes a dict of just its attributes.
+    Sensitive elements (`output.SENSITIVE_ELEMENTS`) are dropped with their subtrees.
+    """
+    if len(element) == 0 and not element.attrib:
         return (element.text or "").strip()
+    children = [child for child in element if child.tag not in SENSITIVE_ELEMENTS]
     counts = Counter(child.tag for child in children)
-    data: dict[str, Any] = {}
+    data: dict[str, Any] = dict(element.attrib)
     for child in children:
         value = to_data(child)
         if counts[child.tag] > 1 or child.tag in REPEATED:
