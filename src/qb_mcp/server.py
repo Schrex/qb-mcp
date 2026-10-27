@@ -11,6 +11,7 @@ from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
 from qb_mcp.errors import QBError
+from qb_mcp.logs import configure_logging
 from qb_mcp.qbxml import query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.transport import Transport
@@ -84,10 +85,14 @@ def default_transport() -> Transport:
             "QB_MCP_REPLAY_DIR", Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "replay"
         )
         return ReplayTransport(Path(fixtures), company_file="(replay)")
-    from qb_mcp.transports.com import ComTransport  # ticket #3
+    from qb_mcp.transports.com import ComTransport
 
     return ComTransport()
 
 
 def main() -> None:
+    try:
+        configure_logging()
+    except OSError as e:  # never let logging stop the server
+        print(f"qb-mcp: log file disabled ({e})", file=sys.stderr)
     build_server(default_transport()).run()
