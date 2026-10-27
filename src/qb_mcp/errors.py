@@ -34,6 +34,23 @@ class ReadOnlyViolation(QBError):
     """A request contained something other than `*QueryRq` elements (ADR-0001)."""
 
 
+class UnexpectedResponse(QBError):
+    """QuickBooks' response wasn't the shape expected: not qbXML, a malformed status, or a
+    record missing a field we rely on."""
+
+    def __init__(self, cause: Exception):
+        if isinstance(cause, KeyError):
+            detail = f"missing {cause.args[0]}"
+        elif isinstance(cause, IndexError):
+            detail = "no record returned"
+        else:
+            detail = str(cause) or type(cause).__name__
+        super().__init__(
+            f"QuickBooks sent a response this server didn't expect ({detail}). "
+            "Try again; if it keeps happening, tell Sumanth."
+        )
+
+
 class QuickBooksStatusError(QBError):
     """QuickBooks answered with an error status code."""
 

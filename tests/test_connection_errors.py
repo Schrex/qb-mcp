@@ -5,7 +5,9 @@ import logging
 from datetime import UTC, datetime, timedelta
 
 import pytest
+from mcp import Client
 
+from qb_mcp.server import build_server
 from qb_mcp.errors import TransportError, TransportFailure
 from qb_mcp.logs import configure_logging, default_log_dir
 
@@ -48,6 +50,50 @@ async def test_quickbooks_status_errors_also_count_as_last_error(call, replay):
     status = (await call("qb_status")).structured_content
 
     assert "3260" in status["last_error"]["message"]
+
+
+# --- Unexpected responses: a clear message and a last error, never a raw exception ---
+
+UNEXPECTED = "QuickBooks sent a response this server didn't expect"
+
+
+async def test_qb_status_reports_a_response_missing_expected_fields(call, replay):
+    replay.respond_with("HostQueryRq", "HostQueryRq.noproduct.xml")
+
+    status = (await call("qb_status")).structured_content
+
+    assert status["reachable"] is False
+    assert UNEXPECTED in status["error"]
+    assert UNEXPECTED in status["last_error"]["message"]
+
+
+@pytest.mark.parametrize("fixture", ["CompanyQueryRq.malformed.xml", "CompanyQueryRq.empty.xml"])
+async def test_tools_report_malformed_responses_clearly_and_as_last_error(call, replay, fixture):
+    replay.respond_with("CompanyQueryRq", fixture)
+
+    result = await call("get_company_info")
+
+    assert result.is_error
+    assert UNEXPECTED in result.content[0].text and "Traceback" not in result.content[0].text
+    replay.respond_with("CompanyQueryRq", "CompanyQueryRq.xml")
+    assert UNEXPECTED in (await call("qb_status")).structured_content["last_error"]["message"]
+
+
+class NotQbxmlTransport:
+    async def send(self, request: str) -> str:
+        return "<html>Service Unavailable"
+
+    async def company_file(self) -> str:
+        return "C:\\QB\\x.QBW"
+
+
+async def test_a_response_that_is_not_qbxml_is_reported_clearly():
+    async with Client(build_server(NotQbxmlTransport()), raise_exceptions=True) as client:
+        result = await client.call_tool("get_company_info", {})
+        status = (await client.call_tool("qb_status", {})).structured_content
+
+    assert result.is_error and UNEXPECTED in result.content[0].text
+    assert status["reachable"] is False and UNEXPECTED in status["last_error"]["message"]
 
 
 # --- Log file --------------------------------------------------------------

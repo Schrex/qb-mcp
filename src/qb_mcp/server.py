@@ -53,51 +53,60 @@ AccountType = Literal[
     "OtherIncome",
 ]
 
+Tool = Callable[..., Awaitable[Any]]
+
 INSTRUCTIONS = (
     "Read-only Lookups against the QuickBooks Desktop Company File that is open on this PC. "
     "Nothing here can change QuickBooks data."
 )
 
 
-def user_facing_errors(tool: Callable[..., Awaitable[Any]]) -> Callable[..., Awaitable[Any]]:
-    """Turn `QBError`s into tool errors the model (and Jeri) can read."""
+def user_facing_errors(qb: QuickBooks) -> Callable[[Tool], Tool]:
+    """Turn `QBError`s, and responses that aren't the expected shape, into tool errors
+    the model (and Jeri) can read."""
 
-    @wraps(tool)
-    async def wrapper(*args: Any, **kwargs: Any) -> Any:
-        try:
-            return await tool(*args, **kwargs)
-        except QBError as e:
-            raise ToolError(str(e)) from e
+    def decorate(tool: Tool) -> Tool:
+        @wraps(tool)
+        async def wrapper(*args: Any, **kwargs: Any) -> Any:
+            try:
+                with qb.interpreting():
+                    return await tool(*args, **kwargs)
+            except QBError as e:
+                raise ToolError(str(e)) from e
 
-    return wrapper
+        return wrapper
+
+    return decorate
 
 
 def build_server(transport: Transport) -> MCPServer:
     qb = QuickBooks(transport)
     mcp = MCPServer("qb-mcp", instructions=INSTRUCTIONS)
+    user_facing = user_facing_errors(qb)
 
     @mcp.tool()
     async def qb_status() -> dict[str, Any]:
         """Check the QuickBooks connection: whether QuickBooks is reachable, its product and version,
         the qbXML versions it supports, which Company File is open, and the last error (and when)."""
         try:
-            host_rs, company_rs = await qb.lookup(query("HostQueryRq"), query("CompanyQueryRq"))
-            company_file = await qb.company_file()
+            with qb.interpreting():
+                host_rs, company_rs = await qb.lookup(query("HostQueryRq"), query("CompanyQueryRq"))
+                company_file = await qb.company_file()
+                host, company = host_rs.records[0], company_rs.records[0]
+                status = {
+                    "reachable": True,
+                    "product": host["ProductName"],
+                    "version": f"{host['MajorVersion']}.{host['MinorVersion']}",
+                    "supported_qbxml_versions": host["SupportedQBXMLVersion"],
+                    "company_name": company["CompanyName"],
+                    "company_file": company_file,
+                }
         except QBError as e:
             return {"reachable": False, "error": str(e), "last_error": qb.last_error.as_dict()}
-        host, company = host_rs.records[0], company_rs.records[0]
-        return {
-            "reachable": True,
-            "product": host["ProductName"],
-            "version": f"{host['MajorVersion']}.{host['MinorVersion']}",
-            "supported_qbxml_versions": host["SupportedQBXMLVersion"],
-            "company_name": company["CompanyName"],
-            "company_file": company_file,
-            "last_error": qb.last_error and qb.last_error.as_dict(),
-        }
+        return status | {"last_error": qb.last_error and qb.last_error.as_dict()}
 
     @mcp.tool()
-    @user_facing_errors
+    @user_facing
     async def get_company_info() -> dict[str, Any]:
         """Company name, address and fiscal year start month from the open Company File."""
         (company_rs,) = await qb.lookup(query("CompanyQueryRq"))
@@ -110,7 +119,7 @@ def build_server(transport: Transport) -> MCPServer:
         }
 
     @mcp.tool()
-    @user_facing_errors
+    @user_facing
     async def list_vendors(
         name_contains: str | None = None,
         status: Literal["active", "inactive", "all"] = "active",
@@ -123,7 +132,7 @@ def build_server(transport: Transport) -> MCPServer:
         return capped([_vendor(v) for v in vendor_rs.records], limit)
 
     @mcp.tool()
-    @user_facing_errors
+    @user_facing
     async def query_bills(
         from_date: date | None = None,
         to_date: date | None = None,
@@ -183,7 +192,7 @@ def build_server(transport: Transport) -> MCPServer:
         return scanned | {"results": matched, "count": len(matched)}
 
     @mcp.tool()
-    @user_facing_errors
+    @user_facing
     async def list_customer_jobs(
         name_contains: str | None = None,
         status: Literal["active", "inactive", "all"] = "active",
@@ -197,7 +206,7 @@ def build_server(transport: Transport) -> MCPServer:
         return capped([_customer_job(c) for c in customer_rs.records], limit)
 
     @mcp.tool()
-    @user_facing_errors
+    @user_facing
     async def list_items(
         name_contains: str | None = None,
         status: Literal["active", "inactive", "all"] = "active",
@@ -211,7 +220,7 @@ def build_server(transport: Transport) -> MCPServer:
         return capped([_item(tag, i) for tag, i in item_rs.rets], limit)
 
     @mcp.tool()
-    @user_facing_errors
+    @user_facing
     async def list_accounts(
         account_type: AccountType | None = None,
         name_contains: str | None = None,
@@ -229,7 +238,7 @@ def build_server(transport: Transport) -> MCPServer:
         return capped([_account(a) for a in account_rs.records], limit)
 
     @mcp.tool()
-    @user_facing_errors
+    @user_facing
     async def run_job_report(
         report: JobReport,
         from_date: date,
@@ -251,7 +260,7 @@ def build_server(transport: Transport) -> MCPServer:
         return parse_report(rs.records[0] if rs.records else None)
 
     @mcp.tool()
-    @user_facing_errors
+    @user_facing
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> dict[str, Any]:
         """Run one raw qbXML query. Prefer the dedicated tools; use this only for questions they
         don't cover (invoices, checks, purchase orders, bills, ...).
