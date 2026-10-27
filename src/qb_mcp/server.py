@@ -41,12 +41,12 @@ def build_server(transport: Transport) -> MCPServer:
     @mcp.tool()
     async def qb_status() -> dict[str, Any]:
         """Check the QuickBooks connection: whether QuickBooks is reachable, its product and version,
-        the qbXML versions it supports, and which Company File is open."""
+        the qbXML versions it supports, which Company File is open, and the last error (and when)."""
         try:
             host_rs, company_rs = await qb.lookup(query("HostQueryRq"), query("CompanyQueryRq"))
             company_file = await qb.company_file()
         except QBError as e:
-            return {"reachable": False, "error": str(e)}
+            return {"reachable": False, "error": str(e), "last_error": qb.last_error.as_dict()}
         host, company = host_rs.records[0], company_rs.records[0]
         return {
             "reachable": True,
@@ -55,6 +55,7 @@ def build_server(transport: Transport) -> MCPServer:
             "supported_qbxml_versions": host["SupportedQBXMLVersion"],
             "company_name": company["CompanyName"],
             "company_file": company_file,
+            "last_error": qb.last_error and qb.last_error.as_dict(),
         }
 
     @mcp.tool()
