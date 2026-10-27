@@ -11,6 +11,7 @@ from typing import Any
 
 from qb_mcp.errors import QuickBooksStatusError
 from qb_mcp.output import is_sensitive
+from qb_mcp.reports import drop_sensitive_columns
 
 # Elements that are lists in the schema even when only one occurs. Extend as needed.
 REPEATED = frozenset(
@@ -71,6 +72,11 @@ def to_data(element: ET.Element) -> Any:
     return data
 
 
+def _ret_data(ret: ET.Element) -> Any:
+    data = to_data(ret)
+    return drop_sensitive_columns(data) if ret.tag == "ReportRet" else data
+
+
 def parse_response(response: str) -> list[QueryResult]:
     """One `QueryResult` per `*Rs` in the response, in document order."""
     root = ET.fromstring(response.encode("utf-8"))
@@ -81,7 +87,7 @@ def parse_response(response: str) -> list[QueryResult]:
             code = int(rs.get("statusCode", "0"))
             if rs.get("statusSeverity") == "Error":
                 raise QuickBooksStatusError(request_type, code, rs.get("statusMessage", ""))
-            rets = [] if code == NO_MATCH else [(ret.tag, to_data(ret)) for ret in rs]
+            rets = [] if code == NO_MATCH else [(ret.tag, _ret_data(ret)) for ret in rs]
             attrs = {k: v for k, v in rs.attrib.items() if not k.startswith("status")}
             results.append(QueryResult(request_type, rets, attrs))
     return results
