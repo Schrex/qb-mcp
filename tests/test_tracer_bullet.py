@@ -26,6 +26,7 @@ async def test_qb_status_reports_quickbooks_and_company_file(call):
         "supported_qbxml_versions": ["1.0", "1.1", "2.0", "13.0", "14.0", "15.0", "16.0"],
         "company_name": "Rock Castle Construction",
         "company_file": r"C:\QB\Rock Castle Construction.QBW",
+        "last_error": None,
     }
 
 

@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<ItemQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="5" iteratorRemainingCount="0" iteratorID="{a1b2c3d4-0000-4000-8000-000000000003}">
+<ItemServiceRet>
+<ListID>80000006-1197757040</ListID>
+<TimeCreated>2007-12-15T14:17:20-08:00</TimeCreated>
+<TimeModified>2007-12-15T14:17:20-08:00</TimeModified>
+<EditSequence>1197757040</EditSequence>
+<Name>Framing</Name>
+<FullName>Framing</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>80000002-1197756811</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Framing labor</SalesDesc>
+<SalesPrice>55.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>8000003F-1197757000</ListID>
+<FullName>Construction Income:Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Framing labor</PurchaseDesc>
+<PurchaseCost>35.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>80000048-1197757010</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>80000010-1197759400</ListID>
+<FullName>Larson Flooring</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemInventoryRet>
+<ListID>80000020-1197757200</ListID>
+<TimeCreated>2007-12-15T14:20:00-08:00</TimeCreated>
+<TimeModified>2023-09-01T08:00:00-08:00</TimeModified>
+<EditSequence>1693580400</EditSequence>
+<Name>Exterior</Name>
+<FullName>Wood Door:Exterior</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>8000001F-1197757190</ListID>
+<FullName>Wood Door</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>80000001-1197756810</ListID>
+<FullName>Tax</FullName>
+</SalesTaxCodeRef>
+<SalesDesc>Exterior wood door</SalesDesc>
+<SalesPrice>120.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>8000003E-1197756990</ListID>
+<FullName>Construction Income:Materials Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Exterior wood door</PurchaseDesc>
+<PurchaseCost>59.00</PurchaseCost>
+<COGSAccountRef>
+<ListID>80000046-1197757005</ListID>
+<FullName>Cost of Goods Sold</FullName>
+</COGSAccountRef>
+<PrefVendorRef>
+<ListID>8000001A-1197759500</ListID>
+<FullName>Perry Windows &amp; Doors</FullName>
+</PrefVendorRef>
+<AssetAccountRef>
+<ListID>80000012-1197756950</ListID>
+<FullName>Inventory Asset</FullName>
+</AssetAccountRef>
+<ReorderPoint>5</ReorderPoint>
+<QuantityOnHand>16</QuantityOnHand>
+<AverageCost>59.00</AverageCost>
+<QuantityOnOrder>0</QuantityOnOrder>
+<QuantityOnSalesOrder>0</QuantityOnSalesOrder>
+</ItemInventoryRet>
+<ItemNonInventoryRet>
+<ListID>80000030-1197757300</ListID>
+<TimeCreated>2007-12-15T14:21:40-08:00</TimeCreated>
+<TimeModified>2007-12-15T14:21:40-08:00</TimeModified>
+<EditSequence>1197757300</EditSequence>
+<Name>Trim</Name>
+<FullName>Lumber:Trim</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>8000002F-1197757290</ListID>
+<FullName>Lumber</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>80000001-1197756810</ListID>
+<FullName>Tax</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Trim lumber</Desc>
+<Price>0.00</Price>
+<AccountRef>
+<ListID>80000049-1197757015</ListID>
+<FullName>Job Expenses:Job Materials</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemNonInventoryRet>
+<ItemOtherChargeRet>
+<ListID>80000040-1197757400</ListID>
+<TimeCreated>2007-12-15T14:23:20-08:00</TimeCreated>
+<TimeModified>2007-12-15T14:23:20-08:00</TimeModified>
+<EditSequence>1197757400</EditSequence>
+<Name>Permit</Name>
+<FullName>Permit</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>80000002-1197756811</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Building permit</Desc>
+<Price>0.00</Price>
+<AccountRef>
+<ListID>8000004A-1197757020</ListID>
+<FullName>Job Expenses:Permits and Licenses</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemOtherChargeRet>
+<ItemSubtotalRet>
+<ListID>80000050-1197757500</ListID>
+<TimeCreated>2007-12-15T14:25:00-08:00</TimeCreated>
+<TimeModified>2007-12-15T14:25:00-08:00</TimeModified>
+<EditSequence>1197757500</EditSequence>
+<Name>Subtotal</Name>
+<IsActive>true</IsActive>
+<ItemDesc>Subtotal</ItemDesc>
+</ItemSubtotalRet>
+</ItemQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
