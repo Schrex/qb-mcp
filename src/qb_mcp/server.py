@@ -1,17 +1,17 @@
 """MCP surface. `build_server(transport)` registers every tool over one Transport."""
 
 import os
-import re
 import sys
 from collections.abc import Awaitable, Callable
+from datetime import date
 from functools import wraps
 from pathlib import Path
-from datetime import date
 from typing import Any, Literal
 
 from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
+from qb_mcp import bills, records
 from qb_mcp.errors import QBError, TransportError, TransportFailure
 from qb_mcp.guard import parse_query_element
 from qb_mcp.logs import configure_logging
@@ -22,18 +22,13 @@ from qb_mcp.reports import parse_report
 from qb_mcp.transport import Transport
 from qb_mcp.transports.unavailable import UnavailableTransport
 
+# Each is the snake_case of its QuickBooks JobReportType (see `_job_report_type`).
 JobReport = Literal[
     "job_profitability_summary",
     "job_profitability_detail",
     "job_estimates_vs_actuals_summary",
     "job_estimates_vs_actuals_detail",
 ]
-JOB_REPORT_TYPES: dict[str, str] = {
-    "job_profitability_summary": "JobProfitabilitySummary",
-    "job_profitability_detail": "JobProfitabilityDetail",
-    "job_estimates_vs_actuals_summary": "JobEstimatesVsActualsSummary",
-    "job_estimates_vs_actuals_detail": "JobEstimatesVsActualsDetail",
-}
 
 AccountType = Literal[
     "AccountsPayable",
@@ -54,7 +49,11 @@ AccountType = Literal[
     "OtherIncome",
 ]
 
+ListStatus = Literal["active", "inactive", "all"]
+ACTIVE_STATUS = {"active": "ActiveOnly", "inactive": "InactiveOnly", "all": "All"}
+
 Tool = Callable[..., Awaitable[Any]]
+RecordMapper = Callable[[str, dict[str, Any]], dict[str, Any]]
 
 INSTRUCTIONS = (
     "Read-only Lookups against the QuickBooks Desktop Company File that is open on this PC. "
@@ -85,6 +84,14 @@ def build_server(transport: Transport) -> MCPServer:
     qb = QuickBooks(transport)
     mcp = MCPServer("qb-mcp", instructions=INSTRUCTIONS)
     user_facing = user_facing_errors(qb)
+
+    async def list_lookup(
+        rq_type: str, to_output: RecordMapper, name_contains: str | None, status: ListStatus, limit: int,
+        *extra_filters: Any,
+    ) -> dict[str, Any]:
+        """The list tools' shared shape: name/status/limit filters -> capped, mapped records."""
+        (rs,) = await qb.lookup(query(rq_type, *_list_filters(name_contains, status, limit), *extra_filters))
+        return capped([to_output(tag, record) for tag, record in rs.rets], limit)
 
     @mcp.tool()
     async def qb_status() -> dict[str, Any]:
@@ -123,15 +130,12 @@ def build_server(transport: Transport) -> MCPServer:
     @mcp.tool()
     @user_facing
     async def list_vendors(
-        name_contains: str | None = None,
-        status: Literal["active", "inactive", "all"] = "active",
-        limit: int = DEFAULT_LIMIT,
+        name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
     ) -> dict[str, Any]:
         """List Vendors with name, active flag, balance and contact basics.
         Optional: `name_contains` (case-insensitive substring), `status` (default active), `limit` (default 100);
         if more Vendors match than `limit`, `more_available` is true."""
-        (vendor_rs,) = await qb.lookup(query("VendorQueryRq", *_list_filters(name_contains, status, limit)))
-        return capped([_vendor(v) for v in vendor_rs.records], limit)
+        return await list_lookup("VendorQueryRq", records.vendor, name_contains, status, limit)
 
     @mcp.tool()
     @user_facing
@@ -140,104 +144,76 @@ def build_server(transport: Transport) -> MCPServer:
         to_date: date | None = None,
         vendor: str | None = None,
         ref_number: str | None = None,
-        paid_status: Literal["paid", "unpaid", "all"] = "all",
+        paid_status: bills.PaidStatus = "all",
         customer_job: str | None = None,
         include_lines: bool = True,
         limit: int = DEFAULT_LIMIT,
     ) -> dict[str, Any]:
-        """Find Bills. Optional: bill date range (`from_date`/`to_date`), exact `vendor` name,
-        exact `ref_number` (the Vendor's invoice number; answers "is this invoice already entered?",
-        empty result if not), `paid_status` (default all), `customer_job`, `include_lines` (default
-        true), `limit` (default 100; `more_available` is true if more exist). Each Bill has vendor, ref
-        number, date, due date, amount, open amount, memo, paid flag and, with lines, `expense_lines`
-        (account) and `item_lines` (item, quantity, cost), each line with amount, Customer:Job, class
-        and billable status.
-        `customer_job` (e.g. "Acme:Main St Paving", or "Acme" for the customer and all its jobs) keeps
-        only Bills with a line charged to it, and only those lines. QuickBooks cannot filter Bills by
-        Customer:Job, so this is applied after fetching up to `limit` Bills: `limit` counts Bills
-        scanned, not matched. Add a date range or Vendor to scan fewer Bills. Needs include_lines."""
+        """Find Bills (Vendors' invoices as entered in QuickBooks). Optional: bill date range
+        (`from_date`/`to_date`), exact `vendor` name, exact `ref_number` (the number on the Vendor's
+        invoice; answers "is this Bill already entered?", empty result if not), `paid_status` (default
+        all), `customer_job`, `include_lines` (default true), `limit` (default 100; `more_available` is
+        true if more exist). Each Bill has vendor, ref number, date, due date, amount, open amount, memo,
+        paid flag and, with lines, `expense_lines` (account) and `item_lines` (item, quantity, cost),
+        each line with amount, Customer:Job, class and billable status.
+        `customer_job` (e.g. "Acme:Main St Paving", or "Acme" for the customer and all its
+        Customer:Jobs) keeps only Bills with a line charged to it, and only those lines. QuickBooks
+        cannot filter Bills by Customer:Job, so this is applied after fetching up to `limit` Bills:
+        `limit` counts Bills scanned, not matched. Add a date range or Vendor to scan fewer Bills.
+        Needs include_lines."""
         if customer_job and not include_lines:
             raise ToolError("customer_job filters Bill lines, so it needs include_lines=true.")
         if ref_number:
-            # qbXML allows an exact RefNumber only on its own; apply the other filters to its matches.
+            (bill_rs,) = await qb.lookup(bills.by_ref_number(ref_number, include_lines))
+            found = [b for b in bill_rs.records if bills.matches(b, from_date, to_date, vendor, paid_status)]
+        else:
             (bill_rs,) = await qb.lookup(
-                query("BillQueryRq", el("RefNumber", ref_number), el("IncludeLineItems", _bool(include_lines)))
+                bills.filtered(from_date, to_date, vendor, paid_status, include_lines, limit)
             )
-            bills = [
-                _bill(b, include_lines)
-                for b in bill_rs.records
-                if _bill_matches(b, from_date, to_date, vendor, paid_status)
-            ]
-            if customer_job:
-                bills = _charged_to(bills, customer_job)
-            return capped(bills, limit)
-
-        filters = [el("MaxReturned", fetch_limit(limit))]
-        if from_date or to_date:
-            date_range = el("TxnDateRangeFilter")
-            if from_date:
-                date_range.append(el("FromTxnDate", from_date.isoformat()))
-            if to_date:
-                date_range.append(el("ToTxnDate", to_date.isoformat()))
-            filters.append(date_range)
-        if vendor:
-            filters.append(el("EntityFilter", None, el("FullName", vendor)))
-        filters.append(el("PaidStatus", PAID_STATUS[paid_status]))
-        filters.append(el("IncludeLineItems", _bool(include_lines)))
-        (bill_rs,) = await qb.lookup(query("BillQueryRq", *filters))
-        bills = [_bill(b, include_lines) for b in bill_rs.records]
-        if not customer_job:
-            return capped(bills, limit)
-        # The cap applies to Bills scanned; report it even if the filter leaves fewer than `limit`.
-        scanned = capped(bills, limit)
-        matched = _charged_to(scanned["results"], customer_job)
-        return scanned | {"results": matched, "count": len(matched)}
+            found = bill_rs.records
+        # The cap applies to Bills scanned; report it even if `customer_job` leaves fewer than `limit`.
+        out = capped([bills.bill(b, include_lines) for b in found], limit)
+        if customer_job:
+            matched = bills.charged_to(out["results"], customer_job)
+            out |= {"results": matched, "count": len(matched)}
+        return out
 
     @mcp.tool()
     @user_facing
     async def list_customer_jobs(
-        name_contains: str | None = None,
-        status: Literal["active", "inactive", "all"] = "active",
-        limit: int = DEFAULT_LIMIT,
+        name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
     ) -> dict[str, Any]:
         """List customers and their Customer:Jobs. Each has its full `name` ("Customer:Job" for a job),
         `kind` ("customer" or "job"), `parent`, `job_status`, own `balance` and `total_balance`
-        (including its jobs). Optional: `name_contains` (case-insensitive substring),
+        (including its Customer:Jobs). Optional: `name_contains` (case-insensitive substring),
         `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
-        (customer_rs,) = await qb.lookup(query("CustomerQueryRq", *_list_filters(name_contains, status, limit)))
-        return capped([_customer_job(c) for c in customer_rs.records], limit)
+        return await list_lookup("CustomerQueryRq", records.customer_job, name_contains, status, limit)
 
     @mcp.tool()
     @user_facing
     async def list_items(
-        name_contains: str | None = None,
-        status: Literal["active", "inactive", "all"] = "active",
-        limit: int = DEFAULT_LIMIT,
+        name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
     ) -> dict[str, Any]:
         """List Items of every kind (service, inventory, non_inventory, other_charge, discount, group, ...),
         each with its full `name`, `kind`, purchase `description`, `cost` and `expense_account`
         (COGS account for inventory items). Optional: `name_contains` (case-insensitive substring),
         `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
-        (item_rs,) = await qb.lookup(query("ItemQueryRq", *_list_filters(name_contains, status, limit)))
-        return capped([_item(tag, i) for tag, i in item_rs.rets], limit)
+        return await list_lookup("ItemQueryRq", records.item, name_contains, status, limit)
 
     @mcp.tool()
     @user_facing
     async def list_accounts(
         account_type: AccountType | None = None,
         name_contains: str | None = None,
-        status: Literal["active", "inactive", "all"] = "active",
+        status: ListStatus = "active",
         limit: int = DEFAULT_LIMIT,
     ) -> dict[str, Any]:
         """List chart-of-accounts Accounts with full `name`, `account_type`, `account_number`,
         own `balance` and `total_balance` (including subaccounts). Optional: `account_type`
         (e.g. Expense, CostOfGoodsSold, Bank), `name_contains` (case-insensitive substring),
         `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
-        filters = _list_filters(name_contains, status, limit)
-        if account_type:
-            filters.append(el("AccountType", account_type))
-        (account_rs,) = await qb.lookup(query("AccountQueryRq", *filters))
-        return capped([_account(a) for a in account_rs.records], limit)
+        extra = [el("AccountType", account_type)] if account_type else []
+        return await list_lookup("AccountQueryRq", records.account, name_contains, status, limit, *extra)
 
     @mcp.tool()
     @user_facing
@@ -249,11 +225,12 @@ def build_server(transport: Transport) -> MCPServer:
     ) -> dict[str, Any]:
         """Run a QuickBooks job report (profitability, or estimates vs. actuals; summary or detail)
         for a date range, optionally limited to one Customer:Job (e.g. "Acme:Main St Paving") or a
-        customer and all its jobs (e.g. "Acme"). Returns the report's column titles and its rows:
-        each row has a `kind` (header, data, subtotal, total), a `label`, the full `name` when the
-        row is for a customer/job/item, and `values` keyed by column title. Empty report -> no rows."""
+        customer and all its Customer:Jobs (e.g. "Acme"). Returns the report's column titles and its
+        rows: each row has a `kind` (header, data, subtotal, total), a `label`, the full `name` when
+        the row is for a customer, Customer:Job or Item, and `values` keyed by column title.
+        Empty report -> no rows."""
         children = [
-            el("JobReportType", JOB_REPORT_TYPES[report]),
+            el("JobReportType", _job_report_type(report)),
             el("ReportPeriod", None, el("FromReportDate", from_date.isoformat()), el("ToReportDate", to_date.isoformat())),
         ]
         if customer_job:
@@ -277,11 +254,12 @@ def build_server(transport: Transport) -> MCPServer:
     return mcp
 
 
-ACTIVE_STATUS = {"active": "ActiveOnly", "inactive": "InactiveOnly", "all": "All"}
-PAID_STATUS = {"paid": "PaidOnly", "unpaid": "NotPaidOnly", "all": "All"}
+def _job_report_type(report: JobReport) -> str:
+    """`job_estimates_vs_actuals_summary` -> `JobEstimatesVsActualsSummary`."""
+    return "".join(word.capitalize() for word in report.split("_"))
 
 
-def _list_filters(name_contains: str | None, status: str, limit: int) -> list[Any]:
+def _list_filters(name_contains: str | None, status: ListStatus, limit: int) -> list[Any]:
     """Shared list-query filter group, in schema order: MaxReturned, ActiveStatus, NameFilter."""
     filters = [el("MaxReturned", fetch_limit(limit)), el("ActiveStatus", ACTIVE_STATUS[status])]
     if name_contains:
@@ -289,166 +267,6 @@ def _list_filters(name_contains: str | None, status: str, limit: int) -> list[An
     return filters
 
 
-def _ref_name(ref: Any) -> str | None:
-    return ref.get("FullName") if isinstance(ref, dict) else None
-
-
-def _customer_job(c: dict[str, Any]) -> dict[str, Any]:
-    parent = _ref_name(c.get("ParentRef"))
-    return {
-        "name": c.get("FullName") or c.get("Name"),
-        "kind": "job" if parent else "customer",
-        "parent": parent,
-        "is_active": c.get("IsActive") == "true",
-        "job_status": c.get("JobStatus"),
-        "balance": c.get("Balance"),
-        "total_balance": c.get("TotalBalance"),
-        "job_description": c.get("JobDesc"),
-    }
-
-
-def _item_kind(tag: str) -> str:
-    """`ItemNonInventoryRet` -> `non_inventory`."""
-    words = re.findall(r"[A-Z][a-z]*", tag.removeprefix("Item").removesuffix("Ret"))
-    return "_".join(w.lower() for w in words)
-
-
-def _first(*values: Any) -> Any:
-    return next((v for v in values if v not in (None, "")), None)
-
-
-def _item(tag: str, i: dict[str, Any]) -> dict[str, Any]:
-    """Description/cost/expense account live in different places per Item kind:
-    one-way items under `SalesOrPurchase`, two-way under `SalesAndPurchase`,
-    inventory/fixed-asset at the top level."""
-    sop = i.get("SalesOrPurchase") or {}
-    sap = i.get("SalesAndPurchase") or {}
-    return {
-        "name": i.get("FullName") or i.get("Name"),
-        "kind": _item_kind(tag),
-        "is_active": i.get("IsActive") == "true",
-        "description": _first(sap.get("PurchaseDesc"), sop.get("Desc"), i.get("PurchaseDesc"), i.get("ItemDesc")),
-        "cost": _first(
-            sap.get("PurchaseCost"), sop.get("Price"), sop.get("PricePercent"), i.get("PurchaseCost"),
-            i.get("DiscountRate"), i.get("DiscountRatePercent"),
-        ),
-        "expense_account": _first(
-            _ref_name(sap.get("ExpenseAccountRef")), _ref_name(sop.get("AccountRef")),
-            _ref_name(i.get("COGSAccountRef")), _ref_name(i.get("AssetAccountRef")), _ref_name(i.get("AccountRef")),
-        ),
-    }
-
-
-def _account(a: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "name": a.get("FullName") or a.get("Name"),
-        "account_type": a.get("AccountType"),
-        "account_number": a.get("AccountNumber"),
-        "is_active": a.get("IsActive") == "true",
-        "description": a.get("Desc"),
-        "balance": a.get("Balance"),
-        "total_balance": a.get("TotalBalance"),
-    }
-
-
-def _vendor(v: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "name": v.get("Name"),
-        "is_active": v.get("IsActive") == "true",
-        "balance": v.get("Balance"),
-        "company_name": v.get("CompanyName"),
-        "contact": v.get("Contact"),
-        "phone": v.get("Phone"),
-        "email": v.get("Email"),
-        "address": v.get("VendorAddress", {}),
-    }
-
-
-def _bool(value: bool) -> str:
-    return "true" if value else "false"
-
-
-def _bill_matches(
-    b: dict[str, Any], from_date: date | None, to_date: date | None, vendor: str | None, paid_status: str
-) -> bool:
-    """Client-side equivalent of BillQueryRq's date/vendor/paid filters (QuickBooks names are case-insensitive)."""
-    txn_date = date.fromisoformat(b["TxnDate"])
-    if (from_date and txn_date < from_date) or (to_date and txn_date > to_date):
-        return False
-    if vendor and (_ref_name(b.get("VendorRef")) or "").casefold() != vendor.casefold():
-        return False
-    is_paid = b.get("IsPaid") == "true"
-    return paid_status == "all" or is_paid == (paid_status == "paid")
-
-
-def _charged_to(bills: list[dict[str, Any]], customer_job: str) -> list[dict[str, Any]]:
-    """Bills (as returned by `_bill`) cut down to their lines for `customer_job` or its sub-jobs;
-    Bills with no such line are dropped."""
-    wanted = customer_job.casefold()
-
-    def on_job(line: dict[str, Any]) -> bool:
-        job = (line["customer_job"] or "").casefold()
-        return job == wanted or job.startswith(wanted + ":")
-
-    out = []
-    for b in bills:
-        expense = [line for line in b["expense_lines"] if on_job(line)]
-        items = [line for line in b["item_lines"] if on_job(line)]
-        if expense or items:
-            out.append(b | {"expense_lines": expense, "item_lines": items})
-    return out
-
-
-def _line_job_fields(line: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "customer_job": _ref_name(line.get("CustomerRef")),
-        "class": _ref_name(line.get("ClassRef")),
-        "billable_status": line.get("BillableStatus"),
-    }
-
-
-def _expense_line(line: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "account": _ref_name(line.get("AccountRef")),
-        "amount": line.get("Amount"),
-        "memo": line.get("Memo"),
-        **_line_job_fields(line),
-    }
-
-
-def _item_line(line: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "item": _ref_name(line.get("ItemRef")),
-        "description": line.get("Desc"),
-        "quantity": line.get("Quantity"),
-        "cost": line.get("Cost"),
-        "amount": line.get("Amount"),
-        **_line_job_fields(line),
-    }
-
-
-def _bill(b: dict[str, Any], include_lines: bool = True) -> dict[str, Any]:
-    header = {
-        "vendor": _ref_name(b.get("VendorRef")),
-        "ref_number": b.get("RefNumber"),
-        "date": b.get("TxnDate"),
-        "due_date": b.get("DueDate"),
-        "amount": b.get("AmountDue"),
-        "open_amount": b.get("OpenAmount"),
-        "memo": b.get("Memo"),
-        "is_paid": b.get("IsPaid") == "true",
-    }
-    if not include_lines:
-        return header
-    # Item groups are flattened: their member item lines carry the job/class/billable detail.
-    item_lines = list(b.get("ItemLineRet", []))
-    for group in b.get("ItemGroupLineRet", []):
-        item_lines.extend(group.get("ItemLineRet", []))
-    return {
-        **header,
-        "expense_lines": [_expense_line(line) for line in b.get("ExpenseLineRet", [])],
-        "item_lines": [_item_line(line) for line in item_lines],
-    }
 
 
 def default_transport() -> Transport:
