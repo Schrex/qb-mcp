@@ -48,7 +48,9 @@ async def test_get_company_info_returns_name_address_and_fiscal_year_start(call)
     }
 
 
-async def test_company_info_never_exposes_tax_ids(call):
+async def test_company_info_never_exposes_tax_ids(call, replay):
+    replay.respond_with("CompanyQueryRq", "CompanyQueryRq.sensitive.xml")
+
     text = (await call("get_company_info")).content[0].text
     assert "EIN" not in text and "SSN" not in text and "00-7904153" not in text
 

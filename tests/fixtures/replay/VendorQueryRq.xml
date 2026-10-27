@@ -20,8 +20,6 @@
 <Phone>650-555-1230</Phone>
 <Email>sales@pattonhardware.example</Email>
 <Contact>Tim Patton</Contact>
-<AccountNumber>RC-5543</AccountNumber>
-<VendorTaxIdent>94-1234567</VendorTaxIdent>
 <IsVendorEligibleFor1099>false</IsVendorEligibleFor1099>
 <Balance>3260.00</Balance>
 </VendorRet>

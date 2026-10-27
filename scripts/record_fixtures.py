@@ -14,6 +14,9 @@ Safety:
   server's deny-list (`output.is_sensitive`, incl. a Vendor's AccountNumber) or a report
   column titled like one (`reports.SENSITIVE_COLUMN_TITLE`). It lists what it found
   (element or column names, never the values).
+- Writes only `<RequestType>.xml` and the variants named in TOOL_CALLS, never a
+  `*.sensitive.xml` fixture: those are hand-written and hold the made-up sensitive values
+  the stripping tests need. Other hand-written variants are left untouched.
 Exit code 0 only if every fixture was written (or would be, with `--dry-run`).
 """
 
@@ -38,6 +41,7 @@ DEFAULT_OUT = Path(__file__).resolve().parents[1] / "tests" / "fixtures" / "repl
 SAMPLE_COMPANY_FILE = "rock castle"  # in the file name, any case
 REPORT_PERIOD = {"from_date": "2000-01-01", "to_date": "2030-12-31"}
 LIMIT = 25
+HAND_WRITTEN_ONLY = "sensitive"  # variant never recorded: `<RequestType>.sensitive.xml`
 
 
 @dataclass(frozen=True)
@@ -146,7 +150,10 @@ async def run(
 
     for name, rs in fixtures.items():
         findings = sensitive_findings(rs)
-        if findings:
+        if name.endswith(f".{HAND_WRITTEN_ONLY}.xml"):
+            print(f"REFUSED {name}: *.{HAND_WRITTEN_ONLY}.xml fixtures are hand-written, never recorded")
+            failed = True
+        elif findings:
             print(f"REFUSED {name}: sensitive values found: {'; '.join(findings)}")
             failed = True
         elif dry_run:

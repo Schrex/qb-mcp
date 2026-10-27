@@ -34,7 +34,9 @@ async def test_run_query_sends_the_element_inside_the_servers_own_envelope(call,
     assert rq.findtext("RefNumber") == "A&B"
 
 
-async def test_run_query_strips_sensitive_fields(call):
+async def test_run_query_strips_sensitive_fields(call, replay):
+    replay.respond_with("InvoiceQueryRq", "InvoiceQueryRq.sensitive.xml")
+
     text = (await call("run_query", query=INVOICES)).content[0].text
 
     assert "4111111111111111" not in text

@@ -73,11 +73,13 @@ async def test_list_customer_jobs_reports_the_cap(call):
     assert out["more_available"] is True
 
 
-async def test_list_customer_jobs_never_returns_tax_ids_or_card_data(call):
+async def test_list_customer_jobs_never_returns_tax_ids_or_card_data(call, replay):
+    replay.respond_with("CustomerQueryRq", "CustomerQueryRq.sensitive.xml")
+
     result = await call("list_customer_jobs", status="all")
 
     text = result.content[0].text + json.dumps(result.structured_content)
-    for secret in ["SR-998877", "xxxxxxxxxxxx1111", "CreditCard", "ResaleNumber"]:
+    for secret in ["SR-998877", "4111111111111111", "CreditCard", "ResaleNumber"]:
         assert secret not in text
 
 
@@ -194,7 +196,9 @@ async def test_list_accounts_rejects_an_unknown_account_type(call):
     assert result.is_error
 
 
-async def test_list_accounts_never_returns_bank_account_numbers(call):
+async def test_list_accounts_never_returns_bank_account_numbers(call, replay):
+    replay.respond_with("AccountQueryRq", "AccountQueryRq.sensitive.xml")
+
     result = await call("list_accounts", status="all")
 
     text = result.content[0].text + json.dumps(result.structured_content)

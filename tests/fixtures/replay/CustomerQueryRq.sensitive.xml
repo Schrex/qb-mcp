@@ -10,6 +10,8 @@
 <ExpirationMonth>12</ExpirationMonth>
 <ExpirationYear>2029</ExpirationYear>
 <NameOnCard>Kristy Abercrombie</NameOnCard>
+<CreditCardAddress>5647 Cypress Hill Rd</CreditCardAddress>
+<CreditCardPostalCode>94326</CreditCardPostalCode>
 </CreditCardInfo>
 <DataExtRet>
 <DataExtName>Notes</DataExtName>

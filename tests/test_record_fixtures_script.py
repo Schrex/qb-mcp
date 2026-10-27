@@ -1,7 +1,6 @@
 """scripts/record_fixtures.py, run against the Replay transport standing in for QuickBooks
 (the real run uses COM on the VM). The Replay fixtures play the part of QuickBooks' answers."""
 
-import re
 import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -34,22 +33,12 @@ EXPECTED_FILES = {
 }
 
 
-# Elements holding the made-up secrets in the hand-written fixtures.
-SECRET_TAGS = "|".join(
-    [
-        "AccountNumber", "EIN", "SSN", "VendorTaxIdent", "ResaleNumber", "BankNumber", "CreditCardNumber",
-        "ExpirationMonth", "ExpirationYear", "NameOnCard", "CreditCardAddress", "CreditCardPostalCode",
-    ]
-)
-
-
 @pytest.fixture
 def clean_quickbooks(tmp_path: Path) -> ReplayTransport:
-    """QuickBooks with the sample file open and no sensitive values in any answer."""
+    """QuickBooks with the sample file open. Its default answers (the base fixtures) hold no
+    sensitive values; only the `*.sensitive.xml` ones do."""
     src = tmp_path / "quickbooks"
     shutil.copytree(FIXTURES, src)
-    for path in src.glob("*.xml"):
-        path.write_text(re.sub(rf"<({SECRET_TAGS})>[^<]*</\1>", r"<\1 />", path.read_text()))
     return ReplayTransport(src, company_file=SAMPLE_FILE)
 
 
@@ -81,8 +70,7 @@ async def test_writes_one_replayable_fixture_per_request_type(clean_quickbooks, 
 
 
 async def test_refuses_a_fixture_with_a_vendor_account_number_and_never_prints_it(clean_quickbooks, out, capsys):
-    vendors = clean_quickbooks.fixtures_dir / "VendorQueryRq.xml"
-    vendors.write_text(vendors.read_text().replace("<AccountNumber />", "<AccountNumber>RC-5543</AccountNumber>", 1))
+    clean_quickbooks.respond_with("VendorQueryRq", "VendorQueryRq.sensitive.xml")
 
     code = await record_fixtures.run(clean_quickbooks, out)
 
@@ -125,6 +113,27 @@ async def test_records_from_another_file_only_when_confirmed_not_live(clean_quic
     code = await record_fixtures.run(other, out, confirm_not_live=True)
 
     assert code == 0 and (out / "VendorQueryRq.xml").exists()
+
+
+async def test_leaves_every_hand_written_variant_untouched(clean_quickbooks):
+    out = clean_quickbooks.fixtures_dir
+    before = {p.name: p.read_bytes() for p in out.glob("*.xml") if p.name not in EXPECTED_FILES}
+    assert any(name.endswith(".sensitive.xml") for name in before)
+
+    assert await record_fixtures.run(clean_quickbooks, out) == 0
+
+    assert {p.name: p.read_bytes() for p in out.glob("*.xml") if p.name not in EXPECTED_FILES} == before
+
+
+async def test_never_records_a_hand_written_only_variant(clean_quickbooks, out, monkeypatch, capsys):
+    calls = [*record_fixtures.TOOL_CALLS, record_fixtures.ToolCall("list_vendors", {}, "sensitive")]
+    monkeypatch.setattr(record_fixtures, "TOOL_CALLS", calls)
+
+    code = await record_fixtures.run(clean_quickbooks, out)
+
+    assert code == 1
+    assert "REFUSED VendorQueryRq.sensitive.xml" in capsys.readouterr().out
+    assert not (out / "VendorQueryRq.sensitive.xml").exists()
 
 
 def test_off_windows_it_says_so_and_records_nothing(monkeypatch, out, capsys):

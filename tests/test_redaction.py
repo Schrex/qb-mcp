@@ -13,7 +13,9 @@ pytestmark = pytest.mark.anyio
 SECRETS = ["94-1234567", "4111111111111111", "SR-998877", "000123456789", "987-65-4321", "00-7904153", "123-45-6789"]
 
 
-async def test_list_vendors_never_returns_the_vendor_tax_id(call):
+async def test_list_vendors_never_returns_the_vendor_tax_id(call, replay):
+    replay.respond_with("VendorQueryRq", "VendorQueryRq.sensitive.xml")
+
     result = await call("list_vendors", status="all")
 
     text = result.content[0].text + json.dumps(result.structured_content)
@@ -22,6 +24,8 @@ async def test_list_vendors_never_returns_the_vendor_tax_id(call):
 
 async def test_sensitive_elements_are_stripped_at_any_depth_from_every_lookup(replay):
     replay.respond_with("CustomerQueryRq", "CustomerQueryRq.sensitive.xml")
+    replay.respond_with("VendorQueryRq", "VendorQueryRq.sensitive.xml")
+    replay.respond_with("CompanyQueryRq", "CompanyQueryRq.sensitive.xml")
 
     results = await QuickBooks(replay).lookup(
         query("CustomerQueryRq"), query("VendorQueryRq"), query("CompanyQueryRq")
@@ -38,13 +42,17 @@ async def test_sensitive_elements_are_stripped_at_any_depth_from_every_lookup(re
 
 
 # A Vendor's AccountNumber can be a credit-card number (e.g. an Amex "vendor").
-async def test_list_vendors_never_returns_the_vendor_account_number(call):
+async def test_list_vendors_never_returns_the_vendor_account_number(call, replay):
+    replay.respond_with("VendorQueryRq", "VendorQueryRq.sensitive.xml")
+
     text = json.dumps((await call("list_vendors", status="all")).structured_content)
 
     assert "RC-5543" not in text and "account_number" not in text
 
 
-async def test_run_query_never_returns_the_vendor_account_number(call):
+async def test_run_query_never_returns_the_vendor_account_number(call, replay):
+    replay.respond_with("VendorQueryRq", "VendorQueryRq.sensitive.xml")
+
     text = (await call("run_query", query="<VendorQueryRq/>")).content[0].text
 
     assert "RC-5543" not in text and "AccountNumber" not in text

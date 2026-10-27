@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<InvoiceQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="2">
+<InvoiceRet>
+<TxnID>1A2B-1197760001</TxnID>
+<RefNumber>1042</RefNumber>
+<CustomerRef>
+<FullName>Acme:Main St Paving</FullName>
+</CustomerRef>
+<TxnDate>2026-09-30</TxnDate>
+<Subtotal>12500.00</Subtotal>
+<BalanceRemaining>12500.00</BalanceRemaining>
+<IsPaid>false</IsPaid>
+<CreditCardTxnInfo>
+<CreditCardTxnInputInfo>
+<CreditCardNumber>4111111111111111</CreditCardNumber>
+<NameOnCard>Acme Owner</NameOnCard>
+</CreditCardTxnInputInfo>
+</CreditCardTxnInfo>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>1A2C-1197760002</TxnID>
+<RefNumber>1043</RefNumber>
+<CustomerRef>
+<FullName>Baker Homes</FullName>
+</CustomerRef>
+<TxnDate>2026-10-02</TxnDate>
+<Subtotal>800.00</Subtotal>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+</InvoiceRet>
+</InvoiceQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

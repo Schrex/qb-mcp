@@ -98,10 +98,14 @@ uv run python scripts/record_fixtures.py --out tests/fixtures/replay
 
 `--dry-run` first to see what will be written. The script refuses to write files containing sensitive values and refuses a non-sample Company File.
 
+- **A run that refuses any file (or hits any error) exits 1** and prints `RECORDING INCOMPLETE`; the other files are still written. Exit 0 only if every file was written.
+- **Rock Castle may contain a company EIN or Vendor account numbers.** Those block `CompanyQueryRq.xml` / `VendorQueryRq.xml` (`REFUSED ... CompanyRet/EIN` or `VendorRet/AccountNumber`). Expected: leave the hand-written fixture in place (it is already free of sensitive values), note in #4 which files were refused and why, and treat the exit 1 as accepted for those files only. Don't blank the values in QuickBooks or pass flags to get around it.
+- **`*.sensitive.xml` fixtures are hand-written and never recorded.** They hold the made-up sensitive values the stripping tests feed in; the script refuses to write that name. Every other fixture must stay free of sensitive values (`tests/test_fixture_hygiene.py` checks this with the script's own scanner).
+
 Review before committing:
 
 1. `git diff --stat` and read every changed fixture. Check: Rock Castle data only; no tax IDs, bank account or card numbers (the script refuses these, but look anyway); no file paths or names identifying Schreiber or Jeri.
-2. Keep the hand-made fixtures that tests rely on for edge cases (`*.error3260.xml`, `*.malformed.xml`, `*.sensitive.xml`, `*.nomatch.xml`, `*.warn.xml`, etc.) unless the recording replaces them deliberately.
+2. Keep the hand-made fixtures that tests rely on for edge cases (`*.error3260.xml`, `*.malformed.xml`, `*.nomatch.xml`, `*.warn.xml`, etc.) unless the recording replaces them deliberately. The script never touches these or `*.sensitive.xml`.
 3. On the Mac: `QBXML_XSD_DIR=~/qbxml-xsd/16.0 uv run pytest`. Fix tests that assumed hand-written data; don't weaken assertions to make them pass.
 4. Commit fixtures on a branch, PR, review the diff once more on GitHub.
 

@@ -29,8 +29,6 @@
 <Email>rockcastle@samplename.com</Email>
 <FirstMonthFiscalYear>January</FirstMonthFiscalYear>
 <FirstMonthIncomeTaxYear>January</FirstMonthIncomeTaxYear>
-<EIN>00-7904153</EIN>
-<SSN>123-45-6789</SSN>
 <TaxForm>Form1120</TaxForm>
 </CompanyRet>
 </CompanyQueryRs>

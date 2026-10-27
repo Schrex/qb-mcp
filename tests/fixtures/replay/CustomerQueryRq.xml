@@ -32,16 +32,7 @@
 </TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>7633.28</TotalBalance>
-<ResaleNumber>SR-998877</ResaleNumber>
 <AccountNumber>1001</AccountNumber>
-<CreditCardInfo>
-<CreditCardNumber>xxxxxxxxxxxx1111</CreditCardNumber>
-<ExpirationMonth>12</ExpirationMonth>
-<ExpirationYear>2027</ExpirationYear>
-<NameOnCard>Kristy Abercrombie</NameOnCard>
-<CreditCardAddress>5647 Cypress Hill Rd</CreditCardAddress>
-<CreditCardPostalCode>94326</CreditCardPostalCode>
-</CreditCardInfo>
 <JobStatus>None</JobStatus>
 <PreferredDeliveryMethod>None</PreferredDeliveryMethod>
 </CustomerRet>

@@ -12,12 +12,6 @@
 <Subtotal>12500.00</Subtotal>
 <BalanceRemaining>12500.00</BalanceRemaining>
 <IsPaid>false</IsPaid>
-<CreditCardTxnInfo>
-<CreditCardTxnInputInfo>
-<CreditCardNumber>4111111111111111</CreditCardNumber>
-<NameOnCard>Acme Owner</NameOnCard>
-</CreditCardTxnInputInfo>
-</CreditCardTxnInfo>
 </InvoiceRet>
 <InvoiceRet>
 <TxnID>1A2C-1197760002</TxnID>

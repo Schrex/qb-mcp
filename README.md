@@ -160,4 +160,6 @@ QB_MCP_TRANSPORT=replay QB_MCP_REPLAY_DIR=tests/fixtures/replay uv run qb-mcp
 
 `QB_MCP_TRANSPORT=replay` without `QB_MCP_REPLAY_DIR` makes every tool report that it's missing. Off Windows with no replay selected, every tool says the server only works on Windows.
 
-**On the Windows VM** (real QuickBooks): `uv run python scripts/smoke_test.py` and `uv run python scripts/record_fixtures.py`; see [docs/vm-runbook.md](docs/vm-runbook.md).
+**Sensitive fixtures.** Base fixtures (`<RequestType>.xml`) and other variants hold no sensitive values, because a recording may replace them. The made-up tax IDs, bank, card and vendor account numbers live only in hand-written `*.sensitive.xml` fixtures, which are never recorded; stripping tests must `replay.respond_with(..., "<RequestType>.sensitive.xml")`. `tests/test_fixture_hygiene.py` enforces both.
+
+**On the Windows VM** (real QuickBooks): `uv run python scripts/smoke_test.py` and `uv run python scripts/record_fixtures.py`; see [docs/vm-runbook.md](docs/vm-runbook.md). A record run that refuses any file exits 1. Rock Castle may contain a company EIN or Vendor account numbers, which block `CompanyQueryRq.xml` / `VendorQueryRq.xml`: leave the hand-written fixture in place and note it in #4.
