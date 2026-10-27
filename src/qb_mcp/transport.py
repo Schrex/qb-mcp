@@ -1,7 +1,8 @@
 """The Transport seam: the only boundary between the server and QuickBooks.
 
-Implementations: `transports.replay.ReplayTransport` (tests, macOS) and the
-COM transport (Windows, QBXMLRP2). Both raise `errors.TransportError` when no
+Implementations: `transports.replay.ReplayTransport` (tests, development), the
+COM transport (Windows, QBXMLRP2) and `transports.unavailable.UnavailableTransport`
+(anywhere QuickBooks can't be reached, e.g. not Windows). All raise `errors.TransportError` when no
 qbXML response could be obtained.
 """
 

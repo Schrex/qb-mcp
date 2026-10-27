@@ -12,7 +12,7 @@ from typing import Any, Literal
 from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
-from qb_mcp.errors import QBError
+from qb_mcp.errors import QBError, TransportError, TransportFailure
 from qb_mcp.guard import parse_query_element
 from qb_mcp.logs import configure_logging
 from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
@@ -20,6 +20,7 @@ from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.reports import parse_report
 from qb_mcp.transport import Transport
+from qb_mcp.transports.unavailable import UnavailableTransport
 
 JobReport = Literal[
     "job_profitability_summary",
@@ -450,15 +451,20 @@ def _bill(b: dict[str, Any], include_lines: bool = True) -> dict[str, Any]:
 
 
 def default_transport() -> Transport:
-    """COM on Windows; Replay elsewhere (or when QB_MCP_TRANSPORT=replay)."""
-    kind = os.environ.get("QB_MCP_TRANSPORT", "com" if sys.platform == "win32" else "replay")
-    if kind == "replay":
+    """COM on Windows. Replay only when a developer selects it (QB_MCP_TRANSPORT=replay and
+    QB_MCP_REPLAY_DIR=<fixtures dir>). Anything else off Windows can't reach QuickBooks, so
+    every tool (and qb_status) says so rather than the server failing to start."""
+    if os.environ.get("QB_MCP_TRANSPORT") == "replay":
+        fixtures = os.environ.get("QB_MCP_REPLAY_DIR")
+        if not fixtures:
+            return UnavailableTransport(
+                TransportError(TransportFailure.OTHER, "QB_MCP_TRANSPORT=replay needs QB_MCP_REPLAY_DIR set")
+            )
         from qb_mcp.transports.replay import ReplayTransport
 
-        fixtures = os.environ.get(
-            "QB_MCP_REPLAY_DIR", Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "replay"
-        )
         return ReplayTransport(Path(fixtures), company_file="(replay)")
+    if sys.platform != "win32":
+        return UnavailableTransport(TransportError(TransportFailure.NOT_WINDOWS))
     from qb_mcp.transports.com import ComTransport
 
     return ComTransport()

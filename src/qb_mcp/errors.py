@@ -18,6 +18,7 @@ class TransportFailure(Enum):
         "QuickBooks hasn't authorized this integration (or the QuickBooks user was denied). "
         "Ask Sumanth to approve it in QuickBooks."
     )
+    NOT_WINDOWS = "This server only works on Windows, on the PC where QuickBooks Desktop is installed."
     INVALID_REQUEST = (
         "QuickBooks couldn't read the request: it doesn't match the qbXML schema "
         "(check element names, spelling and order)."
