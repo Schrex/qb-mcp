@@ -350,7 +350,6 @@ def _vendor(v: dict[str, Any]) -> dict[str, Any]:
         "phone": v.get("Phone"),
         "email": v.get("Email"),
         "address": v.get("VendorAddress", {}),
-        "account_number": v.get("AccountNumber"),
     }
 
 

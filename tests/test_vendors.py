@@ -25,7 +25,6 @@ async def test_list_vendors_returns_name_active_balance_and_contact_basics(call)
             "State": "CA",
             "PostalCode": "94326",
         },
-        "account_number": "RC-5543",
     }
     assert [v["name"] for v in out["results"]] == ["Patton Hardware Supplies", "Timberloft Lumber"]
     assert out["more_available"] is False

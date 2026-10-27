@@ -42,3 +42,22 @@ def test_redact_strips_sensitive_keys_from_data_built_outside_a_lookup():
     data = {"rows": [{"Vendor": "Patton", "Extra": {"VendorTaxIdent": "94-1234567", "BankNumber": "1"}}]}
 
     assert redact(data) == {"rows": [{"Vendor": "Patton", "Extra": {}}]}
+
+
+# A Vendor's AccountNumber can be a credit-card number (e.g. an Amex "vendor").
+async def test_list_vendors_never_returns_the_vendor_account_number(call):
+    text = json.dumps((await call("list_vendors", status="all")).structured_content)
+
+    assert "RC-5543" not in text and "account_number" not in text
+
+
+async def test_run_query_never_returns_the_vendor_account_number(call):
+    text = (await call("run_query", query="<VendorQueryRq/>")).content[0].text
+
+    assert "RC-5543" not in text and "AccountNumber" not in text
+
+
+async def test_chart_of_accounts_numbers_are_kept(call):
+    accounts = (await call("list_accounts", status="all")).structured_content["results"]
+
+    assert any(a["account_number"] for a in accounts)

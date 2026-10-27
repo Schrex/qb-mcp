@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from qb_mcp.errors import QuickBooksStatusError
-from qb_mcp.output import SENSITIVE_ELEMENTS
+from qb_mcp.output import is_sensitive
 
 # Elements that are lists in the schema even when only one occurs. Extend as needed.
 REPEATED = frozenset(
@@ -55,11 +55,11 @@ def to_data(element: ET.Element) -> Any:
 
     Attributes (report rows/columns carry their values in them) become keys of
     the dict; a leaf with attributes becomes a dict of just its attributes.
-    Sensitive elements (`output.SENSITIVE_ELEMENTS`) are dropped with their subtrees.
+    Sensitive elements (`output.is_sensitive`) are dropped with their subtrees.
     """
     if len(element) == 0 and not element.attrib:
         return (element.text or "").strip()
-    children = [child for child in element if child.tag not in SENSITIVE_ELEMENTS]
+    children = [child for child in element if not is_sensitive(child.tag, element.tag)]
     counts = Counter(child.tag for child in children)
     data: dict[str, Any] = dict(element.attrib)
     for child in children:

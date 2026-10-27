@@ -11,9 +11,9 @@
 
 from typing import Any
 
-# Matched by element name, anywhere. `AccountNumber` is deliberately absent: it is the
-# chart-of-accounts number / Schreiber's account at a Vendor, which Jeri needs. The
-# bank account number of a Bank account is `BankNumber`.
+# Matched by element name, anywhere. `AccountNumber` is absent: on an Account it is the
+# chart-of-accounts number, which Jeri needs (a Vendor's is in `SENSITIVE_CHILDREN`).
+# The bank account number of a Bank account is `BankNumber`.
 SENSITIVE_ELEMENTS = frozenset(
     {
         # tax IDs
@@ -42,6 +42,17 @@ SENSITIVE_ELEMENTS = frozenset(
         "PagerPIN",
     }
 )
+
+# Matched by element name, only directly inside the given parent element.
+SENSITIVE_CHILDREN: dict[str, frozenset[str]] = {
+    # A Vendor's AccountNumber is Schreiber's account at that Vendor, which for a card
+    # issuer (e.g. Amex) is the credit-card number.
+    "VendorRet": frozenset({"AccountNumber"}),
+}
+
+
+def is_sensitive(tag: str, parent: str) -> bool:
+    return tag in SENSITIVE_ELEMENTS or tag in SENSITIVE_CHILDREN.get(parent, ())
 
 
 def redact(data: Any) -> Any:
