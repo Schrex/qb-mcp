@@ -64,16 +64,17 @@ INSTRUCTIONS = (
 
 def user_facing_errors(qb: QuickBooks) -> Callable[[Tool], Tool]:
     """Turn `QBError`s, and responses that aren't the expected shape, into tool errors
-    the model (and Jeri) can read."""
+    the model (and Jeri) can read; add QuickBooks' warnings, if any, as `warnings`."""
 
     def decorate(tool: Tool) -> Tool:
         @wraps(tool)
         async def wrapper(*args: Any, **kwargs: Any) -> Any:
             try:
-                with qb.interpreting():
-                    return await tool(*args, **kwargs)
+                with qb.answering() as warnings:
+                    out = await tool(*args, **kwargs)
             except QBError as e:
                 raise ToolError(str(e)) from e
+            return out | {"warnings": warnings} if warnings else out
 
         return wrapper
 
@@ -90,7 +91,7 @@ def build_server(transport: Transport) -> MCPServer:
         """Check the QuickBooks connection: whether QuickBooks is reachable, its product and version,
         the qbXML versions it supports, which Company File is open, and the last error (and when)."""
         try:
-            with qb.interpreting():
+            with qb.answering():
                 host_rs, company_rs = await qb.lookup(query("HostQueryRq"), query("CompanyQueryRq"))
                 company_file = await qb.company_file()
                 host, company = host_rs.records[0], company_rs.records[0]

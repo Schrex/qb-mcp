@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<VendorQueryRs statusCode="500" statusSeverity="Warn" statusMessage="The query request has not been fully completed. There was a required element (&quot;Stone &amp; Co&quot;) that could not be found in QuickBooks." retCount="2">
+<VendorRet>
+<ListID>80000005-1197759347</ListID>
+<TimeCreated>2007-12-15T14:55:47-08:00</TimeCreated>
+<TimeModified>2023-11-20T10:12:01-08:00</TimeModified>
+<EditSequence>1700503921</EditSequence>
+<Name>Patton Hardware Supplies</Name>
+<IsActive>true</IsActive>
+<CompanyName>Patton Hardware Supplies</CompanyName>
+<VendorAddress>
+<Addr1>Patton Hardware Supplies</Addr1>
+<Addr2>4872 County Rd</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</VendorAddress>
+<Phone>650-555-1230</Phone>
+<Email>sales@pattonhardware.example</Email>
+<Contact>Tim Patton</Contact>
+<AccountNumber>RC-5543</AccountNumber>
+<VendorTaxIdent>94-1234567</VendorTaxIdent>
+<IsVendorEligibleFor1099>false</IsVendorEligibleFor1099>
+<Balance>3260.00</Balance>
+</VendorRet>
+<VendorRet>
+<ListID>8000002B-1197759889</ListID>
+<Name>Timberloft Lumber</Name>
+<IsActive>true</IsActive>
+<CompanyName>Timberloft Lumber</CompanyName>
+<Phone>650-555-9875</Phone>
+<Balance>0.00</Balance>
+</VendorRet>
+</VendorQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

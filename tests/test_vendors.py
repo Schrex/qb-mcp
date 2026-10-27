@@ -68,6 +68,22 @@ async def test_list_vendors_reports_when_more_vendors_exist_than_the_limit(call)
     assert "more exist" in out["note"]
 
 
+async def test_quickbooks_warnings_still_return_data_and_say_what_was_incomplete(call, replay):
+    replay.respond_with("VendorQueryRq", "VendorQueryRq.warn.xml")
+
+    result = await call("list_vendors")
+
+    assert not result.is_error
+    out = result.structured_content
+    assert [v["name"] for v in out["results"]] == ["Patton Hardware Supplies", "Timberloft Lumber"]
+    (warning,) = out["warnings"]
+    assert "500" in warning and "has not been fully completed" in warning
+
+
+async def test_no_warnings_key_when_quickbooks_had_none(call):
+    assert "warnings" not in (await call("list_vendors")).structured_content
+
+
 async def test_list_vendors_no_match_is_an_empty_list(call, replay):
     replay.respond_with("VendorQueryRq", "VendorQueryRq.nomatch.xml")
 

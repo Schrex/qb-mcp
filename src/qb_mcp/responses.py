@@ -1,7 +1,8 @@
 """Turns qbXML response documents into plain JSON-friendly data.
 
 Status 0 is success, 1 ("no match") is an empty result, warnings (e.g. 500,
-partial match) still return data, errors raise `QuickBooksStatusError`.
+partial match) still return data plus a `warning` message, errors raise
+`QuickBooksStatusError`.
 """
 
 import xml.etree.ElementTree as ET
@@ -40,11 +41,11 @@ NO_MATCH = 1
 
 @dataclass
 class QueryResult:
-    """One `*Rs` element: its `*Ret` children as (tag, data) pairs plus status attrs."""
+    """One `*Rs` element: its `*Ret` children as (tag, data) pairs, and QuickBooks' warning if any."""
 
     request_type: str  # e.g. "VendorQueryRq"
     rets: list[tuple[str, Any]] = field(default_factory=list)  # tag kept for mixed types (ItemServiceRet, ...)
-    attrs: dict[str, str] = field(default_factory=dict)  # requestID, retCount, iteratorRemainingCount, ...
+    warning: str | None = None
 
     @property
     def records(self) -> list[Any]:
@@ -85,9 +86,13 @@ def parse_response(response: str) -> list[QueryResult]:
         for rs in msgs:
             request_type = rs.tag.removesuffix("Rs") + "Rq"
             code = int(rs.get("statusCode", "0"))
-            if rs.get("statusSeverity") == "Error":
-                raise QuickBooksStatusError(request_type, code, rs.get("statusMessage", ""))
+            severity, message = rs.get("statusSeverity"), rs.get("statusMessage", "")
+            if severity == "Error":
+                raise QuickBooksStatusError(request_type, code, message)
+            # "Warn" (e.g. 500: a name in a filter wasn't found) still comes with usable
+            # data, so it is returned, not raised; its message travels with the result
+            # so the tool's output says the answer may be incomplete.
+            warning = f"QuickBooks warning {code} for {request_type}: {message}" if severity == "Warn" else None
             rets = [] if code == NO_MATCH else [(ret.tag, _ret_data(ret)) for ret in rs]
-            attrs = {k: v for k, v in rs.attrib.items() if not k.startswith("status")}
-            results.append(QueryResult(request_type, rets, attrs))
+            results.append(QueryResult(request_type, rets, warning))
     return results
