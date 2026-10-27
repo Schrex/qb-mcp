@@ -21,7 +21,7 @@ from qb_mcp.transports.com import APP_NAME, ComTransport, error_from_hresult
         (0x8004041D, TransportFailure.NOT_AUTHORIZED),
         (0x80040420, TransportFailure.NOT_AUTHORIZED),
         (0x80040414, TransportFailure.OTHER),
-        (0x80040400, TransportFailure.OTHER),
+        (0x80040400, TransportFailure.INVALID_REQUEST),
     ],
 )
 def test_known_hresults_map_to_failure_causes(hresult, cause):

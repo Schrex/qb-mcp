@@ -89,7 +89,10 @@ class ReplayTransport:
         doc = etree.fromstring(request.encode("utf-8"))
         if not self._schema.validate(doc):
             # Mirrors QuickBooks rejecting an unparseable request (0x80040400).
-            raise TransportError(TransportFailure.OTHER, f"request failed qbXML schema validation: {self._schema.error_log.last_error.message}")
+            raise TransportError(
+                TransportFailure.INVALID_REQUEST,
+                f"request failed qbXML schema validation: {self._schema.error_log.last_error.message}",
+            )
 
     def _canned_rs(self, request_type: str) -> ET.Element:
         path = self.fixtures_dir / self._overrides.get(request_type, f"{request_type}.xml")

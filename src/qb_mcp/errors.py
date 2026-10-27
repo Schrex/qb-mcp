@@ -18,6 +18,10 @@ class TransportFailure(Enum):
         "QuickBooks hasn't authorized this integration (or the QuickBooks user was denied). "
         "Ask Sumanth to approve it in QuickBooks."
     )
+    INVALID_REQUEST = (
+        "QuickBooks couldn't read the request: it doesn't match the qbXML schema "
+        "(check element names, spelling and order)."
+    )
     OTHER = "Couldn't talk to QuickBooks."
 
 

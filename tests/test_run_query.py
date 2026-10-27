@@ -67,7 +67,10 @@ async def test_run_query_reports_schema_invalid_queries_clearly(call):
     result = await call("run_query", query=out_of_order)
 
     assert result.is_error
-    assert "schema validation" in result.content[0].text
+    text = result.content[0].text
+    assert "schema validation" in text
+    assert not text.startswith("Couldn't talk to QuickBooks")
+    assert "doesn't match the qbXML schema" in text
 
 
 async def test_run_query_description_steers_to_dedicated_tools(client):

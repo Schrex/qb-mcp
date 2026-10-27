@@ -36,6 +36,7 @@ _SAME_USER = "QuickBooks must be open as the same Windows user as Claude, and no
 # HRESULT -> (cause, extra hint). Codes from Intuit's SDK error list; some
 # runtime mappings are unverified on real QuickBooks (see ticket #3 notes).
 _HRESULTS: dict[int, tuple[TransportFailure, str]] = {
+    0x80040400: (TransportFailure.INVALID_REQUEST, ""),  # error parsing the qbXML text stream
     0x80040408: (TransportFailure.QB_NOT_RUNNING, _SAME_USER),
     0x80040416: (TransportFailure.QB_NOT_RUNNING, ""),
     0x80040417: (TransportFailure.NO_COMPANY_FILE, ""),
