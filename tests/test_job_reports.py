@@ -68,6 +68,18 @@ async def test_report_without_customer_job_covers_all_jobs(call, replay):
     assert "ReportEntityFilter" not in replay.sent[0]
 
 
+@pytest.mark.parametrize("report", ["job_profitability_detail", "job_estimates_vs_actuals_detail"])
+async def test_detail_reports_need_a_customer_job_and_say_so_before_asking_quickbooks(call, replay, report):
+    # Real QuickBooks (Enterprise 2024, #4) answers error 3150 'missing element: "ReportEntityFilter"'
+    # for a detail report without one; the tool explains that instead of forwarding the error.
+    result = await call("run_job_report", report=report, from_date="2024-01-01", to_date="2024-12-31")
+
+    assert result.is_error
+    message = " ".join(c.text for c in result.content)
+    assert "customer_job" in message and "detail" in message and "summary" in message
+    assert replay.sent == []
+
+
 @pytest.mark.parametrize("fixture", ["JobReportQueryRq.empty.xml", "JobReportQueryRq.nomatch.xml"])
 async def test_empty_report_returns_no_rows_not_an_error(call, replay, fixture):
     replay.respond_with("JobReportQueryRq", fixture)

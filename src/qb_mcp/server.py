@@ -225,10 +225,16 @@ def build_server(transport: Transport) -> MCPServer:
     ) -> dict[str, Any]:
         """Run a QuickBooks job report (profitability, or estimates vs. actuals; summary or detail)
         for a date range, optionally limited to one Customer:Job (e.g. "Acme:Main St Paving") or a
-        customer and all its Customer:Jobs (e.g. "Acme"). Returns the report's column titles and its
-        rows: each row has a `kind` (header, data, subtotal, total), a `label`, the full `name` when
-        the row is for a customer, Customer:Job or Item, and `values` keyed by column title.
-        Empty report -> no rows."""
+        customer and all its Customer:Jobs (e.g. "Acme"). The summary reports cover every job when
+        `customer_job` is omitted; the detail reports require it (QuickBooks runs them for one
+        Customer:Job). Returns the report's column titles and its rows: each row has a `kind`
+        (header, data, subtotal, total), a `label`, the full `name` when the row is for a customer,
+        Customer:Job or Item, and `values` keyed by column title. Empty report -> no rows."""
+        if report.endswith("_detail") and not customer_job:
+            raise ToolError(
+                f"{report} needs customer_job: QuickBooks runs detail job reports for one Customer:Job "
+                f"(or one customer with its jobs). For all jobs use {report.removesuffix('_detail')}_summary."
+            )
         children = [
             el("JobReportType", _job_report_type(report)),
             el("ReportPeriod", None, el("FromReportDate", from_date.isoformat()), el("ToReportDate", to_date.isoformat())),

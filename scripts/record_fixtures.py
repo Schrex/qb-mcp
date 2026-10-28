@@ -44,6 +44,8 @@ SAMPLE_COMPANY_FILE = "rock castle"  # in the file name, any case
 # trial writes Rock Castle as `sample_product-based business.QBW`, verified in #4).
 SAMPLE_FILE_PREFIX = "sample_"
 REPORT_PERIOD = {"from_date": "2000-01-01", "to_date": "2030-12-31"}
+# Detail job reports need one Customer:Job (QuickBooks error 3150 otherwise); a Rock Castle job.
+DETAIL_JOB = {**REPORT_PERIOD, "customer_job": "Abercrombie, Kristy:Remodel Bathroom"}
 LIMIT = 25
 HAND_WRITTEN_ONLY = "sensitive"  # variant never recorded: `<RequestType>.sensitive.xml`
 
@@ -65,9 +67,9 @@ TOOL_CALLS = [
     ToolCall("query_bills", {"limit": 10}),
     ToolCall("run_query", {"query": "<InvoiceQueryRq><MaxReturned>11</MaxReturned></InvoiceQueryRq>", "limit": 10}),
     ToolCall("run_job_report", {"report": "job_profitability_summary", **REPORT_PERIOD}),
-    ToolCall("run_job_report", {"report": "job_profitability_detail", **REPORT_PERIOD}, "profitability_detail"),
+    ToolCall("run_job_report", {"report": "job_profitability_detail", **DETAIL_JOB}, "profitability_detail"),
     ToolCall("run_job_report", {"report": "job_estimates_vs_actuals_summary", **REPORT_PERIOD}, "estimates"),
-    ToolCall("run_job_report", {"report": "job_estimates_vs_actuals_detail", **REPORT_PERIOD}, "estimates_detail"),
+    ToolCall("run_job_report", {"report": "job_estimates_vs_actuals_detail", **DETAIL_JOB}, "estimates_detail"),
 ]
 
 

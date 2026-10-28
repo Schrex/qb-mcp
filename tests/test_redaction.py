@@ -72,7 +72,11 @@ async def test_run_job_report_drops_tax_id_account_card_and_bank_columns(call, r
     replay.respond_with("JobReportQueryRq", "JobReportQueryRq.sensitive.xml")
 
     result = await call(
-        "run_job_report", report="job_profitability_detail", from_date="2024-01-01", to_date="2024-12-31"
+        "run_job_report",
+        report="job_profitability_detail",
+        from_date="2024-01-01",
+        to_date="2024-12-31",
+        customer_job="Acme:Main St Paving",
     )
 
     report = result.structured_content
