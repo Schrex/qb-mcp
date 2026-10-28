@@ -116,8 +116,15 @@ uv run python scripts/record_fixtures.py --out tests/fixtures/replay
 `--dry-run` first to see what will be written. The script refuses to write files containing sensitive values and refuses a non-sample Company File.
 
 - **A run that refuses any file (or hits any error) exits 1** and prints `RECORDING INCOMPLETE`; the other files are still written. Exit 0 only if every file was written.
-- **Rock Castle may contain a company EIN or Vendor account numbers.** Those block `CompanyQueryRq.xml` / `VendorQueryRq.xml` (`REFUSED ... CompanyRet/EIN` or `VendorRet/AccountNumber`). Expected: leave the hand-written fixture in place (it is already free of sensitive values), note in #4 which files were refused and why, and treat the exit 1 as accepted for those files only. Don't blank the values in QuickBooks or pass flags to get around it.
+- **Rock Castle contains a company EIN, Vendor account numbers and tax IDs, and one bank account number.** Verified 2026-10-28: the recorder refuses `CompanyQueryRq.xml` (`CompanyRet/EIN`), `VendorQueryRq.xml` (`VendorRet/AccountNumber` x11, `VendorRet/VendorTaxIdent` x2) and `AccountQueryRq.xml` (`AccountRet/BankNumber` x1); the other nine fixtures record cleanly (Host, Customer, Item, Bill, Invoice, and the four job reports). Expected: leave the hand-written fixture in place (it is already free of sensitive values), note in #4 which files were refused and why, and treat the exit 1 as accepted for those files only. Don't blank the values in QuickBooks or pass flags to get around it.
 - **`*.sensitive.xml` fixtures are hand-written and never recorded.** They hold the made-up sensitive values the stripping tests feed in; the script refuses to write that name. Every other fixture must stay free of sensitive values (`tests/test_fixture_hygiene.py` checks this with the script's own scanner).
+
+Detail job reports need a Customer:Job (QuickBooks error 3150 `missing element: "ReportEntityFilter"` otherwise, verified); the recorder runs them for `Abercrombie, Kristy:Remodel Bathroom`.
+
+Job report facts (verified 2026-10-28, Enterprise 2024):
+- Column titles: profitability (summary and detail) `Act. Cost`, `Act. Revenue`, `($) Diff.`; estimates vs. actuals (summary and detail) `Est. Cost`, `Act. Cost`, `($) Diff.`, `Est. Revenue`, `Act. Revenue`, `($) Diff.` (the second `($) Diff.` is reported as `($) Diff. (2)`). Detail titles read "Job Profitability Detail for <Customer:Job>".
+- An **empty** report (period with no activity) is not "no rows": QuickBooks returns one `TotalRow` labelled `TOTAL` with `0.00` in every column.
+- A Customer:Job that **doesn't exist** is QuickBooks error **3120** "Object ... cannot be found", not an empty report.
 
 Review before committing:
 
