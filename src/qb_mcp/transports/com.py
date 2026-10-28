@@ -30,7 +30,7 @@ _DIALOG = (
     "Close or answer it in QuickBooks, then try again."
 )
 _BUSY = "QuickBooks is busy or still starting up. Wait a moment, then try again."
-_SAME_USER = "QuickBooks must be open as the same Windows user as Claude, and not as administrator."
+_SAME_USER = "If QuickBooks is open, it must be open as the same Windows user as Claude, and not as administrator."
 _SDK_MISSING = "QuickBooks' SDK components are missing or not installed correctly."
 _NOT_REGISTERED = (
     "QuickBooks' request processor isn't registered on this PC "

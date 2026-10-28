@@ -115,10 +115,10 @@ Messages Claude may show, and what to do:
 
 | Message (start) | What to do |
 |---|---|
-| `QuickBooks isn't running. Open QuickBooks and the Company File...` | Open QuickBooks and the Company File, ask again. If QuickBooks *is* open and the message adds "QuickBooks must be open as the same Windows user as Claude, and not as administrator": QuickBooks or Claude was started with "Run as administrator" or as another Windows user. Close both, start both normally. |
+| `QuickBooks isn't running. Open QuickBooks and the Company File...` | Open QuickBooks and the Company File, ask again. If QuickBooks *is* open, the hint "If QuickBooks is open, it must be open as the same Windows user as Claude, and not as administrator" applies: QuickBooks or Claude was started with "Run as administrator" or as another Windows user. Close both, start both normally. |
 | `QuickBooks is open but no Company File is loaded...` | Open the Company File. |
 | `QuickBooks hasn't authorized this integration (or the QuickBooks user was denied). Ask Sumanth...` | The authorization prompt was answered "No", or was removed. As Admin: **Edit > Preferences > Integrated Applications > Company Preferences**; check **Schreiber QuickBooks Lookup** is listed and allowed (re-check its Properties), or remove it and redo step 4 of the install. Extra hints may mention certificate invalid/expired/revoked, "Not allowed to log in automatically" or "Check Preferences > Integrated Applications". |
-| `...QuickBooks has a window or dialog open (possibly an authorization prompt)...` / `QuickBooks didn't answer within 120s` | A QuickBooks window is waiting for an answer (often the authorization prompt, sometimes behind other windows). Answer or close it, ask again. |
+| `...QuickBooks has a window or dialog open (possibly an authorization prompt)...` / `QuickBooks didn't answer within 120s` | A QuickBooks window is waiting for an answer (often the authorization prompt, sometimes behind other windows). Answer or close it, ask again. If there is no prompt at all and every request times out, QuickBooks was started "as administrator" (the installer does this when it finishes): close QuickBooks and reopen it from the Start menu. |
 | `QuickBooks is busy or still starting up...` | Wait a moment, ask again. |
 | `...A different Company File is open in QuickBooks.` | Open the right Company File. |
 | `QuickBooks' SDK components are missing or not installed correctly.` | Repair QuickBooks (Control Panel > Programs > QuickBooks > Repair). Tell Sumanth. |

@@ -45,6 +45,15 @@ def test_modal_dialog_hresult_tells_user_to_close_it():
     assert "dialog" in str(error_from_hresult(0x80040414, "")).lower()
 
 
+def test_quickbooks_closed_hresult_says_not_running_and_only_conditionally_mentions_elevation():
+    # Verified with QuickBooks closed (#4): 0x80040408 "Could not start QuickBooks."
+    message = str(error_from_hresult(0x80040408, "Could not start QuickBooks."))
+
+    assert message.startswith("QuickBooks isn't running.")
+    assert "If QuickBooks is open" in message and "same Windows user" in message
+    assert "Could not start QuickBooks.; code 0x80040408" in message
+
+
 def test_class_not_registered_hresult_mentions_quickbooks_not_installed():
     # Verified on a PC without QuickBooks (#4): Dispatch("QBXMLRP2.RequestProcessor")
     # fails with CO_E_CLASSSTRING "Invalid class string", 0x800401F3.
