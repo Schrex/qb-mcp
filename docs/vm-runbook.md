@@ -26,6 +26,8 @@ Cloud VM (if used instead):
 
 Do everything below as one normal Windows user (not "Run as administrator"). QuickBooks and the Python process must run as the **same Windows user at the same elevation**, or COM calls fail with "QuickBooks isn't running... must be open as the same Windows user...". The user needs to be in the local Administrators group only so the QuickBooks installer can elevate through UAC (verified on the spare PC: user `Sumanth`, Windows 11 Pro 10.0.22631 x64, 32 GB RAM, 300 GB free).
 
+**Verified 2026-10-28:** the QuickBooks installer launches QuickBooks **elevated** when it finishes. In that state a non-elevated Python gets **no error and no Application Certificate prompt**: `BeginSession` blocks until the 120 s timeout ("QuickBooks didn't answer within 120s..."), and every later request queues behind it and times out too. Close QuickBooks (File > Exit) and reopen it from the Start menu before the first smoke test. To check: `(Get-Process QBW).Path` is empty from a normal PowerShell when QuickBooks is elevated.
+
 ## 3. Install QuickBooks Enterprise 2024 (trial)
 
 1. Download the QuickBooks Desktop Enterprise 2024 trial from Intuit (trial download page; needs an Intuit account). **(unverified: current trial availability/length; Enterprise trials have historically been 30 days.)**
