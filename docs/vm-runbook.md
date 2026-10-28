@@ -30,7 +30,7 @@ Do everything below as one normal Windows user (not "Run as administrator"). Qui
 
 ## 3. Install QuickBooks Enterprise 2024 (trial)
 
-1. Download the QuickBooks Desktop Enterprise 2024 trial from Intuit (trial download page; needs an Intuit account). **(unverified: current trial availability/length; Enterprise trials have historically been 30 days.)**
+1. Download the QuickBooks Desktop Enterprise 2024 trial from Intuit (trial download page; needs an Intuit account). Verified 2026-10-28: the trial is available and runs **30 days**; the installer asks for the industry edition (pick Contractor) and installs to `C:\Program Files\Intuit\QuickBooks Enterprise Solutions 24.0\`. It reports itself as "Intuit QuickBooks Enterprise Solutions: Contractor 24.0 Trial Version", version 34.0, qbXML versions 1.0 through **17.0**.
 2. Install with defaults; choose the **Contractor** edition when asked (matches Jeri's Enterprise Contractor 2024).
 3. Apply updates: **Help > Update QuickBooks Desktop > Update Now**.
 
@@ -50,7 +50,9 @@ The SDK also has **SDKTestPlus3** (Start menu, under QuickBooks SDK) for sending
 
 ## 5. Open Rock Castle Construction
 
-**File > Open or Restore Company > Open a sample file > Rock Castle Construction** (sample files live under `C:\Users\Public\Documents\Intuit\QuickBooks\Sample Company Files\QuickBooks Enterprise Solutions 24.0\` **(unverified path)**). Log in as **Admin** (sample files have no password by default).
+**File > Open or Restore Company > Open a sample file > Rock Castle Construction**, or on the trial's first-run screen **"I want to see a sample Company File"**. Log in as **Admin** (sample files have no password by default). QuickBooks asks to update the file format first (**Update Company > Yes**); fine for the sample.
+
+Verified 2026-10-28: the trial's first-run flow puts the file on the **Desktop** as `sample_product-based business.QBW` (53 MB; QuickBooks ships no `Sample Company Files` folder under Public Documents). The company name inside is "Rock Castle Construction" but the file name isn't, so the recorder recognises Intuit's `sample_*` naming as well as "rock castle".
 
 Sample files are fine to record from: fictional data. The fixture recorder refuses any other Company File unless given `--i-confirm-not-live-data`; don't use that flag for this ticket.
 
@@ -67,7 +69,7 @@ uv sync
 
 **Python version (verified 2026-10-28 on the spare PC):** the repo pins `3.12` in `.python-version`. Without the pin, uv 0.13.6 picked CPython 3.15.2 and `uv sync` failed with `Missing expected target directory for Python minor version link` (the 3.15 install was left incomplete). `uv python install 3.12` printed the same error but produced a working interpreter; `uv sync` then installed everything (pywin32 312) and `uv run pytest` passed (188 passed, 2 skipped: the XSD tests). Keep this in mind for the `uvx` install on Jeri's PC (#10): if `uvx` hits the same error, pass `--python 3.12`.
 
-Check that uv picked a 64-bit Python: `uv run python -c "import struct; print(struct.calcsize('P')*8)"` → `64` (verified: `3.12.16 [MSC v.1944 64 bit (AMD64)]`). QuickBooks 2024 is 64-bit; 64-bit Python with its 64-bit request processor is expected to work **(unverified until the smoke test passes)**. If `Dispatch` fails with "request processor isn't registered" (0x800401F3 / 0x80040154) *with QuickBooks installed*, try a 32-bit Python (`uv python install cpython-3.12-windows-x86` and `uv sync --python <that>`) and record the result here. Note: with QuickBooks **not installed at all**, the smoke test fails with exactly that message (`Invalid class string; code 0x800401F3`, verified), so the message alone doesn't distinguish "not installed" from a bitness mismatch.
+Check that uv picked a 64-bit Python: `uv run python -c "import struct; print(struct.calcsize('P')*8)"` → `64` (verified: `3.12.16 [MSC v.1944 64 bit (AMD64)]`). QuickBooks 2024 is 64-bit; 64-bit Python with the 64-bit request processor **works (verified 2026-10-28: smoke test passed with CPython 3.12.16 x64, pywin32 312)**. If `Dispatch` fails with "request processor isn't registered" (0x800401F3 / 0x80040154) *with QuickBooks installed*, try a 32-bit Python (`uv python install cpython-3.12-windows-x86` and `uv sync --python <that>`) and record the result here. Note: with QuickBooks **not installed at all**, the smoke test fails with exactly that message (`Invalid class string; code 0x800401F3`, verified), so the message alone doesn't distinguish "not installed" from a bitness mismatch.
 
 ## 7. Authorize and smoke-test
 
@@ -76,7 +78,7 @@ Check that uv picked a 64-bit Python: `uv run python -c "import struct; print(st
    uv run python scripts/smoke_test.py
    ```
 2. QuickBooks shows the Application Certificate prompt for **Schreiber QuickBooks Lookup**. Pick **Yes, whenever this QuickBooks company file is open**; **Login as:** the view-only user from step 8 if you've created it (otherwise Admin for now; you can change it later under Integrated Applications); leave the **personal data** checkbox unchecked.
-3. If the script timed out waiting on the prompt (120 s), run it again. Expect `PASS` (`qb_status` reachable + one Vendor lookup).
+3. If the script timed out waiting on the prompt (120 s), run it again. Expect `PASS` (`qb_status` reachable + one Vendor lookup). Verified: the call that raises the certificate prompt fails with `The QuickBooks user has denied access.; code 0x80040420` even when you answer Yes; the next call in the same run already succeeds, and the next run passes cleanly.
 4. Note in #4: the exact `qb_status` output (product, version, supported qbXML versions), and any COM error codes seen.
 5. **Capture the real HRESULTs (unverified mapping):** close the Company File (leave QuickBooks open) and run the smoke test; then close QuickBooks entirely and run it again. Record the message and `code 0x...` of each in #4 so `transports/com.py`'s mapping can be pinned. Already verified: QuickBooks not installed → `Invalid class string; code 0x800401F3`, mapped to "request processor isn't registered".
 

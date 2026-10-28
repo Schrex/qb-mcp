@@ -47,7 +47,7 @@ where.exe uvx
 
 Note the full path `where.exe uvx` prints (usually `C:\Users\<Jeri>\.local\bin\uvx.exe`); you need it if Claude can't find `uvx` (see Troubleshooting).
 
-**64-bit:** QuickBooks 2022 and later (incl. Enterprise 2024) is 64-bit, and uv installs 64-bit Python on a 64-bit Windows, which is what the 64-bit SDK request processor needs. Don't install a 32-bit Python for this. (64-bit Python talking to QB 2024 is expected to work but is confirmed only once the VM smoke test (#4) passes.)
+**64-bit:** QuickBooks 2022 and later (incl. Enterprise 2024) is 64-bit, and uv installs 64-bit Python on a 64-bit Windows, which is what the 64-bit SDK request processor needs. Don't install a 32-bit Python for this. (Confirmed on the #4 test PC: 64-bit Python 3.12 talks to Enterprise 2024.)
 
 Optional pre-warm, so Claude's first launch isn't slow:
 
@@ -96,7 +96,7 @@ Save, then **fully quit** Claude Desktop (system tray icon > Quit, not just clos
    - Leave **"Allow this application to access personal data such as Social Security Numbers and customer credit card information"** *unchecked*.
    - Continue / Done.
    Not "Yes, always" (that's unattended access when QuickBooks is closed; out of scope).
-4. Claude may report a timeout while the prompt was up (the server waits 120 s). Ask "run qb status" again.
+4. Claude may report a timeout while the prompt was up (the server waits 120 s), or "The QuickBooks user has denied access" for the request that raised the prompt. Ask "run qb status" again.
 
 ### 5. Verify
 
