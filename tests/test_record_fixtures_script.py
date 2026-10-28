@@ -96,6 +96,22 @@ async def test_refuses_a_report_with_values_in_sensitive_columns(clean_quickbook
     assert not (out / "JobReportQueryRq.xml").exists()
 
 
+@pytest.mark.parametrize(
+    ("path", "is_sample"),
+    [
+        (SAMPLE_FILE, True),
+        # What the Enterprise 2024 trial's "see a sample Company File" flow writes (verified, #4).
+        (r"C:\Users\Sumanth\Desktop\sample_product-based business.QBW", True),
+        (r"C:\QB\sample_service-based business.qbw", True),
+        (r"C:\QB\Schreiber Excavating.QBW", False),
+        (r"C:\QB\samples\Schreiber Excavating.QBW", False),  # only the file name counts
+        (r"C:\QB\resample_data.QBW", False),
+    ],
+)
+def test_recognises_rock_castle_and_intuit_sample_file_names(path, is_sample):
+    assert record_fixtures.is_sample_company_file(path) is is_sample
+
+
 async def test_refuses_to_record_from_a_company_file_that_isnt_the_sample(clean_quickbooks, out, capsys):
     live = ReplayTransport(clean_quickbooks.fixtures_dir, company_file=LIVE_FILE)
 

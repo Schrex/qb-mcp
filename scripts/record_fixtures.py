@@ -9,7 +9,8 @@ writes one fixture per `*Rs`: `<RequestType>[.<variant>].xml`.
 
 Safety:
 - Refuses to record at all unless the open Company File looks like the Rock Castle
-  sample (`--i-confirm-not-live-data` overrides). Never record from a live file.
+  sample: "rock castle" in the file name, or Intuit's `sample_*` naming
+  (`--i-confirm-not-live-data` overrides). Never record from a live file.
 - Refuses to write any fixture holding a non-empty sensitive value: an element on the
   server's deny-list (`output.is_sensitive`, incl. a Vendor's AccountNumber) or a report
   column titled like one (`reports.SENSITIVE_COLUMN_TITLE`). It lists what it found
@@ -39,6 +40,9 @@ from qb_mcp.transport import Transport
 
 DEFAULT_OUT = Path(__file__).resolve().parents[1] / "tests" / "fixtures" / "replay"
 SAMPLE_COMPANY_FILE = "rock castle"  # in the file name, any case
+# Intuit names the shipped sample files `sample_<kind> business.qbw` (the Enterprise 2024
+# trial writes Rock Castle as `sample_product-based business.QBW`, verified in #4).
+SAMPLE_FILE_PREFIX = "sample_"
 REPORT_PERIOD = {"from_date": "2000-01-01", "to_date": "2030-12-31"}
 LIMIT = 25
 HAND_WRITTEN_ONLY = "sensitive"  # variant never recorded: `<RequestType>.sensitive.xml`
@@ -84,7 +88,8 @@ class RecordingTransport:
 
 
 def is_sample_company_file(path: str) -> bool:
-    return SAMPLE_COMPANY_FILE in ntpath.basename(path).lower()
+    name = ntpath.basename(path).lower()
+    return SAMPLE_COMPANY_FILE in name or name.startswith(SAMPLE_FILE_PREFIX)
 
 
 def sensitive_findings(rs: ET.Element) -> list[str]:
