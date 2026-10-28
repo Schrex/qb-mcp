@@ -4,7 +4,18 @@ Prove the COM path against real QuickBooks before the install visit, answer the 
 
 Items marked **(unverified)** come from research, not from running them; correct this file when the VM shows otherwise.
 
-## 1. VM
+## 1. Machine
+
+**Chosen: a spare office Windows PC** (no cloud cost). The cloud-VM notes below apply only if that changes.
+
+Spare-PC rules:
+- **Windows 10/11 Pro x64**, ≥ 16 GB RAM, ~20 GB free disk.
+- **No production QuickBooks on it**, and not Jeri's PC. Installing the 2024 trial next to a licensed install can disturb that install's registration and request processor.
+- **Never point it at Schreiber's live Company File** or the network share it sits on. Use only the Rock Castle sample file stored locally.
+- Use a dedicated local Windows user for this work; you need admin rights only to install software.
+- When #4 is done, uninstall the QuickBooks trial and SDK (or reimage) so the PC doesn't keep an expired trial around.
+
+Cloud VM (if used instead):
 
 - **OS:** Windows 11 Pro x64, or Windows Server 2022 x64 (Desktop Experience). QuickBooks Enterprise 2024 lists Windows 10/11 and Server 2016+ as supported **(unverified for Server 2022 with the trial)**; prefer Windows 11 if the cloud offers it.
 - **Size:** ≥ 4 vCPU, 16 GB RAM, ≥ 128 GB SSD. (Azure `D4s_v5`, AWS `m6i.xlarge`, or equivalent.)
