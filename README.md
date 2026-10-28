@@ -122,7 +122,7 @@ Messages Claude may show, and what to do:
 | `QuickBooks is busy or still starting up...` | Wait a moment, ask again. |
 | `...A different Company File is open in QuickBooks.` | Open the right Company File. |
 | `QuickBooks' SDK components are missing or not installed correctly.` | Repair QuickBooks (Control Panel > Programs > QuickBooks > Repair). Tell Sumanth. |
-| `QuickBooks' request processor isn't registered on this PC.` | Usually a 32/64-bit mismatch or broken QuickBooks install. Tell Sumanth (send the log). |
+| `QuickBooks' request processor isn't registered on this PC...` | QuickBooks isn't installed on this PC (verified: this is what a PC without QuickBooks reports), or a 32/64-bit mismatch or broken QuickBooks install. Tell Sumanth (send the log). |
 | `QuickBooks couldn't read the request: it doesn't match the qbXML schema...` | A malformed `run_query` or a server bug. Ask the question differently; if it came from a built-in tool, tell Sumanth. |
 | `Couldn't talk to QuickBooks. (... code 0x...)` | Unrecognised failure. Send Sumanth the log and the code. |
 | `QuickBooks returned error <code> for <Request>: <message>` | QuickBooks rejected the query. 3260 "Insufficient permission level" = the QuickBooks user lacks access to that area (see step 2). Others: send to Sumanth. |

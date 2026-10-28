@@ -45,6 +45,16 @@ def test_modal_dialog_hresult_tells_user_to_close_it():
     assert "dialog" in str(error_from_hresult(0x80040414, "")).lower()
 
 
+def test_class_not_registered_hresult_mentions_quickbooks_not_installed():
+    # Verified on a PC without QuickBooks (#4): Dispatch("QBXMLRP2.RequestProcessor")
+    # fails with CO_E_CLASSSTRING "Invalid class string", 0x800401F3.
+    message = str(error_from_hresult(0x800401F3, "Invalid class string"))
+
+    assert "isn't registered" in message
+    assert "isn't installed" in message
+    assert "code 0x800401F3" in message
+
+
 def test_importing_com_transport_does_not_import_windows_modules():
     assert "pythoncom" not in sys.modules and "win32com" not in sys.modules
 

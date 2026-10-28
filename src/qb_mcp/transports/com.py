@@ -32,7 +32,10 @@ _DIALOG = (
 _BUSY = "QuickBooks is busy or still starting up. Wait a moment, then try again."
 _SAME_USER = "QuickBooks must be open as the same Windows user as Claude, and not as administrator."
 _SDK_MISSING = "QuickBooks' SDK components are missing or not installed correctly."
-_NOT_REGISTERED = "QuickBooks' request processor isn't registered on this PC."
+_NOT_REGISTERED = (
+    "QuickBooks' request processor isn't registered on this PC "
+    "(QuickBooks isn't installed, or Python and QuickBooks don't match in 32/64-bit)."
+)
 
 # HRESULT -> (cause, extra hint). Codes from Intuit's SDK error list; some
 # runtime mappings are unverified on real QuickBooks (see ticket #3 notes).
