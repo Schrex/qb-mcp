@@ -16,12 +16,43 @@ def _sent(replay, rq_type: str) -> ET.Element:
 # --- list_customer_jobs ---------------------------------------------------
 
 
+# The default fixtures are recorded from Rock Castle Construction (Intuit's sample company).
+ROCK_CASTLE_CUSTOMER_JOBS = [
+    "Abercrombie, Kristy",
+    "Abercrombie, Kristy:Family Room",
+    "Abercrombie, Kristy:Kitchen",
+    "Abercrombie, Kristy:Remodel Bathroom",
+    "Allard, Robert",
+    "Allard, Robert:Remodel",
+    "Babcock's Music Shop",
+    "Babcock's Music Shop:Remodel",
+    "Baker, Chris",
+    "Baker, Chris:Family Room",
+    "Baker, Chris:Garage Repair",
+    "Balak, Mike",
+    "Balak, Mike:Utility Shed",
+    "Barley, Renee",
+    "Barley, Renee:Repairs",
+    "Bauman, Mark",
+    "Bauman, Mark:Home Remodel",
+    "Bolinski, Rafal",
+    "Bolinski, Rafal:2nd story addition",
+    "Bristol, Sonya",
+    "Bristol, Sonya:Repairs",
+    "Bristol, Sonya:Utility Shed",
+    "Burch, Jason",
+    "Burch, Jason:Room Addition",
+    "Campbell, Heather",
+    "Campbell, Heather:Remodel",
+]
+
+
 async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs(call):
     result = await call("list_customer_jobs")
 
     assert not result.is_error
     out = result.structured_content
-    assert out["results"] == [
+    assert out["results"][:6] == [
         {
             "name": "Abercrombie, Kristy",
             "kind": "customer",
@@ -29,18 +60,28 @@ async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs
             "is_active": True,
             "job_status": "None",
             "balance": "0.00",
-            "total_balance": "7633.28",
+            "total_balance": "0.00",
             "job_description": None,
         },
         {
-            "name": "Abercrombie, Kristy:Kitchen",
+            "name": "Abercrombie, Kristy:Family Room",
             "kind": "job",
             "parent": "Abercrombie, Kristy",
             "is_active": True,
             "job_status": "Closed",
             "balance": "0.00",
             "total_balance": "0.00",
-            "job_description": "Kitchen remodel",
+            "job_description": "Remodel family room: Drywall, re-carpet, add fireplace.",
+        },
+        {
+            "name": "Abercrombie, Kristy:Kitchen",
+            "kind": "job",
+            "parent": "Abercrombie, Kristy",
+            "is_active": True,
+            "job_status": "Pending",
+            "balance": "0.00",
+            "total_balance": "0.00",
+            "job_description": "Fire restoration of kitchen: Replace counter, dishwasher, oven and paint.",
         },
         {
             "name": "Abercrombie, Kristy:Remodel Bathroom",
@@ -48,11 +89,36 @@ async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs
             "parent": "Abercrombie, Kristy",
             "is_active": True,
             "job_status": "InProgress",
-            "balance": "7633.28",
-            "total_balance": "7633.28",
+            "balance": "0.00",
+            "total_balance": "0.00",
+            "job_description": "Remodel master bathroom: Build new counter, Replace fixtures, Add whirlpool.",
+        },
+        {  # the customer's total_balance rolls up its job's balance
+            "name": "Allard, Robert",
+            "kind": "customer",
+            "parent": None,
+            "is_active": True,
+            "job_status": "None",
+            "balance": "0.00",
+            "total_balance": "14510.00",
+            "job_description": None,
+        },
+        {
+            "name": "Allard, Robert:Remodel",
+            "kind": "job",
+            "parent": "Allard, Robert",
+            "is_active": True,
+            "job_status": "None",
+            "balance": "14510.00",
+            "total_balance": "14510.00",
             "job_description": None,
         },
     ]
+    assert [c["name"] for c in out["results"]] == ROCK_CASTLE_CUSTOMER_JOBS
+    assert [c["kind"] for c in out["results"]] == [
+        "job" if ":" in name else "customer" for name in ROCK_CASTLE_CUSTOMER_JOBS
+    ]
+    assert out["count"] == 26
     assert out["more_available"] is False
 
 
@@ -69,7 +135,7 @@ async def test_list_customer_jobs_sends_name_filter_status_and_limit(call, repla
 async def test_list_customer_jobs_reports_the_cap(call):
     out = (await call("list_customer_jobs", limit=2)).structured_content
 
-    assert [c["name"] for c in out["results"]] == ["Abercrombie, Kristy", "Abercrombie, Kristy:Kitchen"]
+    assert [c["name"] for c in out["results"]] == ["Abercrombie, Kristy", "Abercrombie, Kristy:Family Room"]
     assert out["more_available"] is True
 
 
@@ -86,7 +152,77 @@ async def test_list_customer_jobs_never_returns_tax_ids_or_card_data(call, repla
 # --- list_items -----------------------------------------------------------
 
 
-async def test_list_items_tags_each_mixed_item_with_its_kind(call):
+async def test_list_items_returns_services_and_inventory_with_cost_and_account(call):
+    out = (await call("list_items")).structured_content
+
+    services = [
+        "Blueprint changes",
+        "Blueprints",
+        "Concrete Slab",
+        "Floor Plans",
+        "Framing",
+        "Installation",
+        "Labor",
+        "Mileage",
+        "Removal",
+        "Repairs",
+        "Subs",
+        "Subs:Carpet",
+        "Subs:Drywall",
+        "Subs:Duct Work",
+        "Subs:Electrical",
+        "Subs:Insulating",
+        "Subs:Metal Wrk",
+        "Subs:Painting",
+        "Subs:Plumbing",
+        "Subs:Roofing",
+        "Subs:Tile &Counter",
+    ]
+    inventory = ["Cabinets", "Cabinets:Cabinet Pulls", "Cabinets:Light Pine", "Door Frame", "Hardware"]
+    assert [(i["name"], i["kind"]) for i in out["results"]] == [(n, "service") for n in services] + [
+        (n, "inventory") for n in inventory
+    ]
+    assert out["count"] == 26 and out["more_available"] is False
+    by_name = {i["name"]: i for i in out["results"]}
+    assert by_name["Framing"] == {  # one-way service: SalesOrPurchase (sold at a price, to an income account)
+        "name": "Framing",
+        "kind": "service",
+        "is_active": True,
+        "description": "Framing labor",
+        "cost": "55.00",
+        "expense_account": "Construction Income:Labor Income",
+    }
+    assert by_name["Mileage"] == {
+        "name": "Mileage",
+        "kind": "service",
+        "is_active": False,
+        "description": None,
+        "cost": "0.365",
+        "expense_account": "Reimbursement Income:Mileage Income",
+    }
+    assert by_name["Subs:Carpet"] == {  # two-way service: SalesAndPurchase, purchase side reported
+        "name": "Subs:Carpet",
+        "kind": "service",
+        "is_active": True,
+        "description": "Install carpeting",
+        "cost": "25.00",
+        "expense_account": "Job Expenses:Subcontractors",
+    }
+    assert by_name["Cabinets:Light Pine"] == {  # inventory: top-level cost and COGS account
+        "name": "Cabinets:Light Pine",
+        "kind": "inventory",
+        "is_active": True,
+        "description": "Light pine kitchen cabinet wall unit \n#CLD- 1235-p",
+        "cost": "1500.00",
+        "expense_account": "Cost of Goods Sold",
+    }
+
+
+async def test_list_items_tags_each_mixed_item_with_its_kind(call, replay):
+    # Rock Castle's recorded Items are services and inventory only; this hand-written
+    # list has one Item of each remaining kind.
+    replay.respond_with("ItemQueryRq", "ItemQueryRq.mixedkinds.xml")
+
     out = (await call("list_items")).structured_content
 
     assert [(i["name"], i["kind"]) for i in out["results"]] == [

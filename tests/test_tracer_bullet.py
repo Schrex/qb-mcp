@@ -21,9 +21,12 @@ async def test_qb_status_reports_quickbooks_and_company_file(call):
     assert not result.is_error
     assert result.structured_content == {
         "reachable": True,
-        "product": "QuickBooks Enterprise Solutions: Contractor 24.0",
+        "product": "Intuit QuickBooks Enterprise Solutions: Contractor 24.0 Trial Version",
         "version": "34.0",
-        "supported_qbxml_versions": ["1.0", "1.1", "2.0", "13.0", "14.0", "15.0", "16.0"],
+        "supported_qbxml_versions": [
+            "1.0", "1.1", "2.0", "2.1", "3.0", "4.0", "4.1", "5.0", "6.0", "7.0", "8.0", "9.0", "10.0",
+            "11.0", "12.0", "13.0", "14.0", "15.0", "16.0", "17.0",
+        ],
         "company_name": "Rock Castle Construction",
         "company_file": r"C:\QB\Rock Castle Construction.QBW",
         "last_error": None,

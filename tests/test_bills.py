@@ -5,6 +5,10 @@ import pytest
 pytestmark = pytest.mark.anyio
 
 
+# The default fixtures are recorded from Rock Castle Construction (Intuit's sample company).
+ROCK_CASTLE_BILLS = ["3847498", "8374892", "930357", "37498", "908472", "380482", "014", "Q1/02", "382940", "015", None]
+
+
 async def test_query_bills_returns_header_with_item_and_expense_lines(call):
     result = await call("query_bills")
 
@@ -12,49 +16,91 @@ async def test_query_bills_returns_header_with_item_and_expense_lines(call):
     out = result.structured_content
     assert out["results"][0] == {
         "vendor": "Patton Hardware Supplies",
-        "ref_number": "INV-88213",
-        "date": "2024-01-10",
-        "due_date": "2024-02-09",
-        "amount": "1325.40",
-        "open_amount": "1325.40",
-        "memo": "Bathroom materials",
-        "is_paid": False,
-        "expense_lines": [
-            {
-                "account": "Job Expenses:Permits and Licenses",
-                "amount": "125.40",
-                "memo": "Delivery fee",
-                "customer_job": "Abercrombie, Kristy:Remodel Bathroom",
-                "class": "Remodel",
-                "billable_status": "NotBillable",
-            }
-        ],
+        "ref_number": "3847498",
+        "date": "2024-12-02",
+        "due_date": "2026-01-01",
+        "amount": "13695.00",
+        "open_amount": "4479.20",
+        "memo": None,
+        "is_paid": True,
+        "expense_lines": [],
         "item_lines": [
             {
-                "item": "Lumber:Trim",
-                "description": "Trim lumber",
-                "quantity": "40",
-                "cost": "15.00",
-                "amount": "600.00",
-                "customer_job": "Abercrombie, Kristy:Remodel Bathroom",
-                "class": "Remodel",
-                "billable_status": "Billable",
+                "item": "Cabinets:Light Pine",
+                "description": "Light pine kitchen cabinet wall unit \n#CLD- 1235-p",
+                "quantity": "5",
+                "cost": "1500.00",
+                "amount": "7500.00",
+                "customer_job": "Burch, Jason:Room Addition",
+                "class": "New Construction",
+                "billable_status": "NotBillable",
             },
-            {  # from inside an item group
-                "item": "Doors:Interior",
-                "description": "Interior door",
-                "quantity": "1",
-                "cost": "600.00",
-                "amount": "600.00",
-                "customer_job": "Cook, Brian:Kitchen",
-                "class": None,
-                "billable_status": "HasBeenBilled",
+            {
+                "item": "Hardware:Doorknobs Std",
+                "description": "Doorknobs Part # DK 3704",
+                "quantity": "100",
+                "cost": "27.00",
+                "amount": "2700.00",
+                "customer_job": "Burch, Jason:Room Addition",
+                "class": "New Construction",
+                "billable_status": "NotBillable",
+            },
+            {
+                "item": "Hardware:Lk Doorknobs",
+                "description": "Locking interior doorknobs  Part # DK415",
+                "quantity": "100",
+                "cost": "34.95",
+                "amount": "3495.00",
+                "customer_job": "Burch, Jason:Room Addition",
+                "class": "New Construction",
+                "billable_status": "NotBillable",
             },
         ],
     }
-    assert [b["ref_number"] for b in out["results"]] == ["INV-88213", "TL-5521"]
-    assert out["results"][1]["is_paid"] is True
+    # A Bill with expense lines only (truck payment split across a loan and its interest).
+    assert out["results"][6]["ref_number"] == "014"
+    assert out["results"][6]["memo"] == "Monthly Truck Payment"
+    assert out["results"][6]["item_lines"] == []
+    assert out["results"][6]["expense_lines"] == [
+        {
+            "account": "Loan - Vehicles (Van)",
+            "amount": "436.07",
+            "memo": None,
+            "customer_job": "Overhead",
+            "class": "Overhead",
+            "billable_status": None,
+        },
+        {
+            "account": "Interest Expense:Loan Interest",
+            "amount": "96.90",
+            "memo": None,
+            "customer_job": "Overhead",
+            "class": "Overhead",
+            "billable_status": "NotBillable",
+        },
+    ]
+    assert [b["ref_number"] for b in out["results"]] == ROCK_CASTLE_BILLS
+    assert [b["is_paid"] for b in out["results"]] == [True] * 11
     assert out["more_available"] is False
+
+
+async def test_query_bills_flattens_item_group_lines(call, replay):
+    # Rock Castle's Bills hold no item groups; this hand-written Bill has one.
+    replay.respond_with("BillQueryRq", "BillQueryRq.jobmix.xml")
+
+    out = (await call("query_bills")).structured_content
+
+    assert [line["item"] for line in out["results"][0]["item_lines"]] == ["Lumber:Trim", "Doors:Interior"]
+    assert out["results"][0]["item_lines"][1] == {  # from inside the item group
+        "item": "Doors:Interior",
+        "description": "Interior door",
+        "quantity": "1",
+        "cost": "600.00",
+        "amount": "600.00",
+        "customer_job": "Cook, Brian:Kitchen",
+        "class": None,
+        "billable_status": "HasBeenBilled",
+    }
 
 
 def _sent_bill_query(replay) -> ET.Element:
@@ -148,12 +194,16 @@ async def test_query_bills_unknown_ref_number_is_an_empty_result(call, replay):
 async def test_query_bills_reports_when_more_bills_exist_than_the_limit(call):
     out = (await call("query_bills", limit=1)).structured_content
 
-    assert [b["ref_number"] for b in out["results"]] == ["INV-88213"]
+    assert [b["ref_number"] for b in out["results"]] == ["3847498"]
     assert out["more_available"] is True
     assert "more exist" in out["note"]
 
 
 async def test_query_bills_customer_job_keeps_only_bills_and_lines_charged_to_it(call, replay):
+    # No Rock Castle Bill splits its lines across Customer:Jobs, so these hand-written
+    # Bills (one line charged to Cook, Brian:Kitchen among lines for other jobs) stand in.
+    replay.respond_with("BillQueryRq", "BillQueryRq.jobmix.xml")
+
     out = (await call("query_bills", customer_job="cook, brian:kitchen", vendor="Patton Hardware Supplies")).structured_content
 
     # BillQueryRq cannot filter by Customer:Job, so nothing job-related is sent.
@@ -168,20 +218,37 @@ async def test_query_bills_customer_job_keeps_only_bills_and_lines_charged_to_it
 
 
 async def test_query_bills_customer_includes_its_jobs(call):
-    out = (await call("query_bills", customer_job="Abercrombie, Kristy")).structured_content
+    # Every line of these two Bills is charged to the job Vasquez, Anabel:Basement Remodel.
+    out = (await call("query_bills", customer_job="Vasquez, Anabel")).structured_content
 
-    assert [b["ref_number"] for b in out["results"]] == ["INV-88213"]
-    bill = out["results"][0]
-    assert [line["account"] for line in bill["expense_lines"]] == ["Job Expenses:Permits and Licenses"]
-    assert [line["item"] for line in bill["item_lines"]] == ["Lumber:Trim"]
+    assert [b["ref_number"] for b in out["results"]] == ["380482", "382940"]
+    kitchens, vu = out["results"]
+    assert kitchens["expense_lines"] == [] and vu["expense_lines"] == []
+    assert [line["item"] for line in kitchens["item_lines"]] == ["Door Frame", "Wood Door:Exterior"]
+    assert [line["item"] for line in vu["item_lines"]] == [
+        "Subs:Carpet",
+        "Subs:Drywall",
+        "Subs:Duct Work",
+        "Subs:Electrical",
+        "Subs:Insulating",
+        "Subs:Painting",
+    ]
+    assert {line["customer_job"] for b in out["results"] for line in b["item_lines"]} == {
+        "Vasquez, Anabel:Basement Remodel"
+    }
 
 
 async def test_query_bills_customer_job_cap_counts_bills_scanned_not_matched(call):
-    out = (await call("query_bills", customer_job="Cook, Brian:Kitchen", limit=1)).structured_content
+    # Vasquez's Bills are the 6th and 9th of 11: scanning 6 finds one, scanning 1 finds none.
+    six = (await call("query_bills", customer_job="Vasquez, Anabel:Basement Remodel", limit=6)).structured_content
+    one = (await call("query_bills", customer_job="Vasquez, Anabel:Basement Remodel", limit=1)).structured_content
 
-    assert [b["ref_number"] for b in out["results"]] == ["INV-88213"]
-    assert out["more_available"] is True
-    assert "more exist" in out["note"]
+    assert [b["ref_number"] for b in six["results"]] == ["380482"]
+    assert six["count"] == 1
+    assert six["more_available"] is True
+    assert "more exist" in six["note"]
+    assert one["results"] == [] and one["count"] == 0
+    assert one["more_available"] is True
 
 
 async def test_query_bills_customer_job_without_lines_is_rejected(call):

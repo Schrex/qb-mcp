@@ -1,0 +1,194 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<JobReportQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ReportRet>
+<ReportTitle>Job Estimates vs. Actuals Detail for Abercrombie, Kristy:Remodel Bathroom</ReportTitle>
+<ReportSubtitle>January 2000 through December 2030</ReportSubtitle>
+<ReportBasis>Accrual</ReportBasis>
+<NumRows>19</NumRows>
+<NumColumns>7</NumColumns>
+<NumColTitleRows>1</NumColTitleRows>
+<ColDesc colID="1" dataType="STRTYPE">
+<ColTitle titleRow="1" />
+<ColType>Label</ColType>
+</ColDesc>
+<ColDesc colID="2" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Est. Cost" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="3" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Cost" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="4" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="($) Diff." />
+<ColType>AmountDifference</ColType>
+</ColDesc>
+<ColDesc colID="5" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Est. Revenue" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="6" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Revenue" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="7" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="($) Diff." />
+<ColType>AmountDifference</ColType>
+</ColDesc>
+<ReportData>
+<TextRow rowNumber="1" value="Parts" />
+<DataRow rowNumber="2">
+<RowData rowType="item" value="Plumb Fixtrs" />
+<ColData colID="1" value="Plumb Fixtrs (Plumbing fixtures)" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="3125.00" />
+<ColData colID="4" value="3125.00" />
+<ColData colID="5" value="0.00" />
+<ColData colID="6" value="2227.50" />
+<ColData colID="7" value="2227.50" />
+</DataRow>
+<SubtotalRow rowNumber="3">
+<ColData colID="1" value="Total Parts" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="3125.00" />
+<ColData colID="4" value="3125.00" />
+<ColData colID="5" value="0.00" />
+<ColData colID="6" value="2227.50" />
+<ColData colID="7" value="2227.50" />
+</SubtotalRow>
+<TextRow rowNumber="4" value="Service" />
+<DataRow rowNumber="5">
+<RowData rowType="item" value="Framing" />
+<ColData colID="1" value="Framing (Framing labor)" />
+<ColData colID="2" value="880.00" />
+<ColData colID="3" value="0.00" />
+<ColData colID="4" value="-880.00" />
+<ColData colID="5" value="880.00" />
+<ColData colID="6" value="1144.00" />
+<ColData colID="7" value="264.00" />
+</DataRow>
+<DataRow rowNumber="6">
+<RowData rowType="item" value="Installation" />
+<ColData colID="1" value="Installation (Installation labor)" />
+<ColData colID="2" value="420.00" />
+<ColData colID="3" value="0.00" />
+<ColData colID="4" value="-420.00" />
+<ColData colID="5" value="420.00" />
+<ColData colID="6" value="546.00" />
+<ColData colID="7" value="126.00" />
+</DataRow>
+<DataRow rowNumber="7">
+<RowData rowType="item" value="Removal" />
+<ColData colID="1" value="Removal (Removal labor)" />
+<ColData colID="2" value="560.00" />
+<ColData colID="3" value="0.00" />
+<ColData colID="4" value="-560.00" />
+<ColData colID="5" value="560.00" />
+<ColData colID="6" value="728.00" />
+<ColData colID="7" value="168.00" />
+</DataRow>
+<TextRow rowNumber="8" value="Subs (Subcontracted services)" />
+<DataRow rowNumber="9">
+<RowData rowType="item" value="Subs:Electrical" />
+<ColData colID="1" value="Electrical (Electrical work)" />
+<ColData colID="2" value="250.00" />
+<ColData colID="3" value="250.00" />
+<ColData colID="4" value="0.00" />
+<ColData colID="5" value="275.00" />
+<ColData colID="6" value="275.00" />
+<ColData colID="7" value="0.00" />
+</DataRow>
+<DataRow rowNumber="10">
+<RowData rowType="item" value="Subs:Painting" />
+<ColData colID="1" value="Painting (Painting)" />
+<ColData colID="2" value="140.00" />
+<ColData colID="3" value="140.00" />
+<ColData colID="4" value="0.00" />
+<ColData colID="5" value="154.00" />
+<ColData colID="6" value="154.00" />
+<ColData colID="7" value="0.00" />
+</DataRow>
+<DataRow rowNumber="11">
+<RowData rowType="item" value="Subs:Plumbing" />
+<ColData colID="1" value="Plumbing (Plumbing)" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="400.00" />
+<ColData colID="4" value="400.00" />
+<ColData colID="5" value="0.00" />
+<ColData colID="6" value="550.00" />
+<ColData colID="7" value="550.00" />
+</DataRow>
+<DataRow rowNumber="12">
+<RowData rowType="item" value="Subs:Tile &amp;Counter" />
+<ColData colID="1" value="Tile &amp;Counter (Install tile or counter)" />
+<ColData colID="2" value="750.00" />
+<ColData colID="3" value="600.00" />
+<ColData colID="4" value="-150.00" />
+<ColData colID="5" value="825.00" />
+<ColData colID="6" value="825.00" />
+<ColData colID="7" value="0.00" />
+</DataRow>
+<SubtotalRow rowNumber="13">
+<RowData rowType="item" value="Subs" />
+<ColData colID="1" value="Total Subs (Subcontracted services)" />
+<ColData colID="2" value="1140.00" />
+<ColData colID="3" value="1390.00" />
+<ColData colID="4" value="250.00" />
+<ColData colID="5" value="1254.00" />
+<ColData colID="6" value="1804.00" />
+<ColData colID="7" value="550.00" />
+</SubtotalRow>
+<SubtotalRow rowNumber="14">
+<ColData colID="1" value="Total Service" />
+<ColData colID="2" value="3000.00" />
+<ColData colID="3" value="1390.00" />
+<ColData colID="4" value="-1610.00" />
+<ColData colID="5" value="3114.00" />
+<ColData colID="6" value="4222.00" />
+<ColData colID="7" value="1108.00" />
+</SubtotalRow>
+<TextRow rowNumber="15" value="Other Charges" />
+<DataRow rowNumber="16">
+<RowData rowType="item" value="Equip Rental" />
+<ColData colID="1" value="Equip Rental (Equipment Rental)" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="300.00" />
+<ColData colID="4" value="300.00" />
+<ColData colID="5" value="0.00" />
+<ColData colID="6" value="300.00" />
+<ColData colID="7" value="300.00" />
+</DataRow>
+<SubtotalRow rowNumber="17">
+<ColData colID="1" value="Total Other Charges" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="300.00" />
+<ColData colID="4" value="300.00" />
+<ColData colID="5" value="0.00" />
+<ColData colID="6" value="300.00" />
+<ColData colID="7" value="300.00" />
+</SubtotalRow>
+<DataRow rowNumber="18">
+<ColData colID="1" value="No item" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="601.23" />
+<ColData colID="4" value="601.23" />
+<ColData colID="5" value="0.00" />
+<ColData colID="6" value="0.00" />
+<ColData colID="7" value="0.00" />
+</DataRow>
+<TotalRow rowNumber="19">
+<ColData colID="1" value="TOTAL" />
+<ColData colID="2" value="3000.00" />
+<ColData colID="3" value="5416.23" />
+<ColData colID="4" value="2416.23" />
+<ColData colID="5" value="3114.00" />
+<ColData colID="6" value="6749.50" />
+<ColData colID="7" value="3635.50" />
+</TotalRow>
+</ReportData>
+</ReportRet>
+</JobReportQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

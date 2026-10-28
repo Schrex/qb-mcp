@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<JobReportQueryRs requestID="1" statusCode="3120" statusSeverity="Error" statusMessage="Object &quot;No Such Customer:No Such Job&quot; specified in the request cannot be found.  QuickBooks error message: Invalid argument.  The specified record does not exist in the list." />
+</QBXMLMsgsRs>
+</QBXML>

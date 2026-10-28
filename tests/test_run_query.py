@@ -7,6 +7,8 @@ from qb_mcp.transports.replay import xsd_dir_from_env
 pytestmark = pytest.mark.anyio
 
 INVOICES = "<InvoiceQueryRq><MaxReturned>50</MaxReturned></InvoiceQueryRq>"
+# The default fixture holds 11 Invoices recorded from Rock Castle Construction (Intuit's sample company).
+ROCK_CASTLE_INVOICES = ["975", "978", "985", "987", "990", "991", "992", "993", "994", "1001", "1002"]
 
 
 async def test_run_query_returns_parsed_results_for_a_query_element(call):
@@ -14,8 +16,9 @@ async def test_run_query_returns_parsed_results_for_a_query_element(call):
 
     assert not result.is_error
     out = result.structured_content
-    assert [i["RefNumber"] for i in out["results"]] == ["1042", "1043"]
-    assert out["results"][0]["CustomerRef"] == {"FullName": "Acme:Main St Paving"}
+    assert [i["RefNumber"] for i in out["results"]] == ROCK_CASTLE_INVOICES
+    assert out["results"][0]["CustomerRef"] == {"ListID": "800000B8-1197707458", "FullName": "Prentice, Adelaide:Bay Window"}
+    assert out["count"] == 11
     assert out["more_available"] is False
 
 
@@ -46,7 +49,7 @@ async def test_run_query_strips_sensitive_fields(call, replay):
 async def test_run_query_caps_results_at_the_limit(call):
     out = (await call("run_query", query=INVOICES, limit=1)).structured_content
 
-    assert [i["RefNumber"] for i in out["results"]] == ["1042"]
+    assert [i["RefNumber"] for i in out["results"]] == ["975"]
     assert out["count"] == 1
     assert out["more_available"] is True
     assert "more exist" in out["note"]

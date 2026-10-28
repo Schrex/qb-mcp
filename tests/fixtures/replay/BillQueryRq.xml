@@ -1,72 +1,877 @@
 <?xml version="1.0" ?>
 <QBXML>
 <QBXMLMsgsRs>
-<BillQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="2">
+<BillQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
 <BillRet>
-<TxnID>1A3F-1704915600</TxnID>
-<TxnNumber>3412</TxnNumber>
-<VendorRef><ListID>80000005-1197759347</ListID><FullName>Patton Hardware Supplies</FullName></VendorRef>
-<APAccountRef><ListID>80000019-1197756960</ListID><FullName>Accounts Payable</FullName></APAccountRef>
-<TxnDate>2024-01-10</TxnDate>
-<DueDate>2024-02-09</DueDate>
-<AmountDue>1325.40</AmountDue>
-<RefNumber>INV-88213</RefNumber>
-<Memo>Bathroom materials</Memo>
-<IsPaid>false</IsPaid>
-<ExpenseLineRet>
-<TxnLineID>1A41-1704915600</TxnLineID>
-<AccountRef><ListID>8000004A-1197757020</ListID><FullName>Job Expenses:Permits and Licenses</FullName></AccountRef>
-<Amount>125.40</Amount>
-<Memo>Delivery fee</Memo>
-<CustomerRef><ListID>80000003-1197756930</ListID><FullName>Abercrombie, Kristy:Remodel Bathroom</FullName></CustomerRef>
-<ClassRef><ListID>80000001-1197756760</ListID><FullName>Remodel</FullName></ClassRef>
+<TxnID>3691-1071520776</TxnID>
+<TimeCreated>2003-12-15T15:39:36-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:06-05:00</TimeModified>
+<EditSequence>1765784190</EditSequence>
+<TxnNumber>613</TxnNumber>
+<VendorRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Patton Hardware Supplies</Addr1>
+<Addr2>4872 County Rd</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2024-12-02</TxnDate>
+<DueDate>2026-01-01</DueDate>
+<AmountDue>13695.00</AmountDue>
+<RefNumber>3847498</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<IsPaid>true</IsPaid>
+<ItemLineRet>
+<TxnLineID>3693-1071520776</TxnLineID>
+<ItemRef>
+<ListID>110000-933272656</ListID>
+<FullName>Cabinets:Light Pine</FullName>
+</ItemRef>
+<Desc>Light pine kitchen cabinet wall unit 
+#CLD- 1235-p</Desc>
+<Quantity>5</Quantity>
+<Cost>1500.00</Cost>
+<Amount>7500.00</Amount>
+<CustomerRef>
+<ListID>990000-1071509249</ListID>
+<FullName>Burch, Jason:Room Addition</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
 <BillableStatus>NotBillable</BillableStatus>
-</ExpenseLineRet>
-<ItemLineRet>
-<TxnLineID>1A42-1704915600</TxnLineID>
-<ItemRef><ListID>80000030-1197757300</ListID><FullName>Lumber:Trim</FullName></ItemRef>
-<Desc>Trim lumber</Desc>
-<Quantity>40</Quantity>
-<Cost>15.00</Cost>
-<Amount>600.00</Amount>
-<CustomerRef><ListID>80000003-1197756930</ListID><FullName>Abercrombie, Kristy:Remodel Bathroom</FullName></CustomerRef>
-<ClassRef><ListID>80000001-1197756760</ListID><FullName>Remodel</FullName></ClassRef>
-<BillableStatus>Billable</BillableStatus>
 </ItemLineRet>
-<ItemGroupLineRet>
-<TxnLineID>1A43-1704915600</TxnLineID>
-<ItemGroupRef><ListID>80000040-1197757400</ListID><FullName>Door Kit</FullName></ItemGroupRef>
-<Desc>Interior door kit</Desc>
-<Quantity>1</Quantity>
-<TotalAmount>600.00</TotalAmount>
 <ItemLineRet>
-<TxnLineID>1A44-1704915600</TxnLineID>
-<ItemRef><ListID>80000031-1197757310</ListID><FullName>Doors:Interior</FullName></ItemRef>
-<Desc>Interior door</Desc>
-<Quantity>1</Quantity>
-<Cost>600.00</Cost>
-<Amount>600.00</Amount>
-<CustomerRef><ListID>80000004-1197756940</ListID><FullName>Cook, Brian:Kitchen</FullName></CustomerRef>
-<BillableStatus>HasBeenBilled</BillableStatus>
+<TxnLineID>3694-1071520776</TxnLineID>
+<ItemRef>
+<ListID>130000-933272656</ListID>
+<FullName>Hardware:Doorknobs Std</FullName>
+</ItemRef>
+<Desc>Doorknobs Part # DK 3704</Desc>
+<Quantity>100</Quantity>
+<Cost>27.00</Cost>
+<Amount>2700.00</Amount>
+<CustomerRef>
+<ListID>990000-1071509249</ListID>
+<FullName>Burch, Jason:Room Addition</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
 </ItemLineRet>
-</ItemGroupLineRet>
-<OpenAmount>1325.40</OpenAmount>
+<ItemLineRet>
+<TxnLineID>3695-1071520776</TxnLineID>
+<ItemRef>
+<ListID>140000-933272656</ListID>
+<FullName>Hardware:Lk Doorknobs</FullName>
+</ItemRef>
+<Desc>Locking interior doorknobs  Part # DK415</Desc>
+<Quantity>100</Quantity>
+<Cost>34.95</Cost>
+<Amount>3495.00</Amount>
+<CustomerRef>
+<ListID>990000-1071509249</ListID>
+<FullName>Burch, Jason:Room Addition</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<OpenAmount>4479.20</OpenAmount>
 </BillRet>
 <BillRet>
-<TxnID>1B10-1706000000</TxnID>
-<TxnNumber>3420</TxnNumber>
-<VendorRef><ListID>80000006-1197759350</ListID><FullName>Timberloft Lumber</FullName></VendorRef>
-<TxnDate>2024-01-22</TxnDate>
-<DueDate>2024-02-21</DueDate>
-<AmountDue>480.00</AmountDue>
-<RefNumber>TL-5521</RefNumber>
+<TxnID>5CAB-1197713763</TxnID>
+<TimeCreated>2007-12-15T05:16:03-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:06-05:00</TimeModified>
+<EditSequence>1765784261</EditSequence>
+<TxnNumber>1302</TxnNumber>
+<VendorRef>
+<ListID>30000-933272656</ListID>
+<FullName>C.U. Electric</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>C. U. Electric</Addr1>
+<Addr2>P.O. Box 2816</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2024-12-15</TxnDate>
+<DueDate>2026-01-14</DueDate>
+<AmountDue>532.00</AmountDue>
+<RefNumber>8374892</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
 <IsPaid>true</IsPaid>
 <ExpenseLineRet>
-<TxnLineID>1B11-1706000000</TxnLineID>
-<AccountRef><ListID>8000004B-1197757030</ListID><FullName>Job Expenses:Job Materials</FullName></AccountRef>
-<Amount>480.00</Amount>
-<CustomerRef><ListID>80000004-1197756940</ListID><FullName>Cook, Brian:Kitchen</FullName></CustomerRef>
-<BillableStatus>Billable</BillableStatus>
+<TxnLineID>5CAD-1197713763</TxnLineID>
+<AccountRef>
+<ListID>490000-933270542</ListID>
+<FullName>Utilities:Gas and Electric</FullName>
+</AccountRef>
+<Amount>532.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+<OpenAmount>750.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>5C83-1197713503</TxnID>
+<TimeCreated>2007-12-15T05:11:43-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:06-05:00</TimeModified>
+<EditSequence>1765784261</EditSequence>
+<TxnNumber>1299</TxnNumber>
+<VendorRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Patton Hardware Supplies</Addr1>
+<Addr2>4872 County Rd</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2024-12-20</TxnDate>
+<DueDate>2026-01-19</DueDate>
+<AmountDue>5064.00</AmountDue>
+<RefNumber>930357</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<IsPaid>true</IsPaid>
+<ItemLineRet>
+<TxnLineID>5C85-1197713503</TxnLineID>
+<ItemRef>
+<ListID>100000-933272656</ListID>
+<FullName>Cabinets:Cabinet Pulls</FullName>
+</ItemRef>
+<Desc>Cabinet Pulls</Desc>
+<Quantity>300</Quantity>
+<Cost>3.00</Cost>
+<Amount>900.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>5C86-1197713503</TxnLineID>
+<ItemRef>
+<ListID>110000-933272656</ListID>
+<FullName>Cabinets:Light Pine</FullName>
+</ItemRef>
+<Desc>Light pine kitchen cabinet wall unit 
+#CLD- 1235-p</Desc>
+<Quantity>1</Quantity>
+<Cost>1500.00</Cost>
+<Amount>1500.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>5C87-1197713503</TxnLineID>
+<ItemRef>
+<ListID>450000-1071511428</ListID>
+<FullName>Hardware:Brass hinges</FullName>
+</ItemRef>
+<Desc>standard interior brass hinge</Desc>
+<Quantity>250</Quantity>
+<Cost>3.00</Cost>
+<Amount>750.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>5C88-1197713503</TxnLineID>
+<ItemRef>
+<ListID>130000-933272656</ListID>
+<FullName>Hardware:Doorknobs Std</FullName>
+</ItemRef>
+<Desc>Doorknobs Part # DK 3704</Desc>
+<Quantity>20</Quantity>
+<Cost>27.00</Cost>
+<Amount>540.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>5C89-1197713503</TxnLineID>
+<ItemRef>
+<ListID>140000-933272656</ListID>
+<FullName>Hardware:Lk Doorknobs</FullName>
+</ItemRef>
+<Desc>Locking interior doorknobs  Part # DK415</Desc>
+<Quantity>20</Quantity>
+<Cost>34.95</Cost>
+<Amount>699.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>5C8A-1197713503</TxnLineID>
+<ItemRef>
+<ListID>160000-933272656</ListID>
+<FullName>Wood Door:Exterior</FullName>
+</ItemRef>
+<Desc>Exterior door - #P-10981</Desc>
+<Quantity>3</Quantity>
+<Cost>105.00</Cost>
+<Amount>315.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>5C8B-1197713503</TxnLineID>
+<ItemRef>
+<ListID>170000-933272656</ListID>
+<FullName>Wood Door:Interior</FullName>
+</ItemRef>
+<Desc>Interior door - P-187055T</Desc>
+<Quantity>6</Quantity>
+<Cost>60.00</Cost>
+<Amount>360.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<OpenAmount>4479.20</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>5CAE-1197713803</TxnID>
+<TimeCreated>2007-12-15T05:16:43-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:06-05:00</TimeModified>
+<EditSequence>1765784261</EditSequence>
+<TxnNumber>1303</TxnNumber>
+<VendorRef>
+<ListID>2E0000-933272659</ListID>
+<FullName>Cal Telephone</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Cal Telephone</Addr1>
+<Addr2>P.O. Box 1100</Addr2>
+<City>Middlefield</City>
+<State>CA</State>
+<PostalCode>94482</PostalCode>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2024-12-23</TxnDate>
+<DueDate>2026-01-22</DueDate>
+<AmountDue>623.00</AmountDue>
+<RefNumber>37498</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<IsPaid>true</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>5CB0-1197713803</TxnLineID>
+<AccountRef>
+<ListID>4A0000-933270542</ListID>
+<FullName>Utilities:Telephone</FullName>
+</AccountRef>
+<Amount>623.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+<OpenAmount>91.94</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>5CB1-1197713940</TxnID>
+<TimeCreated>2007-12-15T05:19:00-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:06-05:00</TimeModified>
+<EditSequence>1765784261</EditSequence>
+<TxnNumber>1304</TxnNumber>
+<VendorRef>
+<ListID>2C0000-933272658</ListID>
+<FullName>Bayshore Water</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Bayshore Water</Addr1>
+<Addr2>P.O. Box 61</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2024-12-28</TxnDate>
+<DueDate>2026-01-27</DueDate>
+<AmountDue>205.00</AmountDue>
+<RefNumber>908472</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<IsPaid>true</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>5CB3-1197713940</TxnLineID>
+<AccountRef>
+<ListID>4B0000-933270542</ListID>
+<FullName>Utilities:Water</FullName>
+</AccountRef>
+<Amount>205.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+<OpenAmount>0.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>69F1-1197780158</TxnID>
+<TimeCreated>2007-12-15T23:42:38-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:07-05:00</TimeModified>
+<EditSequence>1765784267</EditSequence>
+<TxnNumber>1370</TxnNumber>
+<VendorRef>
+<ListID>7B0000-1071524812</ListID>
+<FullName>Custom Kitchens of Bayshore</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Custom Kitchens of Bayshore</Addr1>
+<Addr2>Butch Brown</Addr2>
+<Addr3>923 S. Industrial Way</Addr3>
+<Addr4>Suite 101</Addr4>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2025-01-01</TxnDate>
+<DueDate>2026-03-02</DueDate>
+<AmountDue>435.00</AmountDue>
+<RefNumber>380482</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>60000-933272660</ListID>
+<FullName>Net 60</FullName>
+</TermsRef>
+<IsPaid>true</IsPaid>
+<ItemLineRet>
+<TxnLineID>69F3-1197780158</TxnLineID>
+<ItemRef>
+<ListID>440001-1071511796</ListID>
+<FullName>Door Frame</FullName>
+</ItemRef>
+<Desc>standard interior door frame</Desc>
+<Quantity>10</Quantity>
+<Cost>12.00</Cost>
+<Amount>120.00</Amount>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>69F4-1197780158</TxnLineID>
+<ItemRef>
+<ListID>160000-933272656</ListID>
+<FullName>Wood Door:Exterior</FullName>
+</ItemRef>
+<Desc>Exterior door - #P-10981</Desc>
+<Quantity>3</Quantity>
+<Cost>105.00</Cost>
+<Amount>315.00</Amount>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<OpenAmount>0.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>38AA-1071513625</TxnID>
+<TimeCreated>2003-12-15T13:40:25-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:36:40-05:00</TimeModified>
+<EditSequence>1765784195</EditSequence>
+<TxnNumber>678</TxnNumber>
+<VendorRef>
+<ListID>720000-1071512482</ListID>
+<FullName>East Bayshore Auto Mall</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Bayshore Auto Mall</Addr1>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2025-01-03</TxnDate>
+<DueDate>2026-01-18</DueDate>
+<AmountDue>532.97</AmountDue>
+<RefNumber>014</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>20000-933272658</ListID>
+<FullName>Net 15</FullName>
+</TermsRef>
+<Memo>Monthly Truck Payment</Memo>
+<IsPaid>true</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>38AC-1071513625</TxnLineID>
+<AccountRef>
+<ListID>120000-933270541</ListID>
+<FullName>Loan - Vehicles (Van)</FullName>
+</AccountRef>
+<Amount>436.07</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+</ExpenseLineRet>
+<ExpenseLineRet>
+<TxnLineID>38AD-1071513625</TxnLineID>
+<AccountRef>
+<ListID>2F0000-933270542</ListID>
+<FullName>Interest Expense:Loan Interest</FullName>
+</AccountRef>
+<Amount>96.90</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+<OpenAmount>0.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>3E42-1071498278</TxnID>
+<TimeCreated>2003-12-15T09:24:38-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:36:52-05:00</TimeModified>
+<EditSequence>1765784211</EditSequence>
+<TxnNumber>820</TxnNumber>
+<VendorRef>
+<ListID>120000-933272657</ListID>
+<FullName>Sergeant Insurance</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Sergeant Insurance</Addr1>
+<Addr2>P.O. Box 6257</Addr2>
+<City>Middlefield</City>
+<State>CA</State>
+<PostalCode>94482</PostalCode>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2025-01-10</TxnDate>
+<DueDate>2026-01-25</DueDate>
+<AmountDue>712.56</AmountDue>
+<RefNumber>Q1/02</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>20000-933272658</ListID>
+<FullName>Net 15</FullName>
+</TermsRef>
+<Memo>Quarterly Premium - Auto</Memo>
+<IsPaid>true</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>3E44-1071498278</TxnLineID>
+<AccountRef>
+<ListID>580000-1071498064</ListID>
+<FullName>Automobile:Insurance</FullName>
+</AccountRef>
+<Amount>712.56</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+<OpenAmount>4050.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>69D9-1197779895</TxnID>
+<TimeCreated>2007-12-15T23:38:15-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:07-05:00</TimeModified>
+<EditSequence>1765784267</EditSequence>
+<TxnNumber>1368</TxnNumber>
+<VendorRef>
+<ListID>800000B4-1197779815</ListID>
+<FullName>Vu Contracting</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Vu Contracting</Addr1>
+<Addr2>Don Vu</Addr2>
+<Addr3>89304 Freedom Dr.</Addr3>
+<City>San Mateo</City>
+<State>CA</State>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2025-01-31</TxnDate>
+<DueDate>2026-02-15</DueDate>
+<AmountDue>2050.00</AmountDue>
+<RefNumber>382940</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>20000-933272658</ListID>
+<FullName>Net 15</FullName>
+</TermsRef>
+<Memo>For Vetter Basement Remodel</Memo>
+<IsPaid>true</IsPaid>
+<ItemLineRet>
+<TxnLineID>69DB-1197779895</TxnLineID>
+<ItemRef>
+<ListID>60000-933272656</ListID>
+<FullName>Subs:Carpet</FullName>
+</ItemRef>
+<Desc>Install carpeting</Desc>
+<Quantity>7</Quantity>
+<Cost>25.00</Cost>
+<Amount>175.00</Amount>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>69DC-1197779895</TxnLineID>
+<ItemRef>
+<ListID>70000-933272656</ListID>
+<FullName>Subs:Drywall</FullName>
+</ItemRef>
+<Desc>Install drywall</Desc>
+<Quantity>25</Quantity>
+<Cost>25.00</Cost>
+<Amount>625.00</Amount>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>69DD-1197779895</TxnLineID>
+<ItemRef>
+<ListID>3C0000-1071513137</ListID>
+<FullName>Subs:Duct Work</FullName>
+</ItemRef>
+<Desc>Heating &amp; Air Conditioning Duct Work</Desc>
+<Quantity>15</Quantity>
+<Cost>25.00</Cost>
+<Amount>375.00</Amount>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>69DE-1197779895</TxnLineID>
+<ItemRef>
+<ListID>80000-933272656</ListID>
+<FullName>Subs:Electrical</FullName>
+</ItemRef>
+<Desc>Electrical work</Desc>
+<Quantity>10</Quantity>
+<Cost>25.00</Cost>
+<Amount>250.00</Amount>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>69DF-1197779895</TxnLineID>
+<ItemRef>
+<ListID>90000-933272656</ListID>
+<FullName>Subs:Insulating</FullName>
+</ItemRef>
+<Desc>Install insulation</Desc>
+<Quantity>5</Quantity>
+<Cost>25.00</Cost>
+<Amount>125.00</Amount>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<ItemLineRet>
+<TxnLineID>69E0-1197779895</TxnLineID>
+<ItemRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Subs:Painting</FullName>
+</ItemRef>
+<Desc>Painting</Desc>
+<Quantity>20</Quantity>
+<Cost>25.00</Cost>
+<Amount>500.00</Amount>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ItemLineRet>
+<OpenAmount>1250.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>38AE-1071513939</TxnID>
+<TimeCreated>2003-12-15T13:45:39-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:36:40-05:00</TimeModified>
+<EditSequence>1765784195</EditSequence>
+<TxnNumber>679</TxnNumber>
+<VendorRef>
+<ListID>720000-1071512482</ListID>
+<FullName>East Bayshore Auto Mall</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Bayshore Auto Mall</Addr1>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2025-02-03</TxnDate>
+<DueDate>2026-02-18</DueDate>
+<AmountDue>532.97</AmountDue>
+<RefNumber>015</RefNumber>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>20000-933272658</ListID>
+<FullName>Net 15</FullName>
+</TermsRef>
+<Memo>Monthly Truck Payment</Memo>
+<IsPaid>true</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>38B0-1071513939</TxnLineID>
+<AccountRef>
+<ListID>120000-933270541</ListID>
+<FullName>Loan - Vehicles (Van)</FullName>
+</AccountRef>
+<Amount>438.57</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+</ExpenseLineRet>
+<ExpenseLineRet>
+<TxnLineID>38B1-1071513939</TxnLineID>
+<AccountRef>
+<ListID>2F0000-933270542</ListID>
+<FullName>Interest Expense:Loan Interest</FullName>
+</AccountRef>
+<Amount>94.40</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+<OpenAmount>0.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>40E6-1071515353</TxnID>
+<TimeCreated>2003-12-15T14:09:13-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:01-05:00</TimeModified>
+<EditSequence>1765784220</EditSequence>
+<TxnNumber>897</TxnNumber>
+<VendorRef>
+<ListID>350000-933272659</ListID>
+<FullName>Kershaw Computer Services</FullName>
+</VendorRef>
+<VendorAddress>
+<Addr1>Kershaw Computer Services</Addr1>
+<Addr2>101 Main St</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</VendorAddress>
+<APAccountRef>
+<ListID>C0000-933270541</ListID>
+<FullName>Accounts Payable</FullName>
+</APAccountRef>
+<TxnDate>2025-03-01</TxnDate>
+<DueDate>2026-03-31</DueDate>
+<AmountDue>714.00</AmountDue>
+<IsPending>false</IsPending>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<IsPaid>true</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>40E8-1071515353</TxnLineID>
+<AccountRef>
+<ListID>3F0000-933270542</ListID>
+<FullName>Repairs:Computer Repairs</FullName>
+</AccountRef>
+<Amount>714.00</Amount>
+<CustomerRef>
+<ListID>800000B0-1197755238</ListID>
+<FullName>Overhead</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>80000007-1197713802</ListID>
+<FullName>Overhead</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
 </ExpenseLineRet>
 <OpenAmount>0.00</OpenAmount>
 </BillRet>

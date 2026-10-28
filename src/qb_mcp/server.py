@@ -229,7 +229,8 @@ def build_server(transport: Transport) -> MCPServer:
         `customer_job` is omitted; the detail reports require it (QuickBooks runs them for one
         Customer:Job). Returns the report's column titles and its rows: each row has a `kind`
         (header, data, subtotal, total), a `label`, the full `name` when the row is for a customer,
-        Customer:Job or Item, and `values` keyed by column title. Empty report -> no rows."""
+        Customer:Job or Item, and `values` keyed by column title. A period with no activity gives
+        a single TOTAL row of zeros; an unknown Customer:Job is a QuickBooks error (3120)."""
         if report.endswith("_detail") and not customer_job:
             raise ToolError(
                 f"{report} needs customer_job: QuickBooks runs detail job reports for one Customer:Job "

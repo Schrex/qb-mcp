@@ -4,24 +4,21 @@
 <JobReportQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
 <ReportRet>
 <ReportTitle>Job Estimates vs. Actuals Summary</ReportTitle>
-<ReportSubtitle>January 1 through December 31, 2024</ReportSubtitle>
+<ReportSubtitle>January 2000 through December 2030</ReportSubtitle>
 <ReportBasis>Accrual</ReportBasis>
-<NumRows>1</NumRows>
+<NumRows>14</NumRows>
 <NumColumns>7</NumColumns>
-<NumColTitleRows>2</NumColTitleRows>
+<NumColTitleRows>1</NumColTitleRows>
 <ColDesc colID="1" dataType="STRTYPE">
 <ColTitle titleRow="1" />
-<ColTitle titleRow="2" />
 <ColType>Label</ColType>
 </ColDesc>
 <ColDesc colID="2" dataType="AMTTYPE">
-<ColTitle titleRow="2" value="Cost" />
-<ColTitle titleRow="1" value="Est." />
+<ColTitle titleRow="1" value="Est. Cost" />
 <ColType>Amount</ColType>
 </ColDesc>
 <ColDesc colID="3" dataType="AMTTYPE">
 <ColTitle titleRow="1" value="Act. Cost" />
-<ColTitle titleRow="2" />
 <ColType>Amount</ColType>
 </ColDesc>
 <ColDesc colID="4" dataType="AMTTYPE">
@@ -41,15 +38,109 @@
 <ColType>AmountDifference</ColType>
 </ColDesc>
 <ReportData>
-<DataRow rowNumber="1">
-<RowData rowType="customer" value="Abercrombie, Kristy:Kitchen" />
-<ColData colID="1" value="Kitchen" />
-<ColData colID="2" value="2000.00" />
-<ColData colID="3" value="2520.00" />
-<ColData colID="4" value="520.00" />
-<ColData colID="6" value="3111.28" />
-<ColData colID="7" />
+<TextRow rowNumber="1" value="Abercrombie, Kristy" />
+<DataRow rowNumber="2">
+<RowData rowType="name" value="Abercrombie, Kristy:Remodel Bathroom" />
+<ColData colID="1" value="Remodel Bathroom" />
+<ColData colID="2" value="3000.00" />
+<ColData colID="3" value="5416.23" />
+<ColData colID="4" value="2416.23" />
+<ColData colID="5" value="3114.00" />
+<ColData colID="6" value="6749.50" />
+<ColData colID="7" value="3635.50" />
 </DataRow>
+<SubtotalRow rowNumber="3">
+<RowData rowType="name" value="Abercrombie, Kristy" />
+<ColData colID="1" value="Total Abercrombie, Kristy" />
+<ColData colID="2" value="3000.00" />
+<ColData colID="3" value="5416.23" />
+<ColData colID="4" value="2416.23" />
+<ColData colID="5" value="3114.00" />
+<ColData colID="6" value="6749.50" />
+<ColData colID="7" value="3635.50" />
+</SubtotalRow>
+<TextRow rowNumber="4" value="Cook, Brian" />
+<DataRow rowNumber="5">
+<RowData rowType="name" value="Cook, Brian:2nd story addition" />
+<ColData colID="1" value="2nd story addition" />
+<ColData colID="2" value="18989.90" />
+<ColData colID="3" value="15767.60" />
+<ColData colID="4" value="-3222.30" />
+<ColData colID="5" value="21331.50" />
+<ColData colID="6" value="18061.20" />
+<ColData colID="7" value="-3270.30" />
+</DataRow>
+<DataRow rowNumber="6">
+<RowData rowType="name" value="Cook, Brian:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="12185.00" />
+<ColData colID="3" value="7390.00" />
+<ColData colID="4" value="-4795.00" />
+<ColData colID="5" value="13003.00" />
+<ColData colID="6" value="12906.45" />
+<ColData colID="7" value="-96.55" />
+</DataRow>
+<SubtotalRow rowNumber="7">
+<RowData rowType="name" value="Cook, Brian" />
+<ColData colID="1" value="Total Cook, Brian" />
+<ColData colID="2" value="31174.90" />
+<ColData colID="3" value="23157.60" />
+<ColData colID="4" value="-8017.30" />
+<ColData colID="5" value="34334.50" />
+<ColData colID="6" value="30967.65" />
+<ColData colID="7" value="-3366.85" />
+</SubtotalRow>
+<TextRow rowNumber="8" value="Ecker Designs" />
+<DataRow rowNumber="9">
+<RowData rowType="name" value="Ecker Designs:Office Repairs" />
+<ColData colID="1" value="Office Repairs" />
+<ColData colID="2" value="5370.00" />
+<ColData colID="3" value="2910.00" />
+<ColData colID="4" value="-2460.00" />
+<ColData colID="5" value="5757.50" />
+<ColData colID="6" value="4984.50" />
+<ColData colID="7" value="-773.00" />
+</DataRow>
+<SubtotalRow rowNumber="10">
+<RowData rowType="name" value="Ecker Designs" />
+<ColData colID="1" value="Total Ecker Designs" />
+<ColData colID="2" value="5370.00" />
+<ColData colID="3" value="2910.00" />
+<ColData colID="4" value="-2460.00" />
+<ColData colID="5" value="5757.50" />
+<ColData colID="6" value="4984.50" />
+<ColData colID="7" value="-773.00" />
+</SubtotalRow>
+<TextRow rowNumber="11" value="Pretell Real Estate" />
+<DataRow rowNumber="12">
+<RowData rowType="name" value="Pretell Real Estate:75 Sunset Rd." />
+<ColData colID="1" value="75 Sunset Rd." />
+<ColData colID="2" value="16226.00" />
+<ColData colID="3" value="3036.00" />
+<ColData colID="4" value="-13190.00" />
+<ColData colID="5" value="18409.93" />
+<ColData colID="6" value="23583.14" />
+<ColData colID="7" value="5173.21" />
+</DataRow>
+<SubtotalRow rowNumber="13">
+<RowData rowType="name" value="Pretell Real Estate" />
+<ColData colID="1" value="Total Pretell Real Estate" />
+<ColData colID="2" value="16226.00" />
+<ColData colID="3" value="3036.00" />
+<ColData colID="4" value="-13190.00" />
+<ColData colID="5" value="18409.93" />
+<ColData colID="6" value="23583.14" />
+<ColData colID="7" value="5173.21" />
+</SubtotalRow>
+<TotalRow rowNumber="14">
+<ColData colID="1" value="TOTAL" />
+<ColData colID="2" value="55770.90" />
+<ColData colID="3" value="34519.83" />
+<ColData colID="4" value="-21251.07" />
+<ColData colID="5" value="61615.93" />
+<ColData colID="6" value="66284.79" />
+<ColData colID="7" value="4668.86" />
+</TotalRow>
 </ReportData>
 </ReportRet>
 </JobReportQueryRs>

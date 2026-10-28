@@ -1,21 +1,34 @@
 <?xml version="1.0" ?>
 <QBXML>
 <QBXMLMsgsRs>
-<HostQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<HostQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
 <HostRet>
-<ProductName>QuickBooks Enterprise Solutions: Contractor 24.0</ProductName>
+<ProductName>Intuit QuickBooks Enterprise Solutions: Contractor 24.0 Trial Version</ProductName>
 <MajorVersion>34</MajorVersion>
 <MinorVersion>0</MinorVersion>
 <Country>US</Country>
 <SupportedQBXMLVersion>1.0</SupportedQBXMLVersion>
 <SupportedQBXMLVersion>1.1</SupportedQBXMLVersion>
 <SupportedQBXMLVersion>2.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>2.1</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>3.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>4.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>4.1</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>5.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>6.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>7.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>8.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>9.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>10.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>11.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>12.0</SupportedQBXMLVersion>
 <SupportedQBXMLVersion>13.0</SupportedQBXMLVersion>
 <SupportedQBXMLVersion>14.0</SupportedQBXMLVersion>
 <SupportedQBXMLVersion>15.0</SupportedQBXMLVersion>
 <SupportedQBXMLVersion>16.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>17.0</SupportedQBXMLVersion>
 <IsAutomaticLogin>false</IsAutomaticLogin>
-<QBFileMode>MultiUser</QBFileMode>
+<QBFileMode>SingleUser</QBFileMode>
 </HostRet>
 </HostQueryRs>
 </QBXMLMsgsRs>
