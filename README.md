@@ -57,17 +57,11 @@ uvx --refresh --from git+https://github.com/Schrex/qb-mcp qb-mcp
 
 Once downloaded it sits silently waiting for MCP input; press Ctrl+C.
 
-### 2. Create the view-only QuickBooks user
+### 2. No separate QuickBooks user
 
-In QuickBooks, signed in as Admin with the Company File open:
+Nothing to create. While QuickBooks and the Company File are open, the SDK runs every request as **whoever is logged into the QuickBooks window** (Jeri), and QuickBooks offers the integration its own "Sign in as" user only for unattended access (QuickBooks not running), which we don't use. Verified on Enterprise 2024 in [#4](https://github.com/Schrex/qb-mcp/issues/4): a view-only user would enforce nothing here. **Read-only is enforced by the server's query-only guard** ([ADR-0001](docs/adr/0001-sdk-for-reads-ui-for-writes.md)); step 5 checks it.
 
-1. **Company > Users > Set Up Users and Roles**.
-2. **User List > New**. User name: `Claude Lookup` (any stable name). Set a password and keep it with Schreiber's other credentials.
-3. **Available Roles**: add **View-Only** (Enterprise's built-in role). Don't add any other role. OK.
-
-If the built-in View-Only role can't run job reports (`run_job_report` returns a permission error, QuickBooks error 3260), make a copy of it under **Role List** that also allows view access to the job/project reports and assign that instead. (Unverified which areas the reports need; check on the VM first.)
-
-> **Open caveat (#4).** Forum reports say that while QuickBooks is open, SDK requests run as **whoever is logged into the QuickBooks window**, not the user the integration is authorized to log in as. If so, the view-only user does *not* enforce read-only in our setup (QuickBooks always open). **The server's query-only guard is the primary protection.** Still create the user; the VM check in [docs/vm-runbook.md](docs/vm-runbook.md) decides whether it adds anything.
+(If unattended access is ever wanted, note that Enterprise 24.0's built-in **View-Only** role can't be given to a local user, it needs an Intuit account; [docs/vm-runbook.md](docs/vm-runbook.md) section 8 has a trimmed custom role that works.)
 
 ### 3. Add the server to Claude Desktop
 
@@ -92,10 +86,10 @@ Save, then **fully quit** Claude Desktop (system tray icon > Quit, not just clos
 2. In Claude Desktop Chat ask: **"run qb status"**.
 3. QuickBooks shows an Application Certificate prompt for **Schreiber QuickBooks Lookup**. Choose:
    - **Yes, whenever this QuickBooks company file is open.**
-   - **Login as:** `Claude Lookup` (the view-only user), if offered.
    - Leave **"Allow this application to access personal data such as Social Security Numbers and customer credit card information"** *unchecked*.
    - Continue / Done.
    Not "Yes, always" (that's unattended access when QuickBooks is closed; out of scope).
+5. Then check what QuickBooks recorded: **Edit > Preferences > Integrated Applications > Company Preferences**, select **Schreiber QuickBooks Lookup**, **Properties**. The personal-data box must be **unchecked** (on the test PC it came out checked after the prompt); "even when QuickBooks isn't running" must be unchecked. OK.
 4. Claude may report a timeout while the prompt was up (the server waits 120 s), or "The QuickBooks user has denied access" for the request that raised the prompt. Ask "run qb status" again.
 
 ### 5. Verify
@@ -125,7 +119,7 @@ Messages Claude may show, and what to do:
 | `QuickBooks' request processor isn't registered on this PC...` | QuickBooks isn't installed on this PC (verified: this is what a PC without QuickBooks reports), or a 32/64-bit mismatch or broken QuickBooks install. Tell Sumanth (send the log). |
 | `QuickBooks couldn't read the request: it doesn't match the qbXML schema...` | A malformed `run_query` or a server bug. Ask the question differently; if it came from a built-in tool, tell Sumanth. |
 | `Couldn't talk to QuickBooks. (... code 0x...)` | Unrecognised failure. Send Sumanth the log and the code. |
-| `QuickBooks returned error <code> for <Request>: <message>` | QuickBooks rejected the query. 3260 "Insufficient permission level" = the QuickBooks user lacks access to that area (see step 2). Others: send to Sumanth. |
+| `QuickBooks returned error <code> for <Request>: <message>` | QuickBooks rejected the query. 3260 "Insufficient permission level" = the QuickBooks user logged into the window lacks access to that area (requests run as that user). Others: send to Sumanth. |
 | `QuickBooks sent a response this server didn't expect (...)` | Try again; if repeated, send the log. |
 | `Refused: ...` | The read-only guard blocked a non-query request. Expected for any add/modify/delete. |
 | `This server only works on Windows...` | Running on a Mac/Linux. Only meaningful on the QuickBooks PC. |
