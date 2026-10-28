@@ -24,7 +24,7 @@ Cloud VM (if used instead):
 
 ## 2. Accounts
 
-Do everything below as one normal Windows user (not "Run as administrator"). QuickBooks and the Python process must run as the **same Windows user at the same elevation**, or COM calls fail with "QuickBooks isn't running... must be open as the same Windows user...".
+Do everything below as one normal Windows user (not "Run as administrator"). QuickBooks and the Python process must run as the **same Windows user at the same elevation**, or COM calls fail with "QuickBooks isn't running... must be open as the same Windows user...". The user needs to be in the local Administrators group only so the QuickBooks installer can elevate through UAC (verified on the spare PC: user `Sumanth`, Windows 11 Pro 10.0.22631 x64, 32 GB RAM, 300 GB free).
 
 ## 3. Install QuickBooks Enterprise 2024 (trial)
 
@@ -63,7 +63,9 @@ cd qb-mcp
 uv sync
 ```
 
-Check that uv picked a 64-bit Python: `uv run python -c "import struct; print(struct.calcsize('P')*8)"` → `64`. QuickBooks 2024 is 64-bit; 64-bit Python with its 64-bit request processor is expected to work **(unverified until the smoke test passes)**. If `Dispatch` fails with "request processor isn't registered" (0x800401F3 / 0x80040154), try a 32-bit Python (`uv python install cpython-3.12-windows-x86` and `uv sync --python <that>`) and record the result here.
+**Python version (verified 2026-10-28 on the spare PC):** the repo pins `3.12` in `.python-version`. Without the pin, uv 0.13.6 picked CPython 3.15.2 and `uv sync` failed with `Missing expected target directory for Python minor version link` (the 3.15 install was left incomplete). `uv python install 3.12` printed the same error but produced a working interpreter; `uv sync` then installed everything (pywin32 312) and `uv run pytest` passed (188 passed, 2 skipped: the XSD tests). Keep this in mind for the `uvx` install on Jeri's PC (#10): if `uvx` hits the same error, pass `--python 3.12`.
+
+Check that uv picked a 64-bit Python: `uv run python -c "import struct; print(struct.calcsize('P')*8)"` → `64` (verified: `3.12.16 [MSC v.1944 64 bit (AMD64)]`). QuickBooks 2024 is 64-bit; 64-bit Python with its 64-bit request processor is expected to work **(unverified until the smoke test passes)**. If `Dispatch` fails with "request processor isn't registered" (0x800401F3 / 0x80040154) *with QuickBooks installed*, try a 32-bit Python (`uv python install cpython-3.12-windows-x86` and `uv sync --python <that>`) and record the result here. Note: with QuickBooks **not installed at all**, the smoke test fails with exactly that message (`Invalid class string; code 0x800401F3`, verified), so the message alone doesn't distinguish "not installed" from a bitness mismatch.
 
 ## 7. Authorize and smoke-test
 
@@ -74,7 +76,7 @@ Check that uv picked a 64-bit Python: `uv run python -c "import struct; print(st
 2. QuickBooks shows the Application Certificate prompt for **Schreiber QuickBooks Lookup**. Pick **Yes, whenever this QuickBooks company file is open**; **Login as:** the view-only user from step 8 if you've created it (otherwise Admin for now; you can change it later under Integrated Applications); leave the **personal data** checkbox unchecked.
 3. If the script timed out waiting on the prompt (120 s), run it again. Expect `PASS` (`qb_status` reachable + one Vendor lookup).
 4. Note in #4: the exact `qb_status` output (product, version, supported qbXML versions), and any COM error codes seen.
-5. **Capture the real HRESULTs (unverified mapping):** close the Company File (leave QuickBooks open) and run the smoke test; then close QuickBooks entirely and run it again. Record the message and `code 0x...` of each in #4 so `transports/com.py`'s mapping can be pinned.
+5. **Capture the real HRESULTs (unverified mapping):** close the Company File (leave QuickBooks open) and run the smoke test; then close QuickBooks entirely and run it again. Record the message and `code 0x...` of each in #4 so `transports/com.py`'s mapping can be pinned. Already verified: QuickBooks not installed → `Invalid class string; code 0x800401F3`, mapped to "request processor isn't registered".
 
 ## 8. Does the view-only user enforce read-only? (#4 comment)
 
