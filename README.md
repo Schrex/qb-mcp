@@ -80,6 +80,8 @@ Claude Desktop > **Settings > Developer > Edit Config** opens `%APPDATA%\Claude\
 
 Save, then **fully quit** Claude Desktop (system tray icon > Quit, not just closing the window) and reopen it.
 
+**Microsoft Store build (verified on the test PC, #4):** the file is elsewhere and the order matters. The app keeps its settings and the `mcpServers` list in one file under `%LOCALAPPDATA%\Claude-Data\claude_<id>\claude_desktop_config.json` (the `%APPDATA%\Claude` folder stays empty and is not read), and it writes that file back from memory when it quits, so an edit made while it is running is lost. Quit Claude Desktop first, then add the `mcpServers` key next to the existing `preferences` key in that file, then reopen. **Settings > Developer > Edit config** opens the right folder either way.
+
 ### 4. First connect: authorize the integration
 
 1. Open QuickBooks and the Company File, logged in as **Admin**. (First authorization is usually only allowed for an Admin; if QuickBooks says it needs single-user mode, switch with **File > Switch to Single-user Mode**, then back after.)
