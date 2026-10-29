@@ -37,8 +37,9 @@ _NOT_REGISTERED = (
     "(QuickBooks isn't installed, or Python and QuickBooks don't match in 32/64-bit)."
 )
 
-# HRESULT -> (cause, extra hint). Codes from Intuit's SDK error list; some
-# runtime mappings are unverified on real QuickBooks (see ticket #3 notes).
+# HRESULT -> (cause, extra hint). Codes from Intuit's SDK error list. Verified on
+# QuickBooks Enterprise 2024 (#4): 0x800401F3, 0x80040408, 0x80040414, 0x80040417,
+# 0x80040420. The rest are Intuit's documented meanings, not yet seen for real.
 _HRESULTS: dict[int, tuple[TransportFailure, str]] = {
     0x80040400: (TransportFailure.INVALID_REQUEST, ""),  # error parsing the qbXML text stream
     0x80040408: (TransportFailure.QB_NOT_RUNNING, _SAME_USER),

@@ -131,7 +131,8 @@ Detail job reports need a Customer:Job (QuickBooks error 3150 `missing element: 
 
 Job report facts (verified 2026-10-28, Enterprise 2024):
 - Column titles: profitability (summary and detail) `Act. Cost`, `Act. Revenue`, `($) Diff.`; estimates vs. actuals (summary and detail) `Est. Cost`, `Act. Cost`, `($) Diff.`, `Est. Revenue`, `Act. Revenue`, `($) Diff.` (the second `($) Diff.` is reported as `($) Diff. (2)`). Detail titles read "Job Profitability Detail for <Customer:Job>".
-- An **empty** report (period with no activity) is not "no rows": QuickBooks returns one `TotalRow` labelled `TOTAL` with `0.00` in every column.
+- An **empty** report (period with no activity) is not "no rows": QuickBooks returns one `TotalRow` labelled `TOTAL` with `0.00` in every column. Verified for all four reports (both summaries and both details).
+- A detail report accepts a **parent customer** as `customer_job` (`FullNameWithChildren`, e.g. `Abercrombie, Kristy`): one report covering all its jobs (verified).
 - A Customer:Job that **doesn't exist** is QuickBooks error **3120** "Object ... cannot be found", not an empty report.
 
 Review before committing:

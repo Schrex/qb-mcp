@@ -72,7 +72,7 @@ Claude Desktop > **Settings > Developer > Edit Config** opens `%APPDATA%\Claude\
   "mcpServers": {
     "qb": {
       "command": "uvx",
-      "args": ["--refresh", "--from", "git+https://github.com/Schrex/qb-mcp", "qb-mcp"]
+      "args": ["--refresh", "--python", "3.12", "--from", "git+https://github.com/Schrex/qb-mcp", "qb-mcp"]
     }
   }
 }
@@ -89,8 +89,8 @@ Save, then **fully quit** Claude Desktop (system tray icon > Quit, not just clos
    - Leave **"Allow this application to access personal data such as Social Security Numbers and customer credit card information"** *unchecked*.
    - Continue / Done.
    Not "Yes, always" (that's unattended access when QuickBooks is closed; out of scope).
-5. Then check what QuickBooks recorded: **Edit > Preferences > Integrated Applications > Company Preferences**, select **Schreiber QuickBooks Lookup**, **Properties**. The personal-data box must be **unchecked** (on the test PC it came out checked after the prompt); "even when QuickBooks isn't running" must be unchecked. OK.
 4. Claude may report a timeout while the prompt was up (the server waits 120 s), or "The QuickBooks user has denied access" for the request that raised the prompt. Ask "run qb status" again.
+5. Then check what QuickBooks recorded: **Edit > Preferences > Integrated Applications > Company Preferences**, select **Schreiber QuickBooks Lookup**, **Properties**. The personal-data box must be **unchecked** (on the test PC it came out checked after the prompt); "even when QuickBooks isn't running" must be unchecked. OK.
 
 ### 5. Verify
 
