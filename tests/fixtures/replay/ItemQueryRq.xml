@@ -1,0 +1,820 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<ItemQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ItemServiceRet>
+<ListID>340000-1071522351</ListID>
+<TimeCreated>2003-12-15T16:05:51-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Blueprint changes</Name>
+<FullName>Blueprint changes</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Price>0.00</Price>
+<AccountRef>
+<ListID>8000007A-1197778194</ListID>
+<FullName>Construction Income:Design Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>80000056-1197778196</ListID>
+<TimeCreated>2007-12-15T23:09:56-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Blueprints</Name>
+<FullName>Blueprints</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Blueprints</Desc>
+<Price>0.00</Price>
+<AccountRef>
+<ListID>8000007A-1197778194</ListID>
+<FullName>Construction Income:Design Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>320000-1071525597</ListID>
+<TimeCreated>2003-12-15T16:59:57-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Concrete Slab</Name>
+<FullName>Concrete Slab</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Foundation slab - prep and pouring</Desc>
+<Price>0.00</Price>
+<AccountRef>
+<ListID>190000-933270541</ListID>
+<FullName>Construction Income:Labor Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>390000-1071512145</ListID>
+<TimeCreated>2003-12-15T13:15:45-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Floor Plans</Name>
+<FullName>Floor Plans</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Floor plans</Desc>
+<Price>0.00</Price>
+<AccountRef>
+<ListID>8000007A-1197778194</ListID>
+<FullName>Construction Income:Design Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>10000-933272655</ListID>
+<TimeCreated>1999-07-29T14:24:15-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Framing</Name>
+<FullName>Framing</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Framing labor</Desc>
+<Price>55.00</Price>
+<AccountRef>
+<ListID>190000-933270541</ListID>
+<FullName>Construction Income:Labor Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>20000-933272655</ListID>
+<TimeCreated>1999-07-29T14:24:15-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Installation</Name>
+<FullName>Installation</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Installation labor</Desc>
+<Price>35.00</Price>
+<AccountRef>
+<ListID>190000-933270541</ListID>
+<FullName>Construction Income:Labor Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>3F0000-1071530163</ListID>
+<TimeCreated>2003-12-15T18:16:03-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Labor</Name>
+<FullName>Labor</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Price>0.00</Price>
+<AccountRef>
+<ListID>190000-933270541</ListID>
+<FullName>Construction Income:Labor Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>460000-1197757285</ListID>
+<TimeCreated>2007-12-15T17:21:25-05:00</TimeCreated>
+<TimeModified>2007-12-15T20:29:08-05:00</TimeModified>
+<EditSequence>1197768548</EditSequence>
+<Name>Mileage</Name>
+<FullName>Mileage</FullName>
+<IsActive>false</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Price>0.365</Price>
+<AccountRef>
+<ListID>5D0000-1197757267</ListID>
+<FullName>Reimbursement Income:Mileage Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>30000-933272655</ListID>
+<TimeCreated>1999-07-29T14:24:15-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Removal</Name>
+<FullName>Removal</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Removal labor</Desc>
+<Price>35.00</Price>
+<AccountRef>
+<ListID>190000-933270541</ListID>
+<FullName>Construction Income:Labor Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>40000-933272655</ListID>
+<TimeCreated>1999-07-29T14:24:15-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Repairs</Name>
+<FullName>Repairs</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesOrPurchase>
+<Desc>Repair work</Desc>
+<Price>35.00</Price>
+<AccountRef>
+<ListID>190000-933270541</ListID>
+<FullName>Construction Income:Labor Income</FullName>
+</AccountRef>
+</SalesOrPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>50000-933272655</ListID>
+<TimeCreated>1999-07-29T14:24:15-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Subs</Name>
+<FullName>Subs</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Subcontracted services</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Subcontracted services</PurchaseDesc>
+<PurchaseCost>0.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>800000B4-1197779815</ListID>
+<FullName>Vu Contracting</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>60000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Carpet</Name>
+<FullName>Subs:Carpet</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Install carpeting</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Install carpeting</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>10000-933272655</ListID>
+<FullName>Larson Flooring</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>70000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Drywall</Name>
+<FullName>Subs:Drywall</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Install drywall</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Install drywall</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>20000-933272656</ListID>
+<FullName>Middlefield Drywall</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>3C0000-1071513137</ListID>
+<TimeCreated>2003-12-15T13:32:17-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Duct Work</Name>
+<FullName>Subs:Duct Work</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Heating &amp; Air Conditioning Duct Work</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Heating &amp; Air Condition Duct Work</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>800000B4-1197779815</ListID>
+<FullName>Vu Contracting</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>80000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Electrical</Name>
+<FullName>Subs:Electrical</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Electrical work</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Electrical work</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>30000-933272656</ListID>
+<FullName>C.U. Electric</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>90000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Insulating</Name>
+<FullName>Subs:Insulating</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Install insulation</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Install insulation</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>40000-933272656</ListID>
+<FullName>Keswick Insulation</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>A0000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Metal Wrk</Name>
+<FullName>Subs:Metal Wrk</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Metal Work</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Metal Work</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>50000-933272656</ListID>
+<FullName>Hamlin Metal</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>B0000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Painting</Name>
+<FullName>Subs:Painting</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Painting</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Painting</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>60000-933272656</ListID>
+<FullName>Washuta &amp; Son Painting</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>C0000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Plumbing</Name>
+<FullName>Subs:Plumbing</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Plumbing</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Plumbing</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>70000-933272656</ListID>
+<FullName>Lew Plumbing</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>D0000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Roofing</Name>
+<FullName>Subs:Roofing</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Roofing</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Roofing</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>80000-933272656</ListID>
+<FullName>Sloan Roofing</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemServiceRet>
+<ListID>E0000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:32:53-05:00</TimeModified>
+<EditSequence>1197747173</EditSequence>
+<Name>Tile &amp;Counter</Name>
+<FullName>Subs:Tile &amp;Counter</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>50000-933272655</ListID>
+<FullName>Subs</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</SalesTaxCodeRef>
+<SalesAndPurchase>
+<SalesDesc>Install tile or counter</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1C0000-933270542</ListID>
+<FullName>Construction Income:Subcontracted Labor Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Install tile or counter</PurchaseDesc>
+<PurchaseCost>25.00</PurchaseCost>
+<ExpenseAccountRef>
+<ListID>340000-933270542</ListID>
+<FullName>Job Expenses:Subcontractors</FullName>
+</ExpenseAccountRef>
+<PrefVendorRef>
+<ListID>90000-933272656</ListID>
+<FullName>Wheeler's Tile Etc.</FullName>
+</PrefVendorRef>
+</SalesAndPurchase>
+</ItemServiceRet>
+<ItemInventoryRet>
+<ListID>F0000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-05-05T11:26:24-05:00</TimeModified>
+<EditSequence>933272656</EditSequence>
+<Name>Cabinets</Name>
+<FullName>Cabinets</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</SalesTaxCodeRef>
+<SalesDesc>Cabinets</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1A0000-933270542</ListID>
+<FullName>Construction Income:Materials Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Cabinets</PurchaseDesc>
+<PurchaseCost>0.00</PurchaseCost>
+<COGSAccountRef>
+<ListID>1E0000-933270542</ListID>
+<FullName>Cost of Goods Sold</FullName>
+</COGSAccountRef>
+<PrefVendorRef>
+<ListID>A0000-933272656</ListID>
+<FullName>Thomas Kitchen &amp; Bath</FullName>
+</PrefVendorRef>
+<AssetAccountRef>
+<ListID>60000-933270541</ListID>
+<FullName>Inventory Asset</FullName>
+</AssetAccountRef>
+<ReorderPoint>15</ReorderPoint>
+<QuantityOnHand>0</QuantityOnHand>
+<AverageCost>0.00</AverageCost>
+<QuantityOnOrder>0</QuantityOnOrder>
+<QuantityOnSalesOrder>0</QuantityOnSalesOrder>
+</ItemInventoryRet>
+<ItemInventoryRet>
+<ListID>100000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2023-08-18T03:38:15-05:00</TimeModified>
+<EditSequence>1179499113</EditSequence>
+<Name>Cabinet Pulls</Name>
+<FullName>Cabinets:Cabinet Pulls</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>F0000-933272656</ListID>
+<FullName>Cabinets</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<UnitOfMeasureSetRef>
+<ListID>80000001-1179499108</ListID>
+<FullName>Each to Case/Doz</FullName>
+</UnitOfMeasureSetRef>
+<SalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</SalesTaxCodeRef>
+<SalesDesc>Cabinet Pulls</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1A0000-933270542</ListID>
+<FullName>Construction Income:Materials Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Cabinet Pulls</PurchaseDesc>
+<PurchaseCost>3.00</PurchaseCost>
+<COGSAccountRef>
+<ListID>1E0000-933270542</ListID>
+<FullName>Cost of Goods Sold</FullName>
+</COGSAccountRef>
+<PrefVendorRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</PrefVendorRef>
+<AssetAccountRef>
+<ListID>60000-933270541</ListID>
+<FullName>Inventory Asset</FullName>
+</AssetAccountRef>
+<ReorderPoint>15</ReorderPoint>
+<QuantityOnHand>423</QuantityOnHand>
+<AverageCost>2.55933</AverageCost>
+<QuantityOnOrder>0</QuantityOnOrder>
+<QuantityOnSalesOrder>0</QuantityOnSalesOrder>
+</ItemInventoryRet>
+<ItemInventoryRet>
+<ListID>110000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2023-08-18T03:38:15-05:00</TimeModified>
+<EditSequence>933272656</EditSequence>
+<Name>Light Pine</Name>
+<FullName>Cabinets:Light Pine</FullName>
+<IsActive>true</IsActive>
+<ParentRef>
+<ListID>F0000-933272656</ListID>
+<FullName>Cabinets</FullName>
+</ParentRef>
+<Sublevel>1</Sublevel>
+<SalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</SalesTaxCodeRef>
+<SalesDesc>Light pine kitchen cabinet wall unit</SalesDesc>
+<SalesPrice>1799.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1A0000-933270542</ListID>
+<FullName>Construction Income:Materials Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>Light pine kitchen cabinet wall unit 
+#CLD- 1235-p</PurchaseDesc>
+<PurchaseCost>1500.00</PurchaseCost>
+<COGSAccountRef>
+<ListID>1E0000-933270542</ListID>
+<FullName>Cost of Goods Sold</FullName>
+</COGSAccountRef>
+<PrefVendorRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</PrefVendorRef>
+<AssetAccountRef>
+<ListID>60000-933270541</ListID>
+<FullName>Inventory Asset</FullName>
+</AssetAccountRef>
+<ReorderPoint>0</ReorderPoint>
+<QuantityOnHand>6</QuantityOnHand>
+<AverageCost>1500.00</AverageCost>
+<QuantityOnOrder>0</QuantityOnOrder>
+<QuantityOnSalesOrder>2</QuantityOnSalesOrder>
+</ItemInventoryRet>
+<ItemInventoryRet>
+<ListID>440001-1071511796</ListID>
+<TimeCreated>2003-12-15T13:09:56-05:00</TimeCreated>
+<TimeModified>2023-08-18T03:38:15-05:00</TimeModified>
+<EditSequence>1197746281</EditSequence>
+<Name>Door Frame</Name>
+<FullName>Door Frame</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</SalesTaxCodeRef>
+<SalesDesc>standard interior door frame</SalesDesc>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1A0000-933270542</ListID>
+<FullName>Construction Income:Materials Income</FullName>
+</IncomeAccountRef>
+<PurchaseDesc>standard interior door frame</PurchaseDesc>
+<PurchaseCost>12.00</PurchaseCost>
+<COGSAccountRef>
+<ListID>1E0000-933270542</ListID>
+<FullName>Cost of Goods Sold</FullName>
+</COGSAccountRef>
+<PrefVendorRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</PrefVendorRef>
+<AssetAccountRef>
+<ListID>60000-933270541</ListID>
+<FullName>Inventory Asset</FullName>
+</AssetAccountRef>
+<QuantityOnHand>21</QuantityOnHand>
+<AverageCost>12.00</AverageCost>
+<QuantityOnOrder>0</QuantityOnOrder>
+<QuantityOnSalesOrder>0</QuantityOnSalesOrder>
+</ItemInventoryRet>
+<ItemInventoryRet>
+<ListID>120000-933272656</ListID>
+<TimeCreated>1999-07-29T14:24:16-05:00</TimeCreated>
+<TimeModified>2007-12-15T14:18:08-05:00</TimeModified>
+<EditSequence>1197746288</EditSequence>
+<Name>Hardware</Name>
+<FullName>Hardware</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<SalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</SalesTaxCodeRef>
+<SalesPrice>0.00</SalesPrice>
+<IncomeAccountRef>
+<ListID>1A0000-933270542</ListID>
+<FullName>Construction Income:Materials Income</FullName>
+</IncomeAccountRef>
+<PurchaseCost>0.00</PurchaseCost>
+<COGSAccountRef>
+<ListID>1E0000-933270542</ListID>
+<FullName>Cost of Goods Sold</FullName>
+</COGSAccountRef>
+<PrefVendorRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</PrefVendorRef>
+<AssetAccountRef>
+<ListID>60000-933270541</ListID>
+<FullName>Inventory Asset</FullName>
+</AssetAccountRef>
+<QuantityOnHand>0</QuantityOnHand>
+<AverageCost>0.00</AverageCost>
+<QuantityOnOrder>0</QuantityOnOrder>
+<QuantityOnSalesOrder>0</QuantityOnSalesOrder>
+</ItemInventoryRet>
+</ItemQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

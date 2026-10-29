@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<InvoiceQueryRs statusCode="3120" statusSeverity="Error" statusMessage="Object &quot;Nope&quot; specified in the request cannot be found." />
+</QBXMLMsgsRs>
+</QBXML>

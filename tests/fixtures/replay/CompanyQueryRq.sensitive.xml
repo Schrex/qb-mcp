@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<CompanyQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<CompanyRet>
+<IsSampleCompany>true</IsSampleCompany>
+<CompanyName>Rock Castle Construction</CompanyName>
+<LegalCompanyName>Rock Castle Construction</LegalCompanyName>
+<Address>
+<Addr1>1735 County Road</Addr1>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+<Country>US</Country>
+</Address>
+<AddressBlock>
+<Addr1>1735 County Road</Addr1>
+<Addr2>Bayshore, CA 94326</Addr2>
+</AddressBlock>
+<LegalAddress>
+<Addr1>1735 County Road</Addr1>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+<Country>US</Country>
+</LegalAddress>
+<Phone>650-555-1234</Phone>
+<Fax>650-555-5678</Fax>
+<Email>rockcastle@samplename.com</Email>
+<FirstMonthFiscalYear>January</FirstMonthFiscalYear>
+<FirstMonthIncomeTaxYear>January</FirstMonthIncomeTaxYear>
+<EIN>00-7904153</EIN>
+<SSN>123-45-6789</SSN>
+<TaxForm>Form1120</TaxForm>
+</CompanyRet>
+</CompanyQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

@@ -1,0 +1,1117 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<JobReportQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ReportRet>
+<ReportTitle>Job Profitability Summary</ReportTitle>
+<ReportSubtitle>January 2000 through December 2030</ReportSubtitle>
+<ReportBasis>Accrual</ReportBasis>
+<NumRows>209</NumRows>
+<NumColumns>4</NumColumns>
+<NumColTitleRows>1</NumColTitleRows>
+<ColDesc colID="1" dataType="STRTYPE">
+<ColTitle titleRow="1" />
+<ColType>Label</ColType>
+</ColDesc>
+<ColDesc colID="2" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Cost" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="3" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Revenue" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ColDesc colID="4" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="($) Diff." />
+<ColType>AmountDifference</ColType>
+</ColDesc>
+<ReportData>
+<TextRow rowNumber="1" value="Abercrombie, Kristy" />
+<DataRow rowNumber="2">
+<RowData rowType="name" value="Abercrombie, Kristy:Family Room" />
+<ColData colID="1" value="Family Room" />
+<ColData colID="2" value="2150.00" />
+<ColData colID="3" value="2961.05" />
+<ColData colID="4" value="811.05" />
+</DataRow>
+<DataRow rowNumber="3">
+<RowData rowType="name" value="Abercrombie, Kristy:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="2645.00" />
+<ColData colID="3" value="4792.00" />
+<ColData colID="4" value="2147.00" />
+</DataRow>
+<DataRow rowNumber="4">
+<RowData rowType="name" value="Abercrombie, Kristy:Remodel Bathroom" />
+<ColData colID="1" value="Remodel Bathroom" />
+<ColData colID="2" value="5416.23" />
+<ColData colID="3" value="6749.50" />
+<ColData colID="4" value="1333.27" />
+</DataRow>
+<SubtotalRow rowNumber="5">
+<RowData rowType="name" value="Abercrombie, Kristy" />
+<ColData colID="1" value="Total Abercrombie, Kristy" />
+<ColData colID="2" value="10211.23" />
+<ColData colID="3" value="14502.55" />
+<ColData colID="4" value="4291.32" />
+</SubtotalRow>
+<TextRow rowNumber="6" value="Allard, Robert" />
+<DataRow rowNumber="7">
+<RowData rowType="name" value="Allard, Robert:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="14510.00" />
+<ColData colID="4" value="14510.00" />
+</DataRow>
+<SubtotalRow rowNumber="8">
+<RowData rowType="name" value="Allard, Robert" />
+<ColData colID="1" value="Total Allard, Robert" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="14510.00" />
+<ColData colID="4" value="14510.00" />
+</SubtotalRow>
+<TextRow rowNumber="9" value="Babcock's Music Shop" />
+<DataRow rowNumber="10">
+<RowData rowType="name" value="Babcock's Music Shop:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="12530.00" />
+<ColData colID="4" value="12530.00" />
+</DataRow>
+<SubtotalRow rowNumber="11">
+<RowData rowType="name" value="Babcock's Music Shop" />
+<ColData colID="1" value="Total Babcock's Music Shop" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="12530.00" />
+<ColData colID="4" value="12530.00" />
+</SubtotalRow>
+<TextRow rowNumber="12" value="Baker, Chris" />
+<DataRow rowNumber="13">
+<RowData rowType="name" value="Baker, Chris:Family Room" />
+<ColData colID="1" value="Family Room" />
+<ColData colID="2" value="2699.54" />
+<ColData colID="3" value="5989.85" />
+<ColData colID="4" value="3290.31" />
+</DataRow>
+<DataRow rowNumber="14">
+<RowData rowType="name" value="Baker, Chris:Garage Repair" />
+<ColData colID="1" value="Garage Repair" />
+<ColData colID="2" value="197.59" />
+<ColData colID="3" value="1040.00" />
+<ColData colID="4" value="842.41" />
+</DataRow>
+<SubtotalRow rowNumber="15">
+<RowData rowType="name" value="Baker, Chris" />
+<ColData colID="1" value="Total Baker, Chris" />
+<ColData colID="2" value="2897.13" />
+<ColData colID="3" value="7029.85" />
+<ColData colID="4" value="4132.72" />
+</SubtotalRow>
+<TextRow rowNumber="16" value="Balak, Mike" />
+<DataRow rowNumber="17">
+<RowData rowType="name" value="Balak, Mike:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="1172.30" />
+<ColData colID="3" value="1999.00" />
+<ColData colID="4" value="826.70" />
+</DataRow>
+<SubtotalRow rowNumber="18">
+<RowData rowType="name" value="Balak, Mike" />
+<ColData colID="1" value="Total Balak, Mike" />
+<ColData colID="2" value="1172.30" />
+<ColData colID="3" value="1999.00" />
+<ColData colID="4" value="826.70" />
+</SubtotalRow>
+<TextRow rowNumber="19" value="Barley, Renee" />
+<DataRow rowNumber="20">
+<RowData rowType="name" value="Barley, Renee:Repairs" />
+<ColData colID="1" value="Repairs" />
+<ColData colID="2" value="2300.00" />
+<ColData colID="3" value="3000.00" />
+<ColData colID="4" value="700.00" />
+</DataRow>
+<SubtotalRow rowNumber="21">
+<RowData rowType="name" value="Barley, Renee" />
+<ColData colID="1" value="Total Barley, Renee" />
+<ColData colID="2" value="2300.00" />
+<ColData colID="3" value="3000.00" />
+<ColData colID="4" value="700.00" />
+</SubtotalRow>
+<TextRow rowNumber="22" value="Bauman, Mark" />
+<DataRow rowNumber="23">
+<RowData rowType="name" value="Bauman, Mark:Home Remodel" />
+<ColData colID="1" value="Home Remodel" />
+<ColData colID="2" value="7500.00" />
+<ColData colID="3" value="16500.00" />
+<ColData colID="4" value="9000.00" />
+</DataRow>
+<SubtotalRow rowNumber="24">
+<RowData rowType="name" value="Bauman, Mark" />
+<ColData colID="1" value="Total Bauman, Mark" />
+<ColData colID="2" value="7500.00" />
+<ColData colID="3" value="16500.00" />
+<ColData colID="4" value="9000.00" />
+</SubtotalRow>
+<TextRow rowNumber="25" value="Bolinski, Rafal" />
+<DataRow rowNumber="26">
+<RowData rowType="name" value="Bolinski, Rafal:2nd story addition" />
+<ColData colID="1" value="2nd story addition" />
+<ColData colID="2" value="4168.24" />
+<ColData colID="3" value="9953.90" />
+<ColData colID="4" value="5785.66" />
+</DataRow>
+<SubtotalRow rowNumber="27">
+<RowData rowType="name" value="Bolinski, Rafal" />
+<ColData colID="1" value="Total Bolinski, Rafal" />
+<ColData colID="2" value="4168.24" />
+<ColData colID="3" value="9953.90" />
+<ColData colID="4" value="5785.66" />
+</SubtotalRow>
+<TextRow rowNumber="28" value="Bristol, Sonya" />
+<DataRow rowNumber="29">
+<RowData rowType="name" value="Bristol, Sonya:Repairs" />
+<ColData colID="1" value="Repairs" />
+<ColData colID="2" value="23.84" />
+<ColData colID="3" value="93.84" />
+<ColData colID="4" value="70.00" />
+</DataRow>
+<DataRow rowNumber="30">
+<RowData rowType="name" value="Bristol, Sonya:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="1286.50" />
+<ColData colID="3" value="1999.00" />
+<ColData colID="4" value="712.50" />
+</DataRow>
+<SubtotalRow rowNumber="31">
+<RowData rowType="name" value="Bristol, Sonya" />
+<ColData colID="1" value="Total Bristol, Sonya" />
+<ColData colID="2" value="1310.34" />
+<ColData colID="3" value="2092.84" />
+<ColData colID="4" value="782.50" />
+</SubtotalRow>
+<TextRow rowNumber="32" value="Burch, Jason" />
+<DataRow rowNumber="33">
+<RowData rowType="name" value="Burch, Jason:Room Addition" />
+<ColData colID="1" value="Room Addition" />
+<ColData colID="2" value="4015.51" />
+<ColData colID="3" value="6773.40" />
+<ColData colID="4" value="2757.89" />
+</DataRow>
+<SubtotalRow rowNumber="34">
+<RowData rowType="name" value="Burch, Jason" />
+<ColData colID="1" value="Total Burch, Jason" />
+<ColData colID="2" value="4015.51" />
+<ColData colID="3" value="6773.40" />
+<ColData colID="4" value="2757.89" />
+</SubtotalRow>
+<TextRow rowNumber="35" value="Campbell, Heather" />
+<DataRow rowNumber="36">
+<RowData rowType="name" value="Campbell, Heather:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="13900.00" />
+<ColData colID="4" value="13900.00" />
+</DataRow>
+<SubtotalRow rowNumber="37">
+<RowData rowType="name" value="Campbell, Heather" />
+<ColData colID="1" value="Total Campbell, Heather" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="13900.00" />
+<ColData colID="4" value="13900.00" />
+</SubtotalRow>
+<TextRow rowNumber="38" value="Carr's Pie Shop" />
+<DataRow rowNumber="39">
+<RowData rowType="name" value="Carr's Pie Shop:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="14900.00" />
+<ColData colID="4" value="14900.00" />
+</DataRow>
+<SubtotalRow rowNumber="40">
+<RowData rowType="name" value="Carr's Pie Shop" />
+<ColData colID="1" value="Total Carr's Pie Shop" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="14900.00" />
+<ColData colID="4" value="14900.00" />
+</SubtotalRow>
+<TextRow rowNumber="41" value="Castillo, Eloisa" />
+<DataRow rowNumber="42">
+<RowData rowType="name" value="Castillo, Eloisa:Bay Window" />
+<ColData colID="1" value="Bay Window" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="361.08" />
+<ColData colID="4" value="361.08" />
+</DataRow>
+<DataRow rowNumber="43">
+<RowData rowType="name" value="Castillo, Eloisa:Utility Room" />
+<ColData colID="1" value="Utility Room" />
+<ColData colID="2" value="2359.22" />
+<ColData colID="3" value="4577.30" />
+<ColData colID="4" value="2218.08" />
+</DataRow>
+<SubtotalRow rowNumber="44">
+<RowData rowType="name" value="Castillo, Eloisa" />
+<ColData colID="1" value="Total Castillo, Eloisa" />
+<ColData colID="2" value="2359.22" />
+<ColData colID="3" value="4938.38" />
+<ColData colID="4" value="2579.16" />
+</SubtotalRow>
+<TextRow rowNumber="45" value="Cook, Brian" />
+<DataRow rowNumber="46">
+<RowData rowType="name" value="Cook, Brian:2nd story addition" />
+<ColData colID="1" value="2nd story addition" />
+<ColData colID="2" value="15767.60" />
+<ColData colID="3" value="19508.00" />
+<ColData colID="4" value="3740.40" />
+</DataRow>
+<DataRow rowNumber="47">
+<RowData rowType="name" value="Cook, Brian:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="7390.00" />
+<ColData colID="3" value="12906.45" />
+<ColData colID="4" value="5516.45" />
+</DataRow>
+<SubtotalRow rowNumber="48">
+<RowData rowType="name" value="Cook, Brian" />
+<ColData colID="1" value="Total Cook, Brian" />
+<ColData colID="2" value="23157.60" />
+<ColData colID="3" value="32414.45" />
+<ColData colID="4" value="9256.85" />
+</SubtotalRow>
+<TextRow rowNumber="49" value="Craven, Pam" />
+<DataRow rowNumber="50">
+<RowData rowType="name" value="Craven, Pam:Duct Work" />
+<ColData colID="1" value="Duct Work" />
+<ColData colID="2" value="345.00" />
+<ColData colID="3" value="946.80" />
+<ColData colID="4" value="601.80" />
+</DataRow>
+<SubtotalRow rowNumber="51">
+<RowData rowType="name" value="Craven, Pam" />
+<ColData colID="1" value="Total Craven, Pam" />
+<ColData colID="2" value="345.00" />
+<ColData colID="3" value="946.80" />
+<ColData colID="4" value="601.80" />
+</SubtotalRow>
+<TextRow rowNumber="52" value="Davies, Aaron" />
+<DataRow rowNumber="53">
+<RowData rowType="name" value="Davies, Aaron:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="14560.00" />
+<ColData colID="4" value="14560.00" />
+</DataRow>
+<SubtotalRow rowNumber="54">
+<RowData rowType="name" value="Davies, Aaron" />
+<ColData colID="1" value="Total Davies, Aaron" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="14560.00" />
+<ColData colID="4" value="14560.00" />
+</SubtotalRow>
+<TextRow rowNumber="55" value="Duncan, Dave" />
+<DataRow rowNumber="56">
+<RowData rowType="name" value="Duncan, Dave:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="1280.00" />
+<ColData colID="3" value="2400.00" />
+<ColData colID="4" value="1120.00" />
+</DataRow>
+<SubtotalRow rowNumber="57">
+<RowData rowType="name" value="Duncan, Dave" />
+<ColData colID="1" value="Total Duncan, Dave" />
+<ColData colID="2" value="1280.00" />
+<ColData colID="3" value="2400.00" />
+<ColData colID="4" value="1120.00" />
+</SubtotalRow>
+<TextRow rowNumber="58" value="Dunn, Eric C.W." />
+<DataRow rowNumber="59">
+<RowData rowType="name" value="Dunn, Eric C.W.:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="1000.00" />
+<ColData colID="3" value="2400.00" />
+<ColData colID="4" value="1400.00" />
+</DataRow>
+<SubtotalRow rowNumber="60">
+<RowData rowType="name" value="Dunn, Eric C.W." />
+<ColData colID="1" value="Total Dunn, Eric C.W." />
+<ColData colID="2" value="1000.00" />
+<ColData colID="3" value="2400.00" />
+<ColData colID="4" value="1400.00" />
+</SubtotalRow>
+<TextRow rowNumber="61" value="Easley, Paula" />
+<DataRow rowNumber="62">
+<RowData rowType="name" value="Easley, Paula:Garage" />
+<ColData colID="1" value="Garage" />
+<ColData colID="2" value="1484.17" />
+<ColData colID="3" value="2360.00" />
+<ColData colID="4" value="875.83" />
+</DataRow>
+<SubtotalRow rowNumber="63">
+<RowData rowType="name" value="Easley, Paula" />
+<ColData colID="1" value="Total Easley, Paula" />
+<ColData colID="2" value="1484.17" />
+<ColData colID="3" value="2360.00" />
+<ColData colID="4" value="875.83" />
+</SubtotalRow>
+<TextRow rowNumber="64" value="Ecker Designs" />
+<DataRow rowNumber="65">
+<RowData rowType="name" value="Ecker Designs:Office Expansion" />
+<ColData colID="1" value="Office Expansion" />
+<ColData colID="2" value="1725.00" />
+<ColData colID="3" value="6087.00" />
+<ColData colID="4" value="4362.00" />
+</DataRow>
+<DataRow rowNumber="66">
+<RowData rowType="name" value="Ecker Designs:Office Repairs" />
+<ColData colID="1" value="Office Repairs" />
+<ColData colID="2" value="2910.00" />
+<ColData colID="3" value="4984.50" />
+<ColData colID="4" value="2074.50" />
+</DataRow>
+<SubtotalRow rowNumber="67">
+<RowData rowType="name" value="Ecker Designs" />
+<ColData colID="1" value="Total Ecker Designs" />
+<ColData colID="2" value="4635.00" />
+<ColData colID="3" value="11071.50" />
+<ColData colID="4" value="6436.50" />
+</SubtotalRow>
+<TextRow rowNumber="68" value="Fisher, Jennifer" />
+<DataRow rowNumber="69">
+<RowData rowType="name" value="Fisher, Jennifer:Garage Roof" />
+<ColData colID="1" value="Garage Roof" />
+<ColData colID="2" value="2905.00" />
+<ColData colID="3" value="6864.00" />
+<ColData colID="4" value="3959.00" />
+</DataRow>
+<DataRow rowNumber="70">
+<RowData rowType="name" value="Fisher, Jennifer:Home Remodel" />
+<ColData colID="1" value="Home Remodel" />
+<ColData colID="2" value="7500.00" />
+<ColData colID="3" value="16500.00" />
+<ColData colID="4" value="9000.00" />
+</DataRow>
+<SubtotalRow rowNumber="71">
+<RowData rowType="name" value="Fisher, Jennifer" />
+<ColData colID="1" value="Total Fisher, Jennifer" />
+<ColData colID="2" value="10405.00" />
+<ColData colID="3" value="23364.00" />
+<ColData colID="4" value="12959.00" />
+</SubtotalRow>
+<TextRow rowNumber="72" value="Fomin, Slava" />
+<DataRow rowNumber="73">
+<RowData rowType="name" value="Fomin, Slava:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="1130.00" />
+<ColData colID="3" value="2499.00" />
+<ColData colID="4" value="1369.00" />
+</DataRow>
+<SubtotalRow rowNumber="74">
+<RowData rowType="name" value="Fomin, Slava" />
+<ColData colID="1" value="Total Fomin, Slava" />
+<ColData colID="2" value="1130.00" />
+<ColData colID="3" value="2499.00" />
+<ColData colID="4" value="1369.00" />
+</SubtotalRow>
+<TextRow rowNumber="75" value="Freeman, Kirby" />
+<DataRow rowNumber="76">
+<RowData rowType="name" value="Freeman, Kirby:Remodel Bathroom" />
+<ColData colID="1" value="Remodel Bathroom" />
+<ColData colID="2" value="2180.00" />
+<ColData colID="3" value="5588.00" />
+<ColData colID="4" value="3408.00" />
+</DataRow>
+<DataRow rowNumber="77">
+<RowData rowType="name" value="Freeman, Kirby:Repairs" />
+<ColData colID="1" value="Repairs" />
+<ColData colID="2" value="259.00" />
+<ColData colID="3" value="770.00" />
+<ColData colID="4" value="511.00" />
+</DataRow>
+<SubtotalRow rowNumber="78">
+<RowData rowType="name" value="Freeman, Kirby" />
+<ColData colID="1" value="Total Freeman, Kirby" />
+<ColData colID="2" value="2439.00" />
+<ColData colID="3" value="6358.00" />
+<ColData colID="4" value="3919.00" />
+</SubtotalRow>
+<TextRow rowNumber="79" value="Hendro Riyadi" />
+<DataRow rowNumber="80">
+<RowData rowType="name" value="Hendro Riyadi:Remodel Kitchen" />
+<ColData colID="1" value="Remodel Kitchen" />
+<ColData colID="2" value="2195.23" />
+<ColData colID="3" value="3975.00" />
+<ColData colID="4" value="1779.77" />
+</DataRow>
+<SubtotalRow rowNumber="81">
+<RowData rowType="name" value="Hendro Riyadi" />
+<ColData colID="1" value="Total Hendro Riyadi" />
+<ColData colID="2" value="2195.23" />
+<ColData colID="3" value="3975.00" />
+<ColData colID="4" value="1779.77" />
+</SubtotalRow>
+<TextRow rowNumber="82" value="Jacobsen, Doug" />
+<DataRow rowNumber="83">
+<RowData rowType="name" value="Jacobsen, Doug:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="4045.00" />
+<ColData colID="3" value="7770.00" />
+<ColData colID="4" value="3725.00" />
+</DataRow>
+<DataRow rowNumber="84">
+<RowData rowType="name" value="Jacobsen, Doug:Poolhouse" />
+<ColData colID="1" value="Poolhouse" />
+<ColData colID="2" value="1729.85" />
+<ColData colID="3" value="7673.50" />
+<ColData colID="4" value="5943.65" />
+</DataRow>
+<SubtotalRow rowNumber="85">
+<RowData rowType="name" value="Jacobsen, Doug" />
+<ColData colID="1" value="Total Jacobsen, Doug" />
+<ColData colID="2" value="5774.85" />
+<ColData colID="3" value="15443.50" />
+<ColData colID="4" value="9668.65" />
+</SubtotalRow>
+<TextRow rowNumber="86" value="Jimenez, Cristina" />
+<DataRow rowNumber="87">
+<RowData rowType="name" value="Jimenez, Cristina:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="1389.00" />
+<ColData colID="3" value="1999.00" />
+<ColData colID="4" value="610.00" />
+</DataRow>
+<SubtotalRow rowNumber="88">
+<RowData rowType="name" value="Jimenez, Cristina" />
+<ColData colID="1" value="Total Jimenez, Cristina" />
+<ColData colID="2" value="1389.00" />
+<ColData colID="3" value="1999.00" />
+<ColData colID="4" value="610.00" />
+</SubtotalRow>
+<TextRow rowNumber="89" value="Johnson, Gordon" />
+<DataRow rowNumber="90">
+<RowData rowType="name" value="Johnson, Gordon:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="1599.00" />
+<ColData colID="3" value="2400.00" />
+<ColData colID="4" value="801.00" />
+</DataRow>
+<SubtotalRow rowNumber="91">
+<RowData rowType="name" value="Johnson, Gordon" />
+<ColData colID="1" value="Total Johnson, Gordon" />
+<ColData colID="2" value="1599.00" />
+<ColData colID="3" value="2400.00" />
+<ColData colID="4" value="801.00" />
+</SubtotalRow>
+<TextRow rowNumber="92" value="Kanitz, Marion" />
+<DataRow rowNumber="93">
+<RowData rowType="name" value="Kanitz, Marion:Bay Window" />
+<ColData colID="1" value="Bay Window" />
+<ColData colID="2" value="2111.80" />
+<ColData colID="3" value="6195.20" />
+<ColData colID="4" value="4083.40" />
+</DataRow>
+<SubtotalRow rowNumber="94">
+<RowData rowType="name" value="Kanitz, Marion" />
+<ColData colID="1" value="Total Kanitz, Marion" />
+<ColData colID="2" value="2111.80" />
+<ColData colID="3" value="6195.20" />
+<ColData colID="4" value="4083.40" />
+</SubtotalRow>
+<TextRow rowNumber="95" value="Keenan, Bridget" />
+<DataRow rowNumber="96">
+<RowData rowType="name" value="Keenan, Bridget:Storage Shed" />
+<ColData colID="1" value="Storage Shed" />
+<ColData colID="2" value="1185.73" />
+<ColData colID="3" value="2446.24" />
+<ColData colID="4" value="1260.51" />
+</DataRow>
+<DataRow rowNumber="97">
+<RowData rowType="name" value="Keenan, Bridget:Sun Room" />
+<ColData colID="1" value="Sun Room" />
+<ColData colID="2" value="52.00" />
+<ColData colID="3" value="95.00" />
+<ColData colID="4" value="43.00" />
+</DataRow>
+<SubtotalRow rowNumber="98">
+<RowData rowType="name" value="Keenan, Bridget" />
+<ColData colID="1" value="Total Keenan, Bridget" />
+<ColData colID="2" value="1237.73" />
+<ColData colID="3" value="2541.24" />
+<ColData colID="4" value="1303.51" />
+</SubtotalRow>
+<TextRow rowNumber="99" value="Lamb, Brad" />
+<DataRow rowNumber="100">
+<RowData rowType="name" value="Lamb, Brad:Room Addition" />
+<ColData colID="1" value="Room Addition" />
+<ColData colID="2" value="4364.82" />
+<ColData colID="3" value="10834.87" />
+<ColData colID="4" value="6470.05" />
+</DataRow>
+<SubtotalRow rowNumber="101">
+<RowData rowType="name" value="Lamb, Brad" />
+<ColData colID="1" value="Total Lamb, Brad" />
+<ColData colID="2" value="4364.82" />
+<ColData colID="3" value="10834.87" />
+<ColData colID="4" value="6470.05" />
+</SubtotalRow>
+<TextRow rowNumber="102" value="Larsen's Pet Shop" />
+<DataRow rowNumber="103">
+<RowData rowType="name" value="Larsen's Pet Shop:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="13900.00" />
+<ColData colID="4" value="13900.00" />
+</DataRow>
+<SubtotalRow rowNumber="104">
+<RowData rowType="name" value="Larsen's Pet Shop" />
+<ColData colID="1" value="Total Larsen's Pet Shop" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="13900.00" />
+<ColData colID="4" value="13900.00" />
+</SubtotalRow>
+<TextRow rowNumber="105" value="Lew Plumbing - C" />
+<DataRow rowNumber="106">
+<RowData rowType="name" value="Lew Plumbing - C:Storage Expansion" />
+<ColData colID="1" value="Storage Expansion" />
+<ColData colID="2" value="115.00" />
+<ColData colID="3" value="220.00" />
+<ColData colID="4" value="105.00" />
+</DataRow>
+<SubtotalRow rowNumber="107">
+<RowData rowType="name" value="Lew Plumbing - C" />
+<ColData colID="1" value="Total Lew Plumbing - C" />
+<ColData colID="2" value="115.00" />
+<ColData colID="3" value="220.00" />
+<ColData colID="4" value="105.00" />
+</SubtotalRow>
+<TextRow rowNumber="108" value="Luke, Noelani" />
+<DataRow rowNumber="109">
+<RowData rowType="name" value="Luke, Noelani:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="8522.45" />
+<ColData colID="3" value="10790.30" />
+<ColData colID="4" value="2267.85" />
+</DataRow>
+<DataRow rowNumber="110">
+<RowData rowType="name" value="Luke, Noelani:Remodel Bathroom" />
+<ColData colID="1" value="Remodel Bathroom" />
+<ColData colID="2" value="3112.50" />
+<ColData colID="3" value="4504.25" />
+<ColData colID="4" value="1391.75" />
+</DataRow>
+<SubtotalRow rowNumber="111">
+<RowData rowType="name" value="Luke, Noelani" />
+<ColData colID="1" value="Total Luke, Noelani" />
+<ColData colID="2" value="11634.95" />
+<ColData colID="3" value="15294.55" />
+<ColData colID="4" value="3659.60" />
+</SubtotalRow>
+<TextRow rowNumber="112" value="Mackey's Nursery and Garden Supply" />
+<DataRow rowNumber="113">
+<RowData rowType="name" value="Mackey's Nursery and Garden Supply:Greenhouse Addition" />
+<ColData colID="1" value="Greenhouse Addition" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="13900.00" />
+<ColData colID="4" value="13900.00" />
+</DataRow>
+<SubtotalRow rowNumber="114">
+<RowData rowType="name" value="Mackey's Nursery and Garden Supply" />
+<ColData colID="1" value="Total Mackey's Nursery and Garden Supply" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="13900.00" />
+<ColData colID="4" value="13900.00" />
+</SubtotalRow>
+<TextRow rowNumber="115" value="Melton, Johnny" />
+<DataRow rowNumber="116">
+<RowData rowType="name" value="Melton, Johnny:Basement Remodel" />
+<ColData colID="1" value="Basement Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="14886.00" />
+<ColData colID="4" value="14886.00" />
+</DataRow>
+<DataRow rowNumber="117">
+<RowData rowType="name" value="Melton, Johnny:Dental office" />
+<ColData colID="1" value="Dental office" />
+<ColData colID="2" value="5825.00" />
+<ColData colID="3" value="13055.50" />
+<ColData colID="4" value="7230.50" />
+</DataRow>
+<SubtotalRow rowNumber="118">
+<RowData rowType="name" value="Melton, Johnny" />
+<ColData colID="1" value="Total Melton, Johnny" />
+<ColData colID="2" value="5825.00" />
+<ColData colID="3" value="27941.50" />
+<ColData colID="4" value="22116.50" />
+</SubtotalRow>
+<TextRow rowNumber="119" value="Memeo, Jeanette" />
+<DataRow rowNumber="120">
+<RowData rowType="name" value="Memeo, Jeanette:2nd story addition" />
+<ColData colID="1" value="2nd story addition" />
+<ColData colID="2" value="14673.45" />
+<ColData colID="3" value="18973.45" />
+<ColData colID="4" value="4300.00" />
+</DataRow>
+<DataRow rowNumber="121">
+<RowData rowType="name" value="Memeo, Jeanette:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="978.39" />
+<ColData colID="3" value="1999.00" />
+<ColData colID="4" value="1020.61" />
+</DataRow>
+<SubtotalRow rowNumber="122">
+<RowData rowType="name" value="Memeo, Jeanette" />
+<ColData colID="1" value="Total Memeo, Jeanette" />
+<ColData colID="2" value="15651.84" />
+<ColData colID="3" value="20972.45" />
+<ColData colID="4" value="5320.61" />
+</SubtotalRow>
+<TextRow rowNumber="123" value="Milner, Eloyse" />
+<DataRow rowNumber="124">
+<RowData rowType="name" value="Milner, Eloyse:Room addition" />
+<ColData colID="1" value="Room addition" />
+<ColData colID="2" value="2572.22" />
+<ColData colID="3" value="4075.66" />
+<ColData colID="4" value="1503.44" />
+</DataRow>
+<SubtotalRow rowNumber="125">
+<RowData rowType="name" value="Milner, Eloyse" />
+<ColData colID="1" value="Total Milner, Eloyse" />
+<ColData colID="2" value="2572.22" />
+<ColData colID="3" value="4075.66" />
+<ColData colID="4" value="1503.44" />
+</SubtotalRow>
+<TextRow rowNumber="126" value="Morgenthaler, Jenny" />
+<DataRow rowNumber="127">
+<RowData rowType="name" value="Morgenthaler, Jenny:Room Addition" />
+<ColData colID="1" value="Room Addition" />
+<ColData colID="2" value="1915.39" />
+<ColData colID="3" value="6346.64" />
+<ColData colID="4" value="4431.25" />
+</DataRow>
+<SubtotalRow rowNumber="128">
+<RowData rowType="name" value="Morgenthaler, Jenny" />
+<ColData colID="1" value="Total Morgenthaler, Jenny" />
+<ColData colID="2" value="1915.39" />
+<ColData colID="3" value="6346.64" />
+<ColData colID="4" value="4431.25" />
+</SubtotalRow>
+<TextRow rowNumber="129" value="Natiello, Ernesto" />
+<DataRow rowNumber="130">
+<RowData rowType="name" value="Natiello, Ernesto:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="6508.67" />
+<ColData colID="3" value="13925.16" />
+<ColData colID="4" value="7416.49" />
+</DataRow>
+<SubtotalRow rowNumber="131">
+<RowData rowType="name" value="Natiello, Ernesto" />
+<ColData colID="1" value="Total Natiello, Ernesto" />
+<ColData colID="2" value="6508.67" />
+<ColData colID="3" value="13925.16" />
+<ColData colID="4" value="7416.49" />
+</SubtotalRow>
+<TextRow rowNumber="132" value="Nelson, Wilma" />
+<DataRow rowNumber="133">
+<RowData rowType="name" value="Nelson, Wilma:Office Remodel" />
+<ColData colID="1" value="Office Remodel" />
+<ColData colID="2" value="5275.00" />
+<ColData colID="3" value="11605.00" />
+<ColData colID="4" value="6330.00" />
+</DataRow>
+<SubtotalRow rowNumber="134">
+<RowData rowType="name" value="Nelson, Wilma" />
+<ColData colID="1" value="Total Nelson, Wilma" />
+<ColData colID="2" value="5275.00" />
+<ColData colID="3" value="11605.00" />
+<ColData colID="4" value="6330.00" />
+</SubtotalRow>
+<TextRow rowNumber="135" value="Nguyen, Tuan" />
+<DataRow rowNumber="136">
+<RowData rowType="name" value="Nguyen, Tuan:Garage" />
+<ColData colID="1" value="Garage" />
+<ColData colID="2" value="2075.00" />
+<ColData colID="3" value="6936.12" />
+<ColData colID="4" value="4861.12" />
+</DataRow>
+<SubtotalRow rowNumber="137">
+<RowData rowType="name" value="Nguyen, Tuan" />
+<ColData colID="1" value="Total Nguyen, Tuan" />
+<ColData colID="2" value="2075.00" />
+<ColData colID="3" value="6936.12" />
+<ColData colID="4" value="4861.12" />
+</SubtotalRow>
+<TextRow rowNumber="138" value="Overfield, David" />
+<DataRow rowNumber="139">
+<RowData rowType="name" value="Overfield, David:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="962.00" />
+<ColData colID="3" value="1999.00" />
+<ColData colID="4" value="1037.00" />
+</DataRow>
+<SubtotalRow rowNumber="140">
+<RowData rowType="name" value="Overfield, David" />
+<ColData colID="1" value="Total Overfield, David" />
+<ColData colID="2" value="962.00" />
+<ColData colID="3" value="1999.00" />
+<ColData colID="4" value="1037.00" />
+</SubtotalRow>
+<TextRow rowNumber="141" value="Prentice, Adelaide" />
+<DataRow rowNumber="142">
+<RowData rowType="name" value="Prentice, Adelaide:Bay Window" />
+<ColData colID="1" value="Bay Window" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="413.50" />
+<ColData colID="4" value="413.50" />
+</DataRow>
+<DataRow rowNumber="143">
+<RowData rowType="name" value="Prentice, Adelaide:Guest Villa" />
+<ColData colID="1" value="Guest Villa" />
+<ColData colID="2" value="14625.00" />
+<ColData colID="3" value="36575.00" />
+<ColData colID="4" value="21950.00" />
+</DataRow>
+<SubtotalRow rowNumber="144">
+<RowData rowType="name" value="Prentice, Adelaide" />
+<ColData colID="1" value="Total Prentice, Adelaide" />
+<ColData colID="2" value="14625.00" />
+<ColData colID="3" value="36988.50" />
+<ColData colID="4" value="22363.50" />
+</SubtotalRow>
+<TextRow rowNumber="145" value="Pretell Real Estate" />
+<DataRow rowNumber="146">
+<RowData rowType="name" value="Pretell Real Estate:155 Wilks Blvd." />
+<ColData colID="1" value="155 Wilks Blvd." />
+<ColData colID="2" value="19189.00" />
+<ColData colID="3" value="28731.50" />
+<ColData colID="4" value="9542.50" />
+</DataRow>
+<DataRow rowNumber="147">
+<RowData rowType="name" value="Pretell Real Estate:75 Sunset Rd." />
+<ColData colID="1" value="75 Sunset Rd." />
+<ColData colID="2" value="3036.00" />
+<ColData colID="3" value="24824.36" />
+<ColData colID="4" value="21788.36" />
+</DataRow>
+<SubtotalRow rowNumber="148">
+<RowData rowType="name" value="Pretell Real Estate" />
+<ColData colID="1" value="Total Pretell Real Estate" />
+<ColData colID="2" value="22225.00" />
+<ColData colID="3" value="53555.86" />
+<ColData colID="4" value="31330.86" />
+</SubtotalRow>
+<TextRow rowNumber="149" value="Rahn, Jennifer" />
+<DataRow rowNumber="150">
+<RowData rowType="name" value="Rahn, Jennifer:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="4368.51" />
+<ColData colID="3" value="20300.00" />
+<ColData colID="4" value="15931.49" />
+</DataRow>
+<SubtotalRow rowNumber="151">
+<RowData rowType="name" value="Rahn, Jennifer" />
+<ColData colID="1" value="Total Rahn, Jennifer" />
+<ColData colID="2" value="4368.51" />
+<ColData colID="3" value="20300.00" />
+<ColData colID="4" value="15931.49" />
+</SubtotalRow>
+<TextRow rowNumber="152" value="Reyes Properties - C" />
+<DataRow rowNumber="153">
+<RowData rowType="name" value="Reyes Properties - C:Repairs" />
+<ColData colID="1" value="Repairs" />
+<ColData colID="2" value="260.00" />
+<ColData colID="3" value="840.00" />
+<ColData colID="4" value="580.00" />
+</DataRow>
+<SubtotalRow rowNumber="154">
+<RowData rowType="name" value="Reyes Properties - C" />
+<ColData colID="1" value="Total Reyes Properties - C" />
+<ColData colID="2" value="260.00" />
+<ColData colID="3" value="840.00" />
+<ColData colID="4" value="580.00" />
+</SubtotalRow>
+<TextRow rowNumber="155" value="Rice, Linda" />
+<DataRow rowNumber="156">
+<RowData rowType="name" value="Rice, Linda:Repairs" />
+<ColData colID="1" value="Repairs" />
+<ColData colID="2" value="739.00" />
+<ColData colID="3" value="1830.00" />
+<ColData colID="4" value="1091.00" />
+</DataRow>
+<SubtotalRow rowNumber="157">
+<RowData rowType="name" value="Rice, Linda" />
+<ColData colID="1" value="Total Rice, Linda" />
+<ColData colID="2" value="739.00" />
+<ColData colID="3" value="1830.00" />
+<ColData colID="4" value="1091.00" />
+</SubtotalRow>
+<TextRow rowNumber="158" value="Robson, Darci" />
+<DataRow rowNumber="159">
+<RowData rowType="name" value="Robson, Darci:Robson Clinic" />
+<ColData colID="1" value="Robson Clinic" />
+<ColData colID="2" value="10165.54" />
+<ColData colID="3" value="12362.00" />
+<ColData colID="4" value="2196.46" />
+</DataRow>
+<SubtotalRow rowNumber="160">
+<RowData rowType="name" value="Robson, Darci" />
+<ColData colID="1" value="Total Robson, Darci" />
+<ColData colID="2" value="10165.54" />
+<ColData colID="3" value="12362.00" />
+<ColData colID="4" value="2196.46" />
+</SubtotalRow>
+<TextRow rowNumber="161" value="Roche, Diarmuid" />
+<DataRow rowNumber="162">
+<RowData rowType="name" value="Roche, Diarmuid:Garage repairs" />
+<ColData colID="1" value="Garage repairs" />
+<ColData colID="2" value="210.00" />
+<ColData colID="3" value="440.00" />
+<ColData colID="4" value="230.00" />
+</DataRow>
+<SubtotalRow rowNumber="163">
+<RowData rowType="name" value="Roche, Diarmuid" />
+<ColData colID="1" value="Total Roche, Diarmuid" />
+<ColData colID="2" value="210.00" />
+<ColData colID="3" value="440.00" />
+<ColData colID="4" value="230.00" />
+</SubtotalRow>
+<TextRow rowNumber="164" value="Ruff, Bryan" />
+<DataRow rowNumber="165">
+<RowData rowType="name" value="Ruff, Bryan:Sun Room" />
+<ColData colID="1" value="Sun Room" />
+<ColData colID="2" value="2683.75" />
+<ColData colID="3" value="5354.56" />
+<ColData colID="4" value="2670.81" />
+</DataRow>
+<DataRow rowNumber="166">
+<RowData rowType="name" value="Ruff, Bryan:Utility Shed" />
+<ColData colID="1" value="Utility Shed" />
+<ColData colID="2" value="975.80" />
+<ColData colID="3" value="1840.00" />
+<ColData colID="4" value="864.20" />
+</DataRow>
+<SubtotalRow rowNumber="167">
+<RowData rowType="name" value="Ruff, Bryan" />
+<ColData colID="1" value="Total Ruff, Bryan" />
+<ColData colID="2" value="3659.55" />
+<ColData colID="3" value="7194.56" />
+<ColData colID="4" value="3535.01" />
+</SubtotalRow>
+<TextRow rowNumber="168" value="Sage, Robert" />
+<DataRow rowNumber="169">
+<RowData rowType="name" value="Sage, Robert:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="17270.00" />
+<ColData colID="4" value="17270.00" />
+</DataRow>
+<SubtotalRow rowNumber="170">
+<RowData rowType="name" value="Sage, Robert" />
+<ColData colID="1" value="Total Sage, Robert" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="17270.00" />
+<ColData colID="4" value="17270.00" />
+</SubtotalRow>
+<TextRow rowNumber="171" value="Samuels Art Supplies" />
+<DataRow rowNumber="172">
+<RowData rowType="name" value="Samuels Art Supplies:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="13900.00" />
+<ColData colID="4" value="13900.00" />
+</DataRow>
+<SubtotalRow rowNumber="173">
+<RowData rowType="name" value="Samuels Art Supplies" />
+<ColData colID="1" value="Total Samuels Art Supplies" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="13900.00" />
+<ColData colID="4" value="13900.00" />
+</SubtotalRow>
+<TextRow rowNumber="174" value="Sauler, Lyn" />
+<DataRow rowNumber="175">
+<RowData rowType="name" value="Sauler, Lyn:Home Remodel" />
+<ColData colID="1" value="Home Remodel" />
+<ColData colID="2" value="7325.00" />
+<ColData colID="3" value="16115.00" />
+<ColData colID="4" value="8790.00" />
+</DataRow>
+<SubtotalRow rowNumber="176">
+<RowData rowType="name" value="Sauler, Lyn" />
+<ColData colID="1" value="Total Sauler, Lyn" />
+<ColData colID="2" value="7325.00" />
+<ColData colID="3" value="16115.00" />
+<ColData colID="4" value="8790.00" />
+</SubtotalRow>
+<TextRow rowNumber="177" value="Smallson, Fran" />
+<DataRow rowNumber="178">
+<RowData rowType="name" value="Smallson, Fran:Office remodeling" />
+<ColData colID="1" value="Office remodeling" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="1665.00" />
+<ColData colID="4" value="1665.00" />
+</DataRow>
+<SubtotalRow rowNumber="179">
+<RowData rowType="name" value="Smallson, Fran" />
+<ColData colID="1" value="Total Smallson, Fran" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="1665.00" />
+<ColData colID="4" value="1665.00" />
+</SubtotalRow>
+<TextRow rowNumber="180" value="Smith, Lee" />
+<DataRow rowNumber="181">
+<RowData rowType="name" value="Smith, Lee:Patio" />
+<ColData colID="1" value="Patio" />
+<ColData colID="2" value="5053.50" />
+<ColData colID="3" value="7918.23" />
+<ColData colID="4" value="2864.73" />
+</DataRow>
+<SubtotalRow rowNumber="182">
+<RowData rowType="name" value="Smith, Lee" />
+<ColData colID="1" value="Total Smith, Lee" />
+<ColData colID="2" value="5053.50" />
+<ColData colID="3" value="7918.23" />
+<ColData colID="4" value="2864.73" />
+</SubtotalRow>
+<TextRow rowNumber="183" value="Teichman, Tim" />
+<DataRow rowNumber="184">
+<RowData rowType="name" value="Teichman, Tim:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="7678.75" />
+<ColData colID="3" value="9757.00" />
+<ColData colID="4" value="2078.25" />
+</DataRow>
+<SubtotalRow rowNumber="185">
+<RowData rowType="name" value="Teichman, Tim" />
+<ColData colID="1" value="Total Teichman, Tim" />
+<ColData colID="2" value="7678.75" />
+<ColData colID="3" value="9757.00" />
+<ColData colID="4" value="2078.25" />
+</SubtotalRow>
+<TextRow rowNumber="186" value="Teschner, Anton" />
+<DataRow rowNumber="187">
+<RowData rowType="name" value="Teschner, Anton:Sun Room" />
+<ColData colID="1" value="Sun Room" />
+<ColData colID="2" value="2294.02" />
+<ColData colID="3" value="9880.00" />
+<ColData colID="4" value="7585.98" />
+</DataRow>
+<SubtotalRow rowNumber="188">
+<RowData rowType="name" value="Teschner, Anton" />
+<ColData colID="1" value="Total Teschner, Anton" />
+<ColData colID="2" value="2294.02" />
+<ColData colID="3" value="9880.00" />
+<ColData colID="4" value="7585.98" />
+</SubtotalRow>
+<TextRow rowNumber="189" value="Tony's Barber Shop" />
+<DataRow rowNumber="190">
+<RowData rowType="name" value="Tony's Barber Shop:Remodel" />
+<ColData colID="1" value="Remodel" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="15870.00" />
+<ColData colID="4" value="15870.00" />
+</DataRow>
+<SubtotalRow rowNumber="191">
+<RowData rowType="name" value="Tony's Barber Shop" />
+<ColData colID="1" value="Total Tony's Barber Shop" />
+<ColData colID="2" value="0.00" />
+<ColData colID="3" value="15870.00" />
+<ColData colID="4" value="15870.00" />
+</SubtotalRow>
+<TextRow rowNumber="192" value="Vasquez, Anabel" />
+<DataRow rowNumber="193">
+<RowData rowType="name" value="Vasquez, Anabel:Basement Remodel" />
+<ColData colID="1" value="Basement Remodel" />
+<ColData colID="2" value="11139.93" />
+<ColData colID="3" value="24005.24" />
+<ColData colID="4" value="12865.31" />
+</DataRow>
+<SubtotalRow rowNumber="194">
+<RowData rowType="name" value="Vasquez, Anabel" />
+<ColData colID="1" value="Total Vasquez, Anabel" />
+<ColData colID="2" value="11139.93" />
+<ColData colID="3" value="24005.24" />
+<ColData colID="4" value="12865.31" />
+</SubtotalRow>
+<TextRow rowNumber="195" value="Violette, Mike" />
+<DataRow rowNumber="196">
+<RowData rowType="name" value="Violette, Mike:Utility Room" />
+<ColData colID="1" value="Utility Room" />
+<ColData colID="2" value="999.95" />
+<ColData colID="3" value="1099.95" />
+<ColData colID="4" value="100.00" />
+</DataRow>
+<DataRow rowNumber="197">
+<RowData rowType="name" value="Violette, Mike:Workshop" />
+<ColData colID="1" value="Workshop" />
+<ColData colID="2" value="3345.69" />
+<ColData colID="3" value="5702.00" />
+<ColData colID="4" value="2356.31" />
+</DataRow>
+<SubtotalRow rowNumber="198">
+<RowData rowType="name" value="Violette, Mike" />
+<ColData colID="1" value="Total Violette, Mike" />
+<ColData colID="2" value="4345.64" />
+<ColData colID="3" value="6801.95" />
+<ColData colID="4" value="2456.31" />
+</SubtotalRow>
+<TextRow rowNumber="199" value="Vitton, David" />
+<DataRow rowNumber="200">
+<RowData rowType="name" value="Vitton, David:Remodel Kitchen" />
+<ColData colID="1" value="Remodel Kitchen" />
+<ColData colID="2" value="325.00" />
+<ColData colID="3" value="700.00" />
+<ColData colID="4" value="375.00" />
+</DataRow>
+<SubtotalRow rowNumber="201">
+<RowData rowType="name" value="Vitton, David" />
+<ColData colID="1" value="Total Vitton, David" />
+<ColData colID="2" value="325.00" />
+<ColData colID="3" value="700.00" />
+<ColData colID="4" value="375.00" />
+</SubtotalRow>
+<TextRow rowNumber="202" value="Wilks, Daniel" />
+<DataRow rowNumber="203">
+<RowData rowType="name" value="Wilks, Daniel:Remodel Bathroom" />
+<ColData colID="1" value="Remodel Bathroom" />
+<ColData colID="2" value="4642.00" />
+<ColData colID="3" value="5806.75" />
+<ColData colID="4" value="1164.75" />
+</DataRow>
+<SubtotalRow rowNumber="204">
+<RowData rowType="name" value="Wilks, Daniel" />
+<ColData colID="1" value="Total Wilks, Daniel" />
+<ColData colID="2" value="4642.00" />
+<ColData colID="3" value="5806.75" />
+<ColData colID="4" value="1164.75" />
+</SubtotalRow>
+<TextRow rowNumber="205" value="Yoo, Young-Kyu" />
+<DataRow rowNumber="206">
+<RowData rowType="name" value="Yoo, Young-Kyu:Repairs" />
+<ColData colID="1" value="Repairs" />
+<ColData colID="2" value="3640.00" />
+<ColData colID="3" value="4125.00" />
+<ColData colID="4" value="485.00" />
+</DataRow>
+<SubtotalRow rowNumber="207">
+<RowData rowType="name" value="Yoo, Young-Kyu" />
+<ColData colID="1" value="Total Yoo, Young-Kyu" />
+<ColData colID="2" value="3640.00" />
+<ColData colID="3" value="4125.00" />
+<ColData colID="4" value="485.00" />
+</SubtotalRow>
+<DataRow rowNumber="208">
+<RowData rowType="name" value="Overhead" />
+<ColData colID="1" value="Overhead" />
+<ColData colID="2" value="187162.12" />
+<ColData colID="3" value="510.19" />
+<ColData colID="4" value="-186651.93" />
+</DataRow>
+<TotalRow rowNumber="209">
+<ColData colID="1" value="TOTAL" />
+<ColData colID="2" value="442875.80" />
+<ColData colID="3" value="669343.84" />
+<ColData colID="4" value="226468.04" />
+</TotalRow>
+</ReportData>
+</ReportRet>
+</JobReportQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

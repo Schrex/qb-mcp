@@ -1,0 +1,804 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<InvoiceQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<InvoiceRet>
+<TxnID>2453-1071526256</TxnID>
+<TimeCreated>2003-12-15T17:10:56-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:45-05:00</TimeModified>
+<EditSequence>1765784158</EditSequence>
+<TxnNumber>417</TxnNumber>
+<CustomerRef>
+<ListID>800000B8-1197707458</ListID>
+<FullName>Prentice, Adelaide:Bay Window</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>80000-933288086</ListID>
+<FullName>Custom Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-11-28</TxnDate>
+<RefNumber>975</RefNumber>
+<BillAddress>
+<Addr1>Adelaide Prentice</Addr1>
+<Addr2>1800 Appleseed Court</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Adelaide Prentice</Addr1>
+<Addr2>1800 Appleseed Court</Addr2>
+<Addr3>Bayshore CA 94326</Addr3>
+</BillAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<DueDate>2025-12-28</DueDate>
+<ShipDate>2026-11-28</ShipDate>
+<Subtotal>413.50</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2D0000-933272656</ListID>
+<FullName>San Domingo</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.50</SalesTaxPercentage>
+<SalesTaxTotal>18.45</SalesTaxTotal>
+<AppliedAmount>-431.95</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>469E-1071530054</TxnID>
+<TimeCreated>2003-12-15T18:14:14-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:44-05:00</TimeModified>
+<EditSequence>1765784231</EditSequence>
+<TxnNumber>1067</TxnNumber>
+<CustomerRef>
+<ListID>800000B7-1197706241</ListID>
+<FullName>Melton, Johnny:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>E0000-1071499861</ListID>
+<FullName>Rock Castle Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-11-30</TxnDate>
+<RefNumber>978</RefNumber>
+<BillAddress>
+<Addr1>Johnny Melton, DDS</Addr1>
+<Addr2>300 Main St, Suite 3</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Johnny Melton, DDS</Addr1>
+<Addr2>300 Main St, Suite 3</Addr2>
+<Addr3>Bayshore CA 94326</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Johnny Melton, DDS</Addr1>
+<Addr2>300 Main St, Suite 3</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Johnny Melton, DDS</Addr1>
+<Addr2>300 Main St, Suite 3</Addr2>
+<Addr3>Bayshore, CA 94326</Addr3>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<DueDate>2025-12-30</DueDate>
+<ShipDate>2026-11-30</ShipDate>
+<Subtotal>14330.50</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2E0000-933272656</ListID>
+<FullName>San Tomas</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.75</SalesTaxPercentage>
+<SalesTaxTotal>158.14</SalesTaxTotal>
+<AppliedAmount>-14488.64</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<CustomerMsgRef>
+<ListID>40000-933272660</ListID>
+<FullName>Please sign this estimate to indicate your approval.</FullName>
+</CustomerMsgRef>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>D7E-933784197</TxnID>
+<TimeCreated>1999-08-04T12:29:57-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:58-05:00</TimeModified>
+<EditSequence>1765784146</EditSequence>
+<TxnNumber>251</TxnNumber>
+<CustomerRef>
+<ListID>280000-933272658</ListID>
+<FullName>Pretell Real Estate:75 Sunset Rd.</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>20001-1197739370</ListID>
+<FullName>Intuit Product Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-12-01</TxnDate>
+<RefNumber>985</RefNumber>
+<BillAddress>
+<Addr1>Pretell Real Estate</Addr1>
+<Addr2>222 Middlefield  Ave</Addr2>
+<City>Middlefield</City>
+<State>CA</State>
+<PostalCode>94482</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Pretell Real Estate</Addr1>
+<Addr2>222 Middlefield  Ave</Addr2>
+<Addr3>Middlefield  CA 94482</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Pretell Real Estate</Addr1>
+<Addr2>75 Sunset Road</Addr2>
+<City>Middlefield</City>
+<State>CA</State>
+<PostalCode>94482</PostalCode>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Pretell Real Estate</Addr1>
+<Addr2>75 Sunset Road</Addr2>
+<Addr3>Middlefield  CA 94482</Addr3>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<DueDate>2025-12-31</DueDate>
+<ShipDate>2026-12-01</ShipDate>
+<Subtotal>11170.96</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2D0000-933272656</ListID>
+<FullName>San Domingo</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.50</SalesTaxPercentage>
+<SalesTaxTotal>614.09</SalesTaxTotal>
+<AppliedAmount>-11785.05</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<CustomerMsgRef>
+<ListID>50000-933272660</ListID>
+<FullName>Thank you for your business.</FullName>
+</CustomerMsgRef>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>20000-999022286</ListID>
+<FullName>Non</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>26BB-1071526385</TxnID>
+<TimeCreated>2003-12-15T17:13:05-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:44-05:00</TimeModified>
+<EditSequence>1765784163</EditSequence>
+<TxnNumber>460</TxnNumber>
+<CustomerRef>
+<ListID>600000-1071508427</ListID>
+<FullName>Smallson, Fran:Office remodeling</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>E0000-1071499861</ListID>
+<FullName>Rock Castle Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-12-09</TxnDate>
+<RefNumber>987</RefNumber>
+<BillAddress>
+<Addr1>Fran Smallson</Addr1>
+<Addr2>5437 Euclid St</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Fran Smallson</Addr1>
+<Addr2>5437 Euclid St</Addr2>
+<Addr3>Bayshore CA 94326</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Smallson Electric</Addr1>
+<Addr2>5437 Euclid St</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Smallson Electric</Addr1>
+<Addr2>5437 Euclid St</Addr2>
+<Addr3>Bayshore CA 94326</Addr3>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>20000-933272658</ListID>
+<FullName>Net 15</FullName>
+</TermsRef>
+<DueDate>2025-12-24</DueDate>
+<ShipDate>2026-12-09</ShipDate>
+<Subtotal>1665.00</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2E0000-933272656</ListID>
+<FullName>San Tomas</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.75</SalesTaxPercentage>
+<SalesTaxTotal>0.00</SalesTaxTotal>
+<AppliedAmount>-1665.00</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>F57-933788188</TxnID>
+<TimeCreated>1999-08-04T13:36:28-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:43-05:00</TimeModified>
+<EditSequence>1765784150</EditSequence>
+<TxnNumber>295</TxnNumber>
+<CustomerRef>
+<ListID>800000B6-1197702033</ListID>
+<FullName>Ecker Designs:Office Expansion</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>80000-933288086</ListID>
+<FullName>Custom Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-12-15</TxnDate>
+<RefNumber>990</RefNumber>
+<BillAddress>
+<Addr1>Deanna Ecker</Addr1>
+<Addr2>95 Amber St</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Deanna Ecker</Addr1>
+<Addr2>95 Amber St</Addr2>
+<Addr3>Bayshore CA 94326</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Ecker Designs</Addr1>
+<Addr2>95 Amber St</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+<Note>Attn: Deanna Ecker</Note>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Ecker Designs</Addr1>
+<Addr2>95 Amber St</Addr2>
+<Addr3>Bayshore CA 94326</Addr3>
+<Addr4>Attn: Deanna Ecker</Addr4>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<PONumber>A905-01</PONumber>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<DueDate>2026-01-14</DueDate>
+<ShipDate>2026-12-15</ShipDate>
+<Subtotal>4690.00</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2E0000-933272656</ListID>
+<FullName>San Tomas</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.75</SalesTaxPercentage>
+<SalesTaxTotal>67.81</SalesTaxTotal>
+<AppliedAmount>-4757.81</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>4346-1071520492</TxnID>
+<TimeCreated>2003-12-15T15:34:52-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:45-05:00</TimeModified>
+<EditSequence>1765784223</EditSequence>
+<TxnNumber>1041</TxnNumber>
+<CustomerRef>
+<ListID>800000B9-1197733691</ListID>
+<FullName>Baker, Chris:Garage Repair</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>80000-933288086</ListID>
+<FullName>Custom Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-12-15</TxnDate>
+<RefNumber>991</RefNumber>
+<BillAddress>
+<Addr1>Baker, Chris</Addr1>
+<Addr2>415 W. Desert Bloom</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Baker, Chris</Addr1>
+<Addr2>415 W. Desert Bloom</Addr2>
+<Addr3>Bayshore, CA  94326</Addr3>
+</BillAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<DueDate>2026-01-14</DueDate>
+<ShipDate>2026-12-15</ShipDate>
+<Subtotal>1040.00</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2E0000-933272656</ListID>
+<FullName>San Tomas</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.75</SalesTaxPercentage>
+<SalesTaxTotal>0.00</SalesTaxTotal>
+<AppliedAmount>-1040.00</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>44A8-1071524908</TxnID>
+<TimeCreated>2003-12-15T16:48:28-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:58-05:00</TimeModified>
+<EditSequence>1765784228</EditSequence>
+<TxnNumber>1059</TxnNumber>
+<CustomerRef>
+<ListID>280000-933272658</ListID>
+<FullName>Pretell Real Estate:75 Sunset Rd.</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>E0000-1071499861</ListID>
+<FullName>Rock Castle Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-12-15</TxnDate>
+<RefNumber>992</RefNumber>
+<BillAddress>
+<Addr1>Pretell Real Estate</Addr1>
+<Addr2>222 Middlefield  Ave</Addr2>
+<City>Middlefield</City>
+<State>CA</State>
+<PostalCode>94482</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Pretell Real Estate</Addr1>
+<Addr2>222 Middlefield  Ave</Addr2>
+<Addr3>Middlefield  CA 94482</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Pretell Real Estate</Addr1>
+<Addr2>75 Sunset Road</Addr2>
+<City>Middlefield</City>
+<State>CA</State>
+<PostalCode>94482</PostalCode>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Pretell Real Estate</Addr1>
+<Addr2>75 Sunset Road</Addr2>
+<Addr3>Middlefield  CA 94482</Addr3>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<DueDate>2026-01-14</DueDate>
+<ShipDate>2026-12-15</ShipDate>
+<Subtotal>12412.18</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2D0000-933272656</ListID>
+<FullName>San Domingo</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.50</SalesTaxPercentage>
+<SalesTaxTotal>614.09</SalesTaxTotal>
+<AppliedAmount>-13026.27</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>44F3-1071525107</TxnID>
+<TimeCreated>2003-12-15T16:51:47-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:43-05:00</TimeModified>
+<EditSequence>1765784229</EditSequence>
+<TxnNumber>1060</TxnNumber>
+<CustomerRef>
+<ListID>800000B6-1197702033</ListID>
+<FullName>Ecker Designs:Office Expansion</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>E0000-1071499861</ListID>
+<FullName>Rock Castle Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-12-15</TxnDate>
+<RefNumber>993</RefNumber>
+<BillAddress>
+<Addr1>Deanna Ecker</Addr1>
+<Addr2>95 Amber St</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Deanna Ecker</Addr1>
+<Addr2>95 Amber St</Addr2>
+<Addr3>Bayshore CA 94326</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Ecker Designs</Addr1>
+<Addr2>95 Amber St</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+<Note>Attn: Deanna Ecker</Note>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Ecker Designs</Addr1>
+<Addr2>95 Amber St</Addr2>
+<Addr3>Bayshore CA 94326</Addr3>
+<Addr4>Attn: Deanna Ecker</Addr4>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>10000-933272658</ListID>
+<FullName>Net 30</FullName>
+</TermsRef>
+<DueDate>2026-01-14</DueDate>
+<ShipDate>2026-12-15</ShipDate>
+<Subtotal>1397.00</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2E0000-933272656</ListID>
+<FullName>San Tomas</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.75</SalesTaxPercentage>
+<SalesTaxTotal>71.30</SalesTaxTotal>
+<AppliedAmount>-1468.30</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>4909-1071512260</TxnID>
+<TimeCreated>2003-12-15T13:17:40-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:43-05:00</TimeModified>
+<EditSequence>1765784236</EditSequence>
+<TxnNumber>1079</TxnNumber>
+<CustomerRef>
+<ListID>800000B5-1197701259</ListID>
+<FullName>Castillo, Eloisa:Bay Window</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>E0000-1071499861</ListID>
+<FullName>Rock Castle Invoice</FullName>
+</TemplateRef>
+<TxnDate>2024-12-23</TxnDate>
+<RefNumber>994</RefNumber>
+<BillAddress>
+<Addr1>Eloisa Castillo</Addr1>
+<Addr2>8321 S. Flower</Addr2>
+<City>E. Bayshore</City>
+<State>CA</State>
+<PostalCode>94781</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Eloisa Castillo</Addr1>
+<Addr2>8321 S. Flower</Addr2>
+<Addr3>E. Bayshore, CA  94781</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Eloisa Castillo</Addr1>
+<Addr2>8321 S. Flower</Addr2>
+<City>E. Bayshore</City>
+<State>CA</State>
+<PostalCode>94781</PostalCode>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Eloisa Castillo</Addr1>
+<Addr2>8321 S. Flower</Addr2>
+<Addr3>E. Bayshore, CA  94781</Addr3>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>20000-933272658</ListID>
+<FullName>Net 15</FullName>
+</TermsRef>
+<DueDate>2026-01-07</DueDate>
+<ShipDate>2026-12-23</ShipDate>
+<Subtotal>361.08</Subtotal>
+<ItemSalesTaxRef>
+<ListID>350000-1071521574</ListID>
+<FullName>East Bayshore</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>0.30</SalesTaxPercentage>
+<SalesTaxTotal>0.00</SalesTaxTotal>
+<AppliedAmount>-361.08</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>8AC9-1197732443</TxnID>
+<TimeCreated>2007-12-15T10:27:23-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:58-05:00</TimeModified>
+<EditSequence>1765784270</EditSequence>
+<TxnNumber>1421</TxnNumber>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>130000-1071512842</ListID>
+<FullName>Custom S.O. Invoice</FullName>
+</TemplateRef>
+<TxnDate>2025-01-28</TxnDate>
+<RefNumber>1001</RefNumber>
+<BillAddress>
+<Addr1>Anabel Vasquez</Addr1>
+<Addr2>5601 Legacy Parkway</Addr2>
+<City>San Mateo</City>
+<State>CA</State>
+<PostalCode>09402</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Anabel Vasquez</Addr1>
+<Addr2>5601 Legacy Parkway</Addr2>
+<Addr3>San Mateo, CA 09402</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Anabel Vasquez</Addr1>
+<Addr2>5601 Legacy Parkway</Addr2>
+<City>San Mateo</City>
+<State>CA</State>
+<PostalCode>09402</PostalCode>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Anabel Vasquez</Addr1>
+<Addr2>5601 Legacy Parkway</Addr2>
+<Addr3>San Mateo, CA 09402</Addr3>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>20000-933272658</ListID>
+<FullName>Net 15</FullName>
+</TermsRef>
+<DueDate>2026-02-12</DueDate>
+<ShipDate>2026-11-20</ShipDate>
+<Subtotal>800.00</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2E0000-933272656</ListID>
+<FullName>San Tomas</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.75</SalesTaxPercentage>
+<SalesTaxTotal>62.00</SalesTaxTotal>
+<AppliedAmount>-862.00</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<IsPaid>true</IsPaid>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>69F9-1197780249</TxnID>
+<TimeCreated>2007-12-15T23:44:09-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:37:58-05:00</TimeModified>
+<EditSequence>1765784268</EditSequence>
+<TxnNumber>1371</TxnNumber>
+<CustomerRef>
+<ListID>800000B3-1197778093</ListID>
+<FullName>Vasquez, Anabel:Basement Remodel</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>40000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<ARAccountRef>
+<ListID>40000-933270541</ListID>
+<FullName>Accounts Receivable</FullName>
+</ARAccountRef>
+<TemplateRef>
+<ListID>E0000-1071499861</ListID>
+<FullName>Rock Castle Invoice</FullName>
+</TemplateRef>
+<TxnDate>2025-01-31</TxnDate>
+<RefNumber>1002</RefNumber>
+<BillAddress>
+<Addr1>Anabel Vasquez</Addr1>
+<Addr2>5601 Legacy Parkway</Addr2>
+<City>San Mateo</City>
+<State>CA</State>
+<PostalCode>09402</PostalCode>
+</BillAddress>
+<BillAddressBlock>
+<Addr1>Anabel Vasquez</Addr1>
+<Addr2>5601 Legacy Parkway</Addr2>
+<Addr3>San Mateo, CA 09402</Addr3>
+</BillAddressBlock>
+<ShipAddress>
+<Addr1>Anabel Vasquez</Addr1>
+<Addr2>5601 Legacy Parkway</Addr2>
+<City>San Mateo</City>
+<State>CA</State>
+<PostalCode>09402</PostalCode>
+</ShipAddress>
+<ShipAddressBlock>
+<Addr1>Anabel Vasquez</Addr1>
+<Addr2>5601 Legacy Parkway</Addr2>
+<Addr3>San Mateo, CA 09402</Addr3>
+</ShipAddressBlock>
+<IsPending>false</IsPending>
+<IsFinanceCharge>false</IsFinanceCharge>
+<TermsRef>
+<ListID>20000-933272658</ListID>
+<FullName>Net 15</FullName>
+</TermsRef>
+<DueDate>2026-02-15</DueDate>
+<ShipDate>2026-01-29</ShipDate>
+<Subtotal>23205.24</Subtotal>
+<ItemSalesTaxRef>
+<ListID>2E0000-933272656</ListID>
+<FullName>San Tomas</FullName>
+</ItemSalesTaxRef>
+<SalesTaxPercentage>7.75</SalesTaxPercentage>
+<SalesTaxTotal>1404.32</SalesTaxTotal>
+<AppliedAmount>-24609.56</AppliedAmount>
+<BalanceRemaining>0.00</BalanceRemaining>
+<Memo>Basement Remodel</Memo>
+<IsPaid>true</IsPaid>
+<CustomerMsgRef>
+<ListID>50000-933272660</ListID>
+<FullName>Thank you for your business.</FullName>
+</CustomerMsgRef>
+<IsToBePrinted>false</IsToBePrinted>
+<IsToBeEmailed>false</IsToBeEmailed>
+<CustomerSalesTaxCodeRef>
+<ListID>10000-999022286</ListID>
+<FullName>Tax</FullName>
+</CustomerSalesTaxCodeRef>
+</InvoiceRet>
+</InvoiceQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

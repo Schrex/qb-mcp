@@ -5,3 +5,6 @@ __pycache__/
 dist/
 *.log
 .DS_Store
+xsd/
+*.xsd
+.claude/worktrees/

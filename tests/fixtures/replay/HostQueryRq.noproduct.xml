@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<HostQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<HostRet>
+<MajorVersion>34</MajorVersion>
+<MinorVersion>0</MinorVersion>
+<Country>US</Country>
+<SupportedQBXMLVersion>1.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>1.1</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>2.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>13.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>14.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>15.0</SupportedQBXMLVersion>
+<SupportedQBXMLVersion>16.0</SupportedQBXMLVersion>
+<IsAutomaticLogin>false</IsAutomaticLogin>
+<QBFileMode>MultiUser</QBFileMode>
+</HostRet>
+</HostQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
