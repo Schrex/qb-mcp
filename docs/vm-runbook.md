@@ -106,9 +106,11 @@ Question: while QuickBooks is open, do SDK requests run as the integration's **L
    (SDKTestPlus3 uses its own app name unless you can set one; if it can't, use the throwaway script. Do not add this script to the repo.)
 6. **Attribution check:** **Reports > Accountant & Taxes > Audit Trail** (today): note which user the `ZZ View-only test` Vendor (if created) is attributed to. Also check **Company > Users > View Users** / the multi-user list for a `Claude Lookup` session while the smoke test runs **(unverified whether it shows)**.
 7. Repeat steps 5–6 logged into the QuickBooks window as a **non-admin full-access** user, to confirm the pattern.
+   **Verified with `claude lookup` (role `Claude view`) in the window, unattended access still on with "Sign in as `claude lookup`":** the same VendorAdd gets **3260 "Insufficient permission level to perform this action."** Confirms the pattern from the other side: the window user's role decides, in both directions.
 8. Delete the test Vendor (sample file only).
 9. Record the result in #4. If the view-only user is **not** enforced: update ADR-0001 ("read-only is enforced by the server's guard; the view-only user is defence-in-depth only for unattended mode") and the caveat in README's install section.
 10. Also check that `run_job_report` works under `Claude Lookup` (if requests run as that user). If it returns error 3260, note which role areas the job reports need, for the install visit.
+    **Verified with `claude lookup` in the window:** all four `run_job_report` variants return the full reports (the `Jobs, Time & Mileage = View` area is enough), and `qb_status`, `get_company_info`, `list_vendors`, `list_items`, `list_accounts`, `query_bills` and `run_query` (InvoiceQueryRq) all work. Only **`list_customer_jobs` is refused: `CustomerQueryRq` → 3260**, surfaced by the tool as "QuickBooks returned error 3260 for CustomerQueryRq: Insufficient permission level..." (the duplicated View-Only role keeps the vendor, item, account and transaction areas, but the trimmed Customer area blocks the customer list). Not needed for v1 (no separate user), but if a restricted window user is ever used, its role needs **Customers & Receivables** view access for `list_customer_jobs`.
 
 ## 9. Record fixtures
 
