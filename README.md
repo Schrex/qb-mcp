@@ -140,7 +140,7 @@ uv run pytest
 
 Tests call the MCP tools in-process with the **Replay** transport (`tests/fixtures/replay/`, one `<RequestType>.xml` per request type); no Windows or QuickBooks needed.
 
-**qbXML schema validation.** Replay validates every outgoing request against the qbXML XSD found in `QBXML_XSD_DIR` (default `<repo>/xsd/`; it loads `qbxmlops*.xsd`). Without it validation is skipped with a warning. Get the 16.0 set from the QuickBooks SDK on the VM ([docs/vm-runbook.md](docs/vm-runbook.md)). **Never commit Intuit's XSD** (Intuit licence; `xsd/` and `*.xsd` are git-ignored).
+**qbXML schema validation.** Replay validates every outgoing request against the qbXML XSD found in `QBXML_XSD_DIR` (default `<repo>/xsd/`; it loads `qbxmlops*.xsd`). Without it validation is skipped with a warning. Get the 16.0 set from the QuickBooks Desktop SDK 17.0 installer, which ships every version's schemas under `C:\Program Files\Intuit\IDN\Common\tools\validator\` ([docs/vm-runbook.md](docs/vm-runbook.md) section 4). **Never commit Intuit's XSD** (Intuit licence; `xsd/` and `*.xsd` are git-ignored).
 
 ```sh
 QBXML_XSD_DIR=~/qbxml-xsd/16.0 uv run pytest

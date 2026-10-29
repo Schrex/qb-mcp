@@ -34,19 +34,21 @@ Do everything below as one normal Windows user (not "Run as administrator"). Qui
 2. Install with defaults; choose the **Contractor** edition when asked (matches Jeri's Enterprise Contractor 2024).
 3. Apply updates: **Help > Update QuickBooks Desktop > Update Now**.
 
-## 4. Install the QuickBooks SDK 16.0 and get the XSD
+## 4. Install the QuickBooks SDK and get the XSD
 
-1. Download QuickBooks SDK 16.0 from the Intuit Developer site (developer.intuit.com, Desktop SDK; needs a free developer login) and install with defaults.
-2. Find the schema files **(unverified location and names)**; expected under `C:\Program Files (x86)\Intuit\IDN\`:
+**Verified 2026-10-29.** There is no separate "SDK 16.0" download any more: the Intuit Developer site (developer.intuit.com > QuickBooks Desktop > Get started > Download and install the SDK; free developer login) offers **Desktop SDK 17.0** only, as `QBSDK170_x64.exe` (64-bit, ~232 MB) or `QBSDK170.exe` (32-bit). The "Older versions" page has only QBFC runtime redistributables, no schemas. The 17.0 installer ships the schemas for **every** qbXML version, 16.0 included.
+
+1. Download `QBSDK170_x64.exe` and install with defaults (UAC prompt; QuickBooks can stay open).
+2. The 64-bit SDK installs to `C:\Program Files\Intuit\IDN\` (no `(x86)`): `QBSDK17.0\` (docs, samples, SDKTestPlus3) and `Common\tools\validator\`, which holds the schemas:
    ```bat
-   dir /s /b "C:\Program Files (x86)\Intuit\IDN\*.xsd"
+   dir /b "C:\Program Files\Intuit\IDN\Common\tools\validator\qbxml*160.xsd"
    ```
-   Expect `qbxmlops160.xsd` plus the files it includes (`qbxml160.xsd`, `qbxmltypes160.xsd`, `qbxmlso160.xsd`). Copy the **whole set** to one folder (the entry file includes the others by relative path).
-3. Copy that folder to the Mac (e.g. `~/qbxml-xsd/16.0/`) and point `QBXML_XSD_DIR` at it. On the VM, either set `QBXML_XSD_DIR` or put the files in `<repo>\xsd\`.
+   Per version `NN0` (2.0 … 17.0) there are four files; the unprefixed ones are the US edition (`QBA`, `QBC`, `QBO`, `QBU` prefixes are the Australian, Canadian, Online and UK editions, not ours). The 16.0 set is `qbxmlops160.xsd` (entry file; includes the other three by relative path), `qbxml160.xsd`, `qbxmltypes160.xsd`, `qbxmlso160.xsd`. Copy the **whole set** to one folder.
+3. Copy that folder to the Mac (e.g. `~/qbxml-xsd/16.0/`) and point `QBXML_XSD_DIR` at it. On the VM, either set `QBXML_XSD_DIR` or put the files in `<repo>\xsd\` (done on the spare PC).
 4. **Never commit the XSD** (Intuit licence). `xsd/` and `*.xsd` are git-ignored; keep it that way.
-5. On the Mac: `QBXML_XSD_DIR=~/qbxml-xsd/16.0 uv run pytest` — every request the tools build must validate against 16.0 (until now validated against 13.0 at best).
+5. `uv run pytest` — every request the tools build must validate against 16.0. **Verified:** 210 passed, 0 skipped with the 16.0 set in `<repo>\xsd\`; the same with the 17.0 set via `QBXML_XSD_DIR`. The compiled schema does reject an unknown element (checked by hand), so validation is live, not a no-op. Replay loads only the last `qbxmlops*.xsd` by name, so keep one version per folder.
 
-The SDK also has **SDKTestPlus3** (Start menu, under QuickBooks SDK) for sending hand-written qbXML; useful for the user-attribution test in step 8.
+The SDK also has **SDKTestPlus3** (Start menu, under QuickBooks SDK) for sending hand-written qbXML, and a **qbXML Validator** in `Common\tools\validator\`.
 
 ## 5. Open Rock Castle Construction
 
