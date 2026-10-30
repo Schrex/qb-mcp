@@ -31,7 +31,19 @@ async def test_qb_status_reports_quickbooks_and_company_file(call):
         "company_file": r"C:\QB\Rock Castle Construction.QBW",
         "server_version": "0.1.0",
         "last_error": None,
-        "stamp": {"filters": {}, "complete": True, "cap_notice": None, "closing_date": "2023-12-31", "period": "may still change", "voided_excluded": 0},
+        "stamp": {
+            "filters": {},
+            "complete": True,
+            "cap_notice": None,
+            "closing_date": "2023-12-31",
+            "period": "may still change",
+            "voided_excluded": 0,
+            "basis": "not a report; basis does not apply",
+            "dates": None,
+            "check_in_quickbooks": (
+                "Help > Product Information (press F2 in QuickBooks): product, version and Company File location"
+            ),
+        },
     }
 
 
@@ -50,7 +62,17 @@ async def test_get_company_info_returns_name_address_and_fiscal_year_start(call)
             "Country": "US",
         },
         "fiscal_year_start_month": "January",
-        "stamp": {"filters": {}, "complete": True, "cap_notice": None, "closing_date": "2023-12-31", "period": "may still change", "voided_excluded": 0},
+        "stamp": {
+            "filters": {},
+            "complete": True,
+            "cap_notice": None,
+            "closing_date": "2023-12-31",
+            "period": "may still change",
+            "voided_excluded": 0,
+            "basis": "not a report; basis does not apply",
+            "dates": None,
+            "check_in_quickbooks": "Company > My Company",
+        },
     }
 
 

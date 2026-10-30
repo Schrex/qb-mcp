@@ -10,6 +10,10 @@ what it can work out centrally:
 - `closing_date` / `period`: the Company File's closing date (from `closing_date`, read once per
   session by `build_server`) and whether the answer's date range is closed or may still change.
 - `voided_excluded`: how many listed records are voided (`is_void`); no total includes them (#28).
+- `basis`: "not a report; basis does not apply" unless a report tool says Accrual or Cash.
+- `dates`: from `from_date`/`to_date` (transaction date) if the tool takes them, else the tool's
+  registered default (`AS_OF_TODAY` for balances, None when no dates apply).
+- `check_in_quickbooks`: the QuickBooks report or screen to check against, given when the tool is registered.
 
 A tool adds facts only it knows by returning `Answer(result, stamp={...})`, whose keys override
 `TrustStamp` fields. New stamp facts (basis, dates, closing date, excluded counts, where to check in
@@ -30,6 +34,9 @@ ClosingDate = Callable[[], Awaitable[date | None]]
 NOT_FILTERS = frozenset({"limit", "include_lines", "report", "query"})
 DEFAULT_NARROW_BY = "date, Vendor or Customer:Job"
 RANGE_END = frozenset({"to_date", "ToTxnDate", "ToReportDate"})
+NO_BASIS = "not a report; basis does not apply"
+TXN_DATE = "transaction date"
+AS_OF_TODAY = {"as_of": "today"}  # current balances
 
 
 @dataclass(frozen=True)
@@ -40,6 +47,11 @@ class TrustStamp:
     closing_date: str | None = None  # ISO date; None if QuickBooks returned none
     period: str = "closing date unknown"  # or "closed" / "may still change"
     voided_excluded: int = 0
+    # #27: what the figures are based on and where to check them.
+    basis: str = NO_BASIS
+    # {"from", "to", "field"} for a date range (None = open-ended), {"as_of"} for balances, None if no dates apply.
+    dates: dict[str, Any] | None = None
+    check_in_quickbooks: str = ""  # a QuickBooks menu path (report or screen); every tool names one
 
 
 @dataclass
@@ -68,6 +80,18 @@ def _applied_filters(arguments: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def date_range(start: Any, end: Any, field: str = TXN_DATE) -> dict[str, Any]:
+    return {"from": start, "to": end, "field": field}
+
+
+def _dates(arguments: dict[str, Any], default: dict[str, Any] | None) -> dict[str, Any] | None:
+    """A tool taking `from_date`/`to_date` filters by transaction date; otherwise the tool's `default`."""
+    if "from_date" in arguments or "to_date" in arguments:
+        filters = _applied_filters(arguments)
+        return date_range(filters.get("from_date"), filters.get("to_date"))
+    return default
+
+
 def _voided(result: dict[str, Any]) -> int:
     return sum(1 for r in result.get("results", []) if isinstance(r, dict) and r.get("is_void") is True)
 
@@ -89,9 +113,15 @@ def _range_end(filters: dict[str, Any]) -> str | None:
     return None
 
 
-def stamped(narrow_by: str = DEFAULT_NARROW_BY, closing_date: ClosingDate | None = None) -> Callable[[Tool], Tool]:
-    """Add `stamp` to the tool's result. `narrow_by` is the capped notice's hint; `closing_date`
-    reads the Company File's closing date (None: unknown)."""
+def stamped(
+    check_in: str,
+    narrow_by: str = DEFAULT_NARROW_BY,
+    closing_date: ClosingDate | None = None,
+    dates: dict[str, Any] | None = None,
+) -> Callable[[Tool], Tool]:
+    """Add `stamp` to the tool's result. `check_in` is where to check it in QuickBooks; `narrow_by` the
+    capped notice's hint; `closing_date` reads the Company File's closing date (None: unknown); `dates`
+    the stamp's dates for a tool without `from_date`/`to_date` (e.g. `AS_OF_TODAY` for balances)."""
 
     def decorate(tool: Tool) -> Tool:
         @wraps(tool)
@@ -100,7 +130,12 @@ def stamped(narrow_by: str = DEFAULT_NARROW_BY, closing_date: ClosingDate | None
             answer = out if isinstance(out, Answer) else Answer(out)
             result = dict(answer.result)
             arguments = _arguments(tool, args, kwargs)
-            stamp = TrustStamp(filters=_applied_filters(arguments), voided_excluded=_voided(result))
+            stamp = TrustStamp(
+                filters=_applied_filters(arguments),
+                voided_excluded=_voided(result),
+                dates=_dates(arguments, dates),
+                check_in_quickbooks=check_in,
+            )
             if result.get("more_available"):
                 shown = arguments.get("limit", result.get("count"))
                 stamp = replace(stamp, complete=False, cap_notice=cap_notice(shown, narrow_by))

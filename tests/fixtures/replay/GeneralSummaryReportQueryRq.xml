@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<GeneralSummaryReportQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ReportRet>
+<ReportTitle>Profit &amp; Loss</ReportTitle>
+<ReportSubtitle>January through December 2024</ReportSubtitle>
+<ReportBasis>Accrual</ReportBasis>
+<NumRows>1</NumRows>
+<NumColumns>2</NumColumns>
+<NumColTitleRows>1</NumColTitleRows>
+<ColDesc colID="1" dataType="STRTYPE">
+<ColTitle titleRow="1" />
+<ColType>Label</ColType>
+</ColDesc>
+<ColDesc colID="2" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Jan - Dec 24" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ReportData>
+<TotalRow rowNumber="1">
+<ColData colID="1" value="Net Income" />
+<ColData colID="2" value="0.00" />
+</TotalRow>
+</ReportData>
+</ReportRet>
+</GeneralSummaryReportQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
