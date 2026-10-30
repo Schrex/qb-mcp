@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#32). Invoices on two A/R accounts: a progress invoice, and the retainage billed on it,
+     kept in a separate A/R account so it isn't mixed with regular receivables. -->
+<QBXML>
+<QBXMLMsgsRs>
+<InvoiceQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<InvoiceRet>
+<TxnID>5A01-1730000000</TxnID>
+<CustomerRef><ListID>800000B8-1197707458</ListID><FullName>Prentice, Adelaide:Bay Window</FullName></CustomerRef>
+<ARAccountRef><ListID>40000-933270541</ListID><FullName>Accounts Receivable</FullName></ARAccountRef>
+<TxnDate>2025-10-15</TxnDate>
+<RefNumber>2101</RefNumber>
+<Subtotal>9000.00</Subtotal>
+<BalanceRemaining>9000.00</BalanceRemaining>
+</InvoiceRet>
+<InvoiceRet>
+<TxnID>5A02-1730000000</TxnID>
+<CustomerRef><ListID>800000B8-1197707458</ListID><FullName>Prentice, Adelaide:Bay Window</FullName></CustomerRef>
+<ARAccountRef><ListID>8000005B-1197756991</ListID><FullName>Retainage Receivable</FullName></ARAccountRef>
+<TxnDate>2025-10-15</TxnDate>
+<RefNumber>2101R</RefNumber>
+<Subtotal>1000.00</Subtotal>
+<BalanceRemaining>1000.00</BalanceRemaining>
+</InvoiceRet>
+</InvoiceQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

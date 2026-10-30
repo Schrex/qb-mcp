@@ -16,11 +16,12 @@ async def test_query_bills_returns_header_with_item_and_expense_lines(call):
     out = result.structured_content
     assert out["results"][0] == {
         "vendor": "Patton Hardware Supplies",
+        "ap_account": "Accounts Payable",
         "ref_number": "3847498",
         "date": "2024-12-02",
         "due_date": "2026-01-01",
         "amount": "13695.00",
-        "open_amount": "0.00",  # paid; QuickBooks' OpenAmount (4479.20) is a Vendor-wide figure (#14)
+        "open_balance": "0.00",  # paid; QuickBooks' OpenAmount (4479.20) is a Vendor-wide figure (#14)
         "memo": None,
         "is_paid": True,
         "expense_lines": [],
@@ -266,14 +267,14 @@ async def test_query_bills_without_lines(call, replay):
     assert "expense_lines" not in out["results"][0]
 
 
-async def test_query_bills_open_amount_is_each_bills_own_balance_not_the_vendor_total(call, replay):
+async def test_query_bills_open_balance_is_each_bills_own_balance_not_the_vendor_total(call, replay):
     # On the test PC every Perry Windows & Doors Bill reported the same OpenAmount (#14);
     # this hand-written response reproduces that with payments and credits linked to the Bills.
     replay.respond_with("BillQueryRq", "BillQueryRq.vendortotal.xml")
 
     out = (await call("query_bills", vendor="Perry Windows & Doors")).structured_content
 
-    assert [(b["ref_number"], b["amount"], b["open_amount"], b["is_paid"]) for b in out["results"]] == [
+    assert [(b["ref_number"], b["amount"], b["open_balance"], b["is_paid"]) for b in out["results"]] == [
         ("PW-101", "1800.00", "1300.00", False),  # partly paid by check: 1,800 - 500
         ("PW-102", "2325.00", "0.00", True),  # paid in full by check
         ("PW-103", "2400.00", "0.00", True),  # 400 Vendor credit + 2,000 check
@@ -291,7 +292,7 @@ async def test_query_bills_asks_quickbooks_for_linked_transactions(call, replay)
     assert ET.fromstring(replay.sent[-2].encode()).findtext("QBXMLMsgsRq/BillQueryRq/IncludeLinkedTxns") == "true"
 
 
-async def test_query_bills_paid_status_follows_the_computed_open_amount(call, replay):
+async def test_query_bills_paid_status_follows_the_computed_open_balance(call, replay):
     replay.respond_with("BillQueryRq", "BillQueryRq.vendortotal.xml")
 
     unpaid = (await call("query_bills", paid_status="unpaid")).structured_content
@@ -303,3 +304,15 @@ async def test_query_bills_paid_status_follows_the_computed_open_amount(call, re
     assert [b["ref_number"] for b in paid["results"]] == ["PW-102", "PW-103"]
     assert paid["count"] == 2
     assert [b["ref_number"] for b in unpaid_ref["results"]] == ["PW-101", "PW-104", "PW-105"]
+
+
+async def test_query_bills_names_each_bills_ap_account(call, replay):
+    # Retainage withheld from a Vendor kept in its own A/P account (#32).
+    replay.respond_with("BillQueryRq", "BillQueryRq.apaccounts.xml")
+
+    out = (await call("query_bills", vendor="Timberloft Lumber", include_lines=False)).structured_content
+
+    assert [(b["ref_number"], b["ap_account"], b["amount"]) for b in out["results"]] == [
+        ("TL-501", "Accounts Payable", "9000.00"),
+        ("TL-501R", "Retainage Payable", "1000.00"),
+    ]

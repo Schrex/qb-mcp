@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#32). One Vendor's Bills on two A/P accounts: a regular Bill, and the retainage
+     withheld on it, kept in a separate A/P account so it isn't mixed with regular payables. -->
+<QBXML>
+<QBXMLMsgsRs>
+<BillQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="2">
+<BillRet>
+<TxnID>3E01-1730000000</TxnID>
+<VendorRef><ListID>80000008-1197759370</ListID><FullName>Timberloft Lumber</FullName></VendorRef>
+<APAccountRef><ListID>80000019-1197756960</ListID><FullName>Accounts Payable</FullName></APAccountRef>
+<TxnDate>2025-10-01</TxnDate>
+<DueDate>2025-10-31</DueDate>
+<AmountDue>9000.00</AmountDue>
+<RefNumber>TL-501</RefNumber>
+<IsPaid>false</IsPaid>
+</BillRet>
+<BillRet>
+<TxnID>3E02-1730000000</TxnID>
+<VendorRef><ListID>80000008-1197759370</ListID><FullName>Timberloft Lumber</FullName></VendorRef>
+<APAccountRef><ListID>8000005A-1197756990</ListID><FullName>Retainage Payable</FullName></APAccountRef>
+<TxnDate>2025-10-01</TxnDate>
+<DueDate>2026-03-31</DueDate>
+<AmountDue>1000.00</AmountDue>
+<RefNumber>TL-501R</RefNumber>
+<Memo>10% retainage on TL-501</Memo>
+<IsPaid>false</IsPaid>
+</BillRet>
+</BillQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

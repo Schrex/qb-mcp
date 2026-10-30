@@ -178,7 +178,8 @@ def build_server(transport: Transport) -> MCPServer:
         (`from_date`/`to_date`), exact `vendor` name, exact `ref_number` (the number on the Vendor's
         invoice; answers "is this Bill already entered?", empty result if not), `paid_status` (default
         all), `customer_job`, `include_lines` (default true), `limit` (default 100; `more_available` is
-        true if more exist). Each Bill has vendor, ref number, date, due date, amount, `open_amount`, memo,
+        true if more exist). Each Bill has vendor, `ap_account` (e.g. a separate retainage A/P account),
+        ref number, date, due date, amount, `open_balance`, memo,
         `is_paid` and, with lines, `expense_lines` (account) and `item_lines` (item, quantity, cost),
         each line with amount, Customer:Job, class and billable status.
         `customer_job` (e.g. "Acme:Main St Paving", or "Acme" for the customer and all its
@@ -186,11 +187,12 @@ def build_server(transport: Transport) -> MCPServer:
         cannot filter Bills by Customer:Job, so this is applied after fetching up to `limit` Bills:
         `limit` counts Bills scanned, not matched. Add a date range or Vendor to scan fewer Bills.
         Needs include_lines.
-        `open_amount` is this Bill's own balance, worked out here: amount less the bill payments and
+        `open_balance` is what is still owed on this Bill, meant to match the Open Balance column of
+        QuickBooks' A/P Aging Detail report; worked out here: amount less the bill payments and
         Vendor credits linked to the Bill (0 if QuickBooks marks it paid). QuickBooks' own OpenAmount
         is not returned: it showed one Vendor-wide total on every Bill. Not yet verified against a real
-        Company File; if a figure matters, check it against QuickBooks' A/P Aging Detail report.
-        `is_paid` means open_amount is 0, and `paid_status` returns only Bills that agree with it."""
+        Company File; if a figure matters, check it against A/P Aging Detail.
+        `is_paid` means open_balance is 0, and `paid_status` returns only Bills that agree with it."""
         if customer_job and not include_lines:
             raise ToolError("customer_job filters Bill lines, so it needs include_lines=true.")
         if ref_number:
@@ -309,7 +311,7 @@ def build_server(transport: Transport) -> MCPServer:
     @user_facing
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> dict[str, Any]:
         (rs,) = await qb.lookup(parse_query_element(query))
-        return capped(rs.records, limit)
+        return capped([records.raw(tag, record) for tag, record in rs.rets], limit)
 
     return mcp
 
@@ -321,7 +323,9 @@ without the <?xml?>/<QBXML>/<QBXMLMsgsRq> envelope, e.g.
 `<InvoiceQueryRq><MaxReturned>101</MaxReturned><TxnDateRangeFilter><FromTxnDate>2026-01-01</FromTxnDate></TxnDateRangeFilter></InvoiceQueryRq>`.
 Allowed query types: {", ".join(sorted(ALLOWED_QUERIES))}.
 Include MaxReturned (limit + 1) on transaction queries. Anything other than a single allowed query
-element is refused. Returns the `*Ret` records (sensitive fields removed), capped at `limit`."""
+element is refused. Returns the `*Ret` records (sensitive fields removed), capped at `limit`.
+Invoices, ReceivePayments and CreditMemos also carry `ar_account`, the A/R account they post to
+(retainage receivable may be kept in its own A/R account)."""
 
 
 def _job_report_type(report: JobReport) -> str:
