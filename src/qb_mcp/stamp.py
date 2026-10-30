@@ -13,7 +13,9 @@ what it can work out centrally:
 - `voided_excluded`: how many listed records are voided (`is_void`); no total includes them (#28).
 - `basis`: "not a report; basis does not apply" unless a report tool says Accrual or Cash.
 - `dates`: from `from_date`/`to_date` (transaction date) if the tool takes them, else the tool's
-  registered default (`AS_OF_TODAY` for balances, None when no dates apply).
+  registered default (`AS_OF_TODAY` for balances, None when no dates apply). A tool whose figures
+  are current balances (`live_balances`, e.g. Bills' open balances) adds `balances_as_of: today`
+  and is never "closed": payments entered after the closing date still change those balances.
 - `check_in_quickbooks`: the QuickBooks report or screen to check against, given when the tool is registered.
 
 A tool adds facts only it knows by returning `Answer(result, stamp={...})`, whose keys override
@@ -46,6 +48,7 @@ FISCAL_MACRO = "unknown (fiscal date macro)"
 NO_BASIS = "not a report; basis does not apply"
 TXN_DATE = "transaction date"
 AS_OF_TODAY = {"as_of": "today"}  # current balances
+BALANCES_AS_OF_TODAY = {"balances_as_of": "today"}  # current balances on records chosen by date
 
 
 @dataclass(frozen=True)
@@ -99,11 +102,12 @@ def date_range(start: Any, end: Any, field: str = TXN_DATE) -> dict[str, Any]:
     return {"from": start, "to": end, "field": field}
 
 
-def _dates(arguments: dict[str, Any], default: dict[str, Any] | None) -> dict[str, Any] | None:
+def _dates(arguments: dict[str, Any], default: dict[str, Any] | None, live_balances: bool) -> dict[str, Any] | None:
     """A tool taking `from_date`/`to_date` filters by transaction date; otherwise the tool's `default`."""
     if "from_date" in arguments or "to_date" in arguments:
         filters = _applied_filters(arguments)
-        return date_range(filters.get("from_date"), filters.get("to_date"))
+        dates = date_range(filters.get("from_date"), filters.get("to_date"))
+        return dates | BALANCES_AS_OF_TODAY if live_balances else dates
     return default
 
 
@@ -111,10 +115,12 @@ def _voided(result: dict[str, Any]) -> int:
     return sum(1 for r in result.get("results", []) if isinstance(r, dict) and r.get("is_void") is True)
 
 
-def _period(filters: dict[str, Any], closed_through: date) -> str:
+def _period(filters: dict[str, Any], closed_through: date, live: bool) -> str:
     """"closed" if the answer's date range ends on or before the closing date, else "may still change"
-    (no end date: it runs to today); a fiscal date macro's end isn't known here (`FISCAL_MACRO`)."""
-    end = _range_end(filters, date.today())
+    (no end date: it runs to today); a fiscal date macro's end isn't known here (`FISCAL_MACRO`).
+    `live` figures (current balances) run to today whatever the date range."""
+    today = date.today()
+    end = today if live else _range_end(filters, today)
     if end == FISCAL:
         return FISCAL_MACRO
     return "closed" if isinstance(end, date) and end <= closed_through else "may still change"
@@ -138,10 +144,13 @@ def stamped(
     narrow_by: str = DEFAULT_NARROW_BY,
     closing_date: ClosingDate | None = None,
     dates: dict[str, Any] | None = None,
+    live_balances: bool = False,
 ) -> Callable[[Tool], Tool]:
     """Add `stamp` to the tool's result. `check_in` is where to check it in QuickBooks; `narrow_by` the
     capped notice's hint; `closing_date` reads the Company File's closing date (None: unknown); `dates`
-    the stamp's dates for a tool without `from_date`/`to_date` (e.g. `AS_OF_TODAY` for balances)."""
+    the stamp's dates for a tool without `from_date`/`to_date` (e.g. `AS_OF_TODAY` for balances);
+    `live_balances` for a tool whose figures are current balances (as of today, whatever its dates)."""
+    live = live_balances or dates == AS_OF_TODAY
 
     def decorate(tool: Tool) -> Tool:
         @wraps(tool)
@@ -153,7 +162,7 @@ def stamped(
             stamp = TrustStamp(
                 filters=_applied_filters(arguments),
                 voided_excluded=_voided(result),
-                dates=_dates(arguments, dates),
+                dates=_dates(arguments, dates, live_balances),
                 check_in_quickbooks=check_in,
             )
             if result.get("more_available"):
@@ -167,7 +176,7 @@ def stamped(
                 stamp = replace(stamp, period=NOT_SET)
             elif isinstance(closed_through, date):
                 stamp = replace(
-                    stamp, closing_date=closed_through.isoformat(), period=_period(stamp.filters, closed_through)
+                    stamp, closing_date=closed_through.isoformat(), period=_period(stamp.filters, closed_through, live)
                 )
             return result | {"stamp": asdict(stamp)}
 

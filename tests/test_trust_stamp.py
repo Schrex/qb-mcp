@@ -193,8 +193,12 @@ async def test_stamp_states_the_date_range_and_the_date_field_it_filtered(call):
     all_bills = (await call("query_bills")).structured_content
 
     assert report["stamp"]["dates"] == {"from": "2024-01-01", "to": "2024-12-31", "field": "transaction date"}
-    assert bills["stamp"]["dates"] == {"from": "2024-01-01", "to": None, "field": "transaction date"}
-    assert all_bills["stamp"]["dates"] == {"from": None, "to": None, "field": "transaction date"}
+    assert bills["stamp"]["dates"] == {
+        "from": "2024-01-01", "to": None, "field": "transaction date", "balances_as_of": "today",
+    }
+    assert all_bills["stamp"]["dates"] == {
+        "from": None, "to": None, "field": "transaction date", "balances_as_of": "today",
+    }
 
 
 async def test_balances_are_stamped_as_of_today(call):
@@ -313,13 +317,23 @@ async def test_every_tool_result_carries_the_closing_date(call, replay, tool):
 async def test_stamp_says_whether_the_date_range_is_closed(call, replay, from_date, to_date, period):
     replay.respond_with("PreferencesQueryRq", CLOSING_DATE)
 
-    bills = (await call("query_bills", from_date=from_date, to_date=to_date)).structured_content
     report = (
         await call("run_job_report", report="job_profitability_summary", from_date=from_date, to_date=to_date)
     ).structured_content
 
-    assert bills["stamp"]["period"] == period
     assert report["stamp"]["period"] == period
+
+
+async def test_bills_open_balances_are_live_so_never_closed_by_their_bill_dates(call, replay):
+    # Bills dated before the closing date can still be paid after it, changing open_balance/is_paid.
+    replay.respond_with("PreferencesQueryRq", CLOSING_DATE)
+
+    stamp = (await call("query_bills", from_date="2024-01-01", to_date="2024-03-31")).structured_content["stamp"]
+
+    assert stamp["period"] == "may still change"
+    assert stamp["dates"] == {
+        "from": "2024-01-01", "to": "2024-03-31", "field": "transaction date", "balances_as_of": "today",
+    }
 
 
 @pytest.mark.parametrize("to_date,period", [("2024-05-31", "closed"), ("2024-07-31", "may still change")])

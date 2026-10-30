@@ -129,12 +129,13 @@ def build_server(transport: Transport) -> MCPServer:
         description: str | None = None,
         errors: bool = True,
         dates: dict[str, Any] | None = None,
+        live_balances: bool = False,
     ):
         """Register a tool. Every tool is `stamped` (trust stamp) and names where to check it in QuickBooks;
         `errors` adds `user_facing` errors."""
 
         def register(fn: Tool) -> Tool:
-            wrapped = stamped(check_in_quickbooks, narrow_by, closing_date, dates)(fn)
+            wrapped = stamped(check_in_quickbooks, narrow_by, closing_date, dates, live_balances)(fn)
             return mcp.tool(description=description)(user_facing(wrapped) if errors else wrapped)
 
         return register
@@ -206,7 +207,7 @@ def build_server(transport: Transport) -> MCPServer:
         if more Vendors match than `limit`, `more_available` is true."""
         return await list_lookup("VendorQueryRq", records.vendor, name_contains, status, limit)
 
-    @tool(check_in.BILLS, narrow_by="date or Vendor")
+    @tool(check_in.BILLS, narrow_by="date or Vendor", live_balances=True)
     async def query_bills(
         from_date: date | None = None,
         to_date: date | None = None,
