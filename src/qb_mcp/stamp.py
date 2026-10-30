@@ -78,6 +78,8 @@ def stamped(narrow_by: str = DEFAULT_NARROW_BY) -> Callable[[Tool], Tool]:
             stamp = replace(stamp, **answer.stamp)
             return result | {"stamp": asdict(stamp)}
 
+        # MCP builds the output schema from the return annotation; a tool returning `Answer` returns a dict here.
+        wrapper.__signature__ = inspect.signature(tool).replace(return_annotation=dict[str, Any])  # type: ignore[attr-defined]
         return wrapper
 
     return decorate

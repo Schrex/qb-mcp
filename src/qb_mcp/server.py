@@ -2,6 +2,7 @@
 
 import os
 import sys
+import xml.etree.ElementTree as ET
 from collections.abc import Awaitable, Callable
 from datetime import date
 from functools import wraps
@@ -19,6 +20,7 @@ from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
 from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.reports import parse_report
+from qb_mcp.responses import to_data
 from qb_mcp.stamp import DEFAULT_NARROW_BY, Answer, stamped
 from qb_mcp.transport import Transport
 from qb_mcp.transports.unavailable import UnavailableTransport
@@ -257,9 +259,10 @@ def build_server(transport: Transport) -> MCPServer:
         return parse_report(rs.records[0] if rs.records else None)
 
     @tool(description=RUN_QUERY_DESCRIPTION)
-    async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> dict[str, Any]:
-        (rs,) = await qb.lookup(parse_query_element(query))
-        return capped(rs.records, limit)
+    async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> Answer:
+        element = parse_query_element(query)
+        (rs,) = await qb.lookup(element)
+        return Answer(capped(rs.records, limit), stamp={"filters": _query_filters(element)})
 
     return mcp
 
@@ -277,6 +280,15 @@ element is refused. Returns the `*Ret` records (sensitive fields removed), cappe
 def _job_report_type(report: JobReport) -> str:
     """`job_estimates_vs_actuals_summary` -> `JobEstimatesVsActualsSummary`."""
     return "".join(word.capitalize() for word in report.split("_"))
+
+
+def _query_filters(element: ET.Element) -> dict[str, Any]:
+    """A raw query's filter elements, for the stamp: every child but MaxReturned and Include*/OwnerID options."""
+    return {
+        child.tag: to_data(child)
+        for child in element
+        if child.tag not in ("MaxReturned", "OwnerID") and not child.tag.startswith("Include")
+    }
 
 
 def _list_filters(name_contains: str | None, status: ListStatus, limit: int) -> list[Any]:
