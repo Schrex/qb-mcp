@@ -258,7 +258,7 @@ def build_server(transport: Transport) -> MCPServer:
     @user_facing
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> dict[str, Any]:
         (rs,) = await qb.lookup(parse_query_element(query))
-        return capped(rs.records, limit)
+        return capped([records.raw(tag, record) for tag, record in rs.rets], limit)
 
     return mcp
 
@@ -270,7 +270,9 @@ without the <?xml?>/<QBXML>/<QBXMLMsgsRq> envelope, e.g.
 `<InvoiceQueryRq><MaxReturned>101</MaxReturned><TxnDateRangeFilter><FromTxnDate>2026-01-01</FromTxnDate></TxnDateRangeFilter></InvoiceQueryRq>`.
 Allowed query types: {", ".join(sorted(ALLOWED_QUERIES))}.
 Include MaxReturned (limit + 1) on transaction queries. Anything other than a single allowed query
-element is refused. Returns the `*Ret` records (sensitive fields removed), capped at `limit`."""
+element is refused. Returns the `*Ret` records (sensitive fields removed), capped at `limit`.
+Invoices, ReceivePayments and CreditMemos also carry `ar_account`, the A/R account they post to
+(retainage receivable may be kept in its own A/R account)."""
 
 
 def _job_report_type(report: JobReport) -> str:

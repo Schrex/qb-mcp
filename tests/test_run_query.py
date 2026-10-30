@@ -37,6 +37,16 @@ async def test_run_query_sends_the_element_inside_the_servers_own_envelope(call,
     assert rq.findtext("RefNumber") == "A&B"
 
 
+@pytest.mark.parametrize("rq_type", ["InvoiceQueryRq", "ReceivePaymentQueryRq", "CreditMemoQueryRq"])
+async def test_run_query_names_the_ar_account_of_invoices_payments_and_credit_memos(call, replay, rq_type):
+    # Retainage receivable kept in its own A/R account (#32).
+    replay.respond_with(rq_type, f"{rq_type}.araccounts.xml")
+
+    out = (await call("run_query", query=f"<{rq_type}><MaxReturned>101</MaxReturned></{rq_type}>")).structured_content
+
+    assert [r["ar_account"] for r in out["results"]] == ["Accounts Receivable", "Retainage Receivable"]
+
+
 async def test_run_query_strips_sensitive_fields(call, replay):
     replay.respond_with("InvoiceQueryRq", "InvoiceQueryRq.sensitive.xml")
 
