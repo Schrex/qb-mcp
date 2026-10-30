@@ -28,6 +28,25 @@
 <Addr2>4872 County Rd</Addr2>
 <Addr3>Bayshore, CA 94326</Addr3>
 </AddressBlock>
+<ExpenseLineRet>
+<TxnLineID>6B1-1197761004</TxnLineID>
+<AccountRef>
+<ListID>A0000-933270542</ListID>
+<FullName>Job Expenses:Job Materials</FullName>
+</AccountRef>
+<Amount>412.30</Amount>
+<Memo>PO 4471 lien waiver on file</Memo>
+<CustomerRef>
+<ListID>800000B8-1197707458</ListID>
+<FullName>Acme:Main St Paving</FullName>
+</CustomerRef>
+</ExpenseLineRet>
+<DataExtRet>
+<OwnerID>0</OwnerID>
+<DataExtName>Ticket No</DataExtName>
+<DataExtType>STR255TYPE</DataExtType>
+<DataExtValue>88123</DataExtValue>
+</DataExtRet>
 </CheckRet>
 <CheckRet>
 <TxnID>6B2-1197761002</TxnID>
