@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<CreditCardChargeQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<CreditCardChargeRet>
+<TxnID>3A41-1071521004</TxnID>
+<TimeCreated>2003-12-15T16:10:04-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:06-05:00</TimeModified>
+<EditSequence>1765784191</EditSequence>
+<TxnNumber>702</TxnNumber>
+<AccountRef>
+<ListID>9C0000-933270542</ListID>
+<FullName>QuickBooks Credit Card</FullName>
+</AccountRef>
+<PayeeEntityRef>
+<ListID>A0000-933272656</ListID>
+<FullName>Bayshore CalOil Service</FullName>
+</PayeeEntityRef>
+<TxnDate>2025-11-28</TxnDate>
+<Amount>86.50</Amount>
+<RefNumber>2810</RefNumber>
+<Memo>Fuel for truck</Memo>
+<ExpenseLineRet>
+<TxnLineID>3A43-1071521004</TxnLineID>
+<AccountRef>
+<ListID>480000-933270542</ListID>
+<FullName>Job Expenses:Equipment Rental</FullName>
+</AccountRef>
+<Amount>86.50</Amount>
+<Memo>Fuel</Memo>
+<CustomerRef>
+<ListID>990000-1071509249</ListID>
+<FullName>Burch, Jason:Room Addition</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>10000-933272658</ListID>
+<FullName>New Construction</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+</CreditCardChargeRet>
+<CreditCardChargeRet>
+<TxnID>3A47-1071521088</TxnID>
+<TimeCreated>2003-12-15T16:11:28-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:06-05:00</TimeModified>
+<EditSequence>1765784192</EditSequence>
+<TxnNumber>703</TxnNumber>
+<AccountRef>
+<ListID>9C0000-933270542</ListID>
+<FullName>QuickBooks Credit Card</FullName>
+</AccountRef>
+<PayeeEntityRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</PayeeEntityRef>
+<TxnDate>2025-12-03</TxnDate>
+<Amount>54.00</Amount>
+<RefNumber>2811</RefNumber>
+<Memo>Doorknobs</Memo>
+<ItemLineRet>
+<TxnLineID>3A49-1071521088</TxnLineID>
+<ItemRef>
+<ListID>130000-933272656</ListID>
+<FullName>Hardware:Doorknobs Std</FullName>
+</ItemRef>
+<Desc>Doorknobs Part # DK 3704</Desc>
+<Quantity>2</Quantity>
+<Cost>27.00</Cost>
+<Amount>54.00</Amount>
+<CustomerRef>
+<ListID>8A0000-1071508857</ListID>
+<FullName>Abercrombie, Kristy:Remodel Bathroom</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>20000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>Billable</BillableStatus>
+</ItemLineRet>
+</CreditCardChargeRet>
+</CreditCardChargeQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
