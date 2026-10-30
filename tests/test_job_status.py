@@ -40,7 +40,8 @@ async def test_list_customer_jobs_job_status_combines_with_active_status(call, r
     assert _names(result) == [
         "Acme Paving:Oak Rd", "Acme Paving:Pine Ct", "Brook Homes:Lot 7", "Brook Homes:Lot 8", "Brook Homes:Lot 9",
     ]
-    assert result.structured_content["filters"] == {"job_status": ["closed", "in_progress"]}
+    assert result.structured_content["stamp"]["filters"]["job_status"] == ["in_progress", "closed"]
+    assert "filters" not in result.structured_content  # the stamp carries them
 
 
 async def test_list_customer_jobs_cap_counts_matching_jobs_not_records_scanned(call, replay):
@@ -74,7 +75,8 @@ async def test_run_job_report_limits_the_report_to_jobs_in_the_given_status(call
     assert [e.text for e in entities] == [
         "Acme Paving:Elm Ave", "Acme Paving:Oak Rd", "Brook Homes:Lot 8", "Brook Homes:Lot 9",
     ]
-    assert result.structured_content["filters"] == {"job_status": ["awarded", "in_progress"]}
+    assert result.structured_content["stamp"]["filters"]["job_status"] == ["awarded", "in_progress"]
+    assert "filters" not in result.structured_content  # the stamp carries them
 
 
 async def test_run_job_report_job_status_within_one_customer(call, replay):

@@ -277,7 +277,7 @@ def build_server(transport: Transport) -> MCPServer:
         # QuickBooks can't filter by JobStatus, so fetch every name/status match and filter here;
         # the cap then counts matching records, so `count`/`more_available` stay exact.
         kept = [records.customer_job(tag, r) for tag, r in await jobs_in(job_status, name_contains, status)]
-        return capped(kept, limit) | {"filters": {"job_status": sorted(set(job_status))}}
+        return capped(kept, limit)
 
     @tool(check_in.ITEMS, narrow_by="name_contains or status")
     async def list_items(
@@ -322,7 +322,7 @@ def build_server(transport: Transport) -> MCPServer:
         a single TOTAL row of zeros; an unknown Customer:Job is a QuickBooks error (3120).
         Optional `job_status` (e.g. ["awarded", "in_progress"]) limits the report to Customer:Jobs in
         those statuses, and `status` (default all: active and inactive) to active or inactive ones; they
-        combine, within `customer_job` if given; `filters` echoes `job_status`.
+        combine, within `customer_job` if given; the stamp's `filters` echo them.
         If none match, no report is run: `rows` is empty and `note` says why.
         The stamp's `basis` is the one QuickBooks ran the report on (qbXML can't choose it for job reports)."""
         if report.endswith("_detail") and not customer_job:
@@ -342,22 +342,20 @@ def build_server(transport: Transport) -> MCPServer:
             if customer_job:  # the Customer:Job itself and everything under it (names are case-insensitive)
                 scope = customer_job.lower()
                 names = [n for n in names if n.lower() == scope or n.lower().startswith(scope + ":")]
-            applied = {"filters": {"job_status": sorted(set(job_status))}} if job_status else {}
             if not names:
                 where = f" under {customer_job}" if customer_job else ""
                 active = f"{status} " if status != "all" else ""
                 in_status = f" has job status {', '.join(sorted(set(job_status)))}" if job_status else ""
                 note = f"No {active}Customer:Job{where}{in_status}; no report run."
                 return Answer(
-                    parse_report(None) | applied | {"note": note}, stamp=where_to_check | {"basis": "no report run"}
+                    parse_report(None) | {"note": note}, stamp=where_to_check | {"basis": "no report run"}
                 )
             children.append(el("ReportEntityFilter", None, *(el("FullName", n) for n in names)))
         elif customer_job:
             children.append(el("ReportEntityFilter", None, el("FullNameWithChildren", customer_job)))
         (rs,) = await qb.lookup(query("JobReportQueryRq", *children))
-        report = parse_report(rs.records[0] if rs.records else None)
-        stamp = where_to_check | {"basis": _report_basis(report)}
-        return Answer(report | applied if job_status or status != "all" else report, stamp=stamp)
+        parsed = parse_report(rs.records[0] if rs.records else None)
+        return Answer(parsed, stamp=where_to_check | {"basis": _report_basis(parsed)})
 
     @tool(check_in.RAW_QUERY, description=RUN_QUERY_DESCRIPTION)
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> Answer:

@@ -1,6 +1,7 @@
 """The trust stamp (#25): one `stamp` on every tool result saying what the answer is based on
 (filters applied) and whether it is complete or capped."""
 
+import re
 import shutil
 from datetime import date, timedelta
 
@@ -8,6 +9,7 @@ import pytest
 from conftest import FIXTURES, tool_requests
 from mcp import Client
 
+from qb_mcp import check_in
 from qb_mcp.errors import TransportError, TransportFailure
 from qb_mcp.server import build_server
 from qb_mcp.transports.replay import ReplayTransport
@@ -494,3 +496,11 @@ async def test_aging_report_stamp_names_the_accounts_it_includes(call, report_ty
 
 async def test_other_answers_name_no_accounts(call):
     assert (await call("query_bills")).structured_content["stamp"]["accounts"] is None
+
+
+async def test_every_query_run_query_allows_names_where_to_check_it(client):
+    # run_query's description lists the allow-list; check_in.QUERIES must name a menu path for each, no more.
+    (run_query,) = [t for t in (await client.list_tools()).tools if t.name == "run_query"]
+    allowed = re.search(r"Allowed query types: ([^.]+)\.", run_query.description).group(1).split(", ")
+
+    assert set(check_in.QUERIES) == set(allowed)
