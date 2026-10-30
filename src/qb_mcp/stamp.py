@@ -62,8 +62,14 @@ class Answer:
     stamp: dict[str, Any] = field(default_factory=dict)
 
 
-def cap_notice(shown: int, narrow_by: str) -> str:
-    return f"Showing the first {shown}; more exist; totals incomplete. Narrow by {narrow_by}."
+def cap_notice(shown: int, narrow_by: str, scanned: int | None = None) -> str:
+    """`shown`: results returned; `scanned`: records fetched, when a filter applied after fetching
+    (e.g. query_bills' `paid_status`, `customer_job`) left fewer than that."""
+    if scanned is not None and shown < scanned:
+        first = f"{shown} found in the first {scanned} scanned"
+    else:
+        first = f"the first {shown}"
+    return f"Showing {first}; more exist; totals incomplete. Narrow by {narrow_by}."
 
 
 def _arguments(tool: Tool, args: tuple[Any, ...], kwargs: dict[str, Any]) -> dict[str, Any]:
@@ -137,8 +143,9 @@ def stamped(
                 check_in_quickbooks=check_in,
             )
             if result.get("more_available"):
-                shown = arguments.get("limit", result.get("count"))
-                stamp = replace(stamp, complete=False, cap_notice=cap_notice(shown, narrow_by))
+                shown = result.get("count", len(result.get("results", [])))
+                notice = cap_notice(shown, narrow_by, arguments.get("limit"))
+                stamp = replace(stamp, complete=False, cap_notice=notice)
                 result.pop("totals", None)
             stamp = replace(stamp, **answer.stamp)
             closed_through = await closing_date() if closing_date else None

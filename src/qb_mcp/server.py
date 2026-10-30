@@ -17,7 +17,7 @@ from qb_mcp import bills, check_in, records
 from qb_mcp.errors import QBError, TransportError, TransportFailure
 from qb_mcp.guard import ALLOWED_QUERIES, parse_query_element
 from qb_mcp.logs import configure_logging
-from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
+from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit, narrowed
 from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.reports import parse_report
@@ -252,12 +252,10 @@ def build_server(transport: Transport) -> MCPServer:
         # The cap applies to Bills scanned; report it even if `customer_job` leaves fewer than `limit`.
         out = capped([bills.bill(b, include_lines) for b in found], limit)
         if paid_status != "all":
-            kept = bills.with_paid_status(out["results"], paid_status)
-            out |= {"results": kept, "count": len(kept)}
+            out = narrowed(out, bills.with_paid_status(out["results"], paid_status), limit)
         if customer_job:
-            matched = bills.charged_to(out["results"], customer_job)
             # No totals: a Bill's amount includes its lines for other Customer:Jobs.
-            return out | {"results": matched, "count": len(matched)}
+            return narrowed(out, bills.charged_to(out["results"], customer_job), limit)
         return out | {"totals": bills.totals(out["results"])}
 
     @tool(check_in.CUSTOMER_JOBS, narrow_by="name_contains or status", dates=AS_OF_TODAY)

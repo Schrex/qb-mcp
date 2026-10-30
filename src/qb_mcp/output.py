@@ -88,8 +88,18 @@ def capped(records: list[Any], limit: int) -> dict[str, Any]:
     more = len(records) > limit
     out: dict[str, Any] = {"results": records[:limit], "count": min(len(records), limit), "more_available": more}
     if more:
-        out["note"] = (
-            f"Showing the first {limit} results; more exist. "
-            "Narrow the question (e.g. a name filter) or raise the limit."
-        )
+        out["note"] = _more_note(f"the first {limit}")
+    return out
+
+
+def _more_note(shown: str) -> str:
+    return f"Showing {shown} results; more exist. Narrow the question (e.g. a name filter) or raise the limit."
+
+
+def narrowed(out: dict[str, Any], kept: list[Any], limit: int) -> dict[str, Any]:
+    """`capped` output after a filter applied to its results (one QuickBooks can't apply): `results`
+    and `count` are what is kept; a capped note says how many of the records scanned matched."""
+    out = out | {"results": kept, "count": len(kept)}
+    if out["more_available"]:
+        out["note"] = _more_note(f"{len(kept)} found in the first {limit} scanned")
     return out

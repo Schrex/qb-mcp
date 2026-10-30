@@ -90,6 +90,20 @@ async def test_capped_result_says_so_in_plain_words_and_how_to_narrow(call, repl
     )
 
 
+async def test_cap_notice_counts_the_results_actually_returned_not_the_limit(call, replay):
+    # 2 Bills scanned (limit 2), more exist; none is paid, so the paid filter returns none of them.
+    replay.respond_with("BillQueryRq", "BillQueryRq.capped.xml")
+
+    out = (await call("query_bills", vendor="Perry Windows & Doors", paid_status="paid", limit=2)).structured_content
+
+    assert out["count"] == 0
+    assert out["stamp"]["complete"] is False
+    assert out["stamp"]["cap_notice"] == (
+        "Showing 0 found in the first 2 scanned; more exist; totals incomplete. Narrow by date or Vendor."
+    )
+    assert "first 2 results" not in out.get("note", "")
+
+
 async def test_capped_result_carries_no_total(call, replay):
     replay.respond_with("BillQueryRq", "BillQueryRq.capped.xml")
 
