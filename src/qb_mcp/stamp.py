@@ -28,6 +28,8 @@ from datetime import date
 from functools import wraps
 from typing import Any
 
+from qb_mcp.date_macros import FISCAL, end_of
+
 Tool = Callable[..., Awaitable[Any]]
 # What a closing-date read gives: the date, NO_CLOSING_DATE (QuickBooks has none set), or None (read failed).
 NO_CLOSING_DATE = "none set"
@@ -39,6 +41,8 @@ NOT_SET = "no closing date set; may still change"
 NOT_FILTERS = frozenset({"limit", "include_lines", "report", "query"})
 DEFAULT_NARROW_BY = "date, Vendor or Customer:Job"
 RANGE_END = frozenset({"to_date", "ToTxnDate", "ToReportDate"})
+DATE_MACROS = frozenset({"DateMacro", "ReportDateMacro"})
+FISCAL_MACRO = "unknown (fiscal date macro)"
 NO_BASIS = "not a report; basis does not apply"
 TXN_DATE = "transaction date"
 AS_OF_TODAY = {"as_of": "today"}  # current balances
@@ -109,17 +113,22 @@ def _voided(result: dict[str, Any]) -> int:
 
 def _period(filters: dict[str, Any], closed_through: date) -> str:
     """"closed" if the answer's date range ends on or before the closing date, else "may still change"
-    (no end date: it runs to today)."""
-    end = _range_end(filters)
-    return "closed" if end and date.fromisoformat(end) <= closed_through else "may still change"
+    (no end date: it runs to today); a fiscal date macro's end isn't known here (`FISCAL_MACRO`)."""
+    end = _range_end(filters, date.today())
+    if end == FISCAL:
+        return FISCAL_MACRO
+    return "closed" if isinstance(end, date) and end <= closed_through else "may still change"
 
 
-def _range_end(filters: dict[str, Any]) -> str | None:
-    """The date range's end among the filters: a tool's `to_date`, or a raw query's ToTxnDate/ToReportDate."""
+def _range_end(filters: dict[str, Any], today: date) -> date | str | None:
+    """The date range's end among the filters: a tool's `to_date`, a raw query's ToTxnDate/ToReportDate,
+    or the end of its date macro relative to `today` (`FISCAL` for a fiscal one)."""
     for name, value in filters.items():
         if name in RANGE_END and isinstance(value, str):
-            return value
-        if isinstance(value, dict) and (end := _range_end(value)):
+            return date.fromisoformat(value)
+        if name in DATE_MACROS and isinstance(value, str):
+            return end_of(value, today)
+        if isinstance(value, dict) and (end := _range_end(value, today)):
             return end
     return None
 

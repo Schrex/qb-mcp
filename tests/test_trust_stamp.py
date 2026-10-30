@@ -1,10 +1,16 @@
 """The trust stamp (#25): one `stamp` on every tool result saying what the answer is based on
 (filters applied) and whether it is complete or capped."""
 
+import shutil
+from datetime import date, timedelta
+
 import pytest
-from conftest import tool_requests
+from conftest import FIXTURES, tool_requests
+from mcp import Client
 
 from qb_mcp.errors import TransportError, TransportFailure
+from qb_mcp.server import build_server
+from qb_mcp.transports.replay import ReplayTransport
 
 pytestmark = pytest.mark.anyio
 
@@ -387,3 +393,57 @@ async def test_closing_date_is_read_again_after_quickbooks_was_unreachable(call,
 
     assert down["period"] == "closing date unknown"
     assert up["closing_date"] == "2024-06-30"
+
+
+# --- date macros (DateMacro / ReportDateMacro): the period they end on, relative to today ---------
+
+
+@pytest.fixture
+async def closed_through_last_month(tmp_path):
+    """A client over the Replay fixtures whose closing date is the last day of last month (relative
+    to today, as QuickBooks resolves date macros)."""
+    last_month_end = date.today().replace(day=1) - timedelta(days=1)
+    fixtures = tmp_path / "replay"
+    shutil.copytree(FIXTURES, fixtures)
+    closing = (FIXTURES / CLOSING_DATE).read_text().replace("2024-06-30", last_month_end.isoformat())
+    (fixtures / "PreferencesQueryRq.xml").write_text(closing)
+    replay = ReplayTransport(fixtures, company_file="(replay)")
+    replay.respond_with("GeneralSummaryReportQueryRq", "GeneralSummaryReportQueryRq.xml")
+    async with Client(build_server(replay), raise_exceptions=True) as client:
+        yield client
+
+
+TXN_MACRO = (
+    "<InvoiceQueryRq><MaxReturned>50</MaxReturned><TxnDateRangeFilter><DateMacro>{}</DateMacro>"
+    "</TxnDateRangeFilter></InvoiceQueryRq>"
+)
+REPORT_MACRO = (
+    "<GeneralSummaryReportQueryRq><GeneralSummaryReportType>ProfitAndLossStandard</GeneralSummaryReportType>"
+    "<ReportDateMacro>{}</ReportDateMacro></GeneralSummaryReportQueryRq>"
+)
+FISCAL_MACRO = "unknown (fiscal date macro)"
+
+
+@pytest.mark.parametrize(
+    "query,period",
+    [
+        (TXN_MACRO.format("LastMonth"), "closed"),
+        (TXN_MACRO.format("LastCalendarQuarter"), "closed"),
+        (TXN_MACRO.format("LastCalendarYear"), "closed"),
+        (TXN_MACRO.format("ThisMonth"), "may still change"),
+        (TXN_MACRO.format("ThisCalendarYearToDate"), "may still change"),
+        (TXN_MACRO.format("Today"), "may still change"),
+        (TXN_MACRO.format("All"), "may still change"),
+        (TXN_MACRO.format("ThisFiscalYear"), FISCAL_MACRO),
+        (TXN_MACRO.format("LastFiscalQuarter"), FISCAL_MACRO),
+        (REPORT_MACRO.format("LastMonth"), "closed"),
+        (REPORT_MACRO.format("LastQuarter"), "closed"),
+        (REPORT_MACRO.format("LastYear"), "closed"),
+        (REPORT_MACRO.format("ThisMonthToDate"), "may still change"),
+        (REPORT_MACRO.format("NextYear"), "may still change"),
+    ],
+)
+async def test_date_macro_period_is_resolved_against_the_closing_date(closed_through_last_month, query, period):
+    out = (await closed_through_last_month.call_tool("run_query", {"query": query})).structured_content
+
+    assert out["stamp"]["period"] == period
