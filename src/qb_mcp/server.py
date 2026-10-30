@@ -19,6 +19,7 @@ from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
 from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.reports import parse_report
+from qb_mcp.stamp import DEFAULT_NARROW_BY, Answer, stamped
 from qb_mcp.transport import Transport
 from qb_mcp.transports.unavailable import UnavailableTransport
 
@@ -85,6 +86,15 @@ def build_server(transport: Transport) -> MCPServer:
     mcp = MCPServer("qb-mcp", instructions=INSTRUCTIONS)
     user_facing = user_facing_errors(qb)
 
+    def tool(narrow_by: str = DEFAULT_NARROW_BY, description: str | None = None, errors: bool = True):
+        """Register a tool. Every tool is `stamped` (trust stamp); `errors` adds `user_facing` errors."""
+
+        def register(fn: Tool) -> Tool:
+            wrapped = stamped(narrow_by)(fn)
+            return mcp.tool(description=description)(user_facing(wrapped) if errors else wrapped)
+
+        return register
+
     async def list_lookup(
         rq_type: str, to_output: RecordMapper, name_contains: str | None, status: ListStatus, limit: int,
         *extra_filters: Any,
@@ -93,7 +103,7 @@ def build_server(transport: Transport) -> MCPServer:
         (rs,) = await qb.lookup(query(rq_type, *_list_filters(name_contains, status, limit), *extra_filters))
         return capped([to_output(tag, record) for tag, record in rs.rets], limit)
 
-    @mcp.tool()
+    @tool(errors=False)
     async def qb_status() -> dict[str, Any]:
         """Check the QuickBooks connection: whether QuickBooks is reachable, its product and version,
         the qbXML versions it supports, which Company File is open, and the last error (and when)."""
@@ -114,8 +124,7 @@ def build_server(transport: Transport) -> MCPServer:
             return {"reachable": False, "error": str(e), "last_error": qb.last_error.as_dict()}
         return status | {"last_error": qb.last_error and qb.last_error.as_dict()}
 
-    @mcp.tool()
-    @user_facing
+    @tool()
     async def get_company_info() -> dict[str, Any]:
         """Company name, address and fiscal year start month from the open Company File."""
         (company_rs,) = await qb.lookup(query("CompanyQueryRq"))
@@ -127,8 +136,7 @@ def build_server(transport: Transport) -> MCPServer:
             "fiscal_year_start_month": company.get("FirstMonthFiscalYear"),
         }
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="name_contains or status")
     async def list_vendors(
         name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
     ) -> dict[str, Any]:
@@ -137,8 +145,7 @@ def build_server(transport: Transport) -> MCPServer:
         if more Vendors match than `limit`, `more_available` is true."""
         return await list_lookup("VendorQueryRq", records.vendor, name_contains, status, limit)
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="date or Vendor")
     async def query_bills(
         from_date: date | None = None,
         to_date: date | None = None,
@@ -186,8 +193,7 @@ def build_server(transport: Transport) -> MCPServer:
             out |= {"results": matched, "count": len(matched)}
         return out
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="name_contains or status")
     async def list_customer_jobs(
         name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
     ) -> dict[str, Any]:
@@ -197,8 +203,7 @@ def build_server(transport: Transport) -> MCPServer:
         `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
         return await list_lookup("CustomerQueryRq", records.customer_job, name_contains, status, limit)
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="name_contains or status")
     async def list_items(
         name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
     ) -> dict[str, Any]:
@@ -208,8 +213,7 @@ def build_server(transport: Transport) -> MCPServer:
         `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
         return await list_lookup("ItemQueryRq", records.item, name_contains, status, limit)
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="account_type, name_contains or status")
     async def list_accounts(
         account_type: AccountType | None = None,
         name_contains: str | None = None,
@@ -223,8 +227,7 @@ def build_server(transport: Transport) -> MCPServer:
         extra = [el("AccountType", account_type)] if account_type else []
         return await list_lookup("AccountQueryRq", records.account, name_contains, status, limit, *extra)
 
-    @mcp.tool()
-    @user_facing
+    @tool()
     async def run_job_report(
         report: JobReport,
         from_date: date,
@@ -253,8 +256,7 @@ def build_server(transport: Transport) -> MCPServer:
         (rs,) = await qb.lookup(query("JobReportQueryRq", *children))
         return parse_report(rs.records[0] if rs.records else None)
 
-    @mcp.tool(description=RUN_QUERY_DESCRIPTION)
-    @user_facing
+    @tool(description=RUN_QUERY_DESCRIPTION)
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> dict[str, Any]:
         (rs,) = await qb.lookup(parse_query_element(query))
         return capped(rs.records, limit)
