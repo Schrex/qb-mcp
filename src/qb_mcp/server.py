@@ -17,12 +17,12 @@ from qb_mcp import bills, check_in, records
 from qb_mcp.errors import QBError, TransportError, TransportFailure
 from qb_mcp.guard import ALLOWED_QUERIES, parse_query_element
 from qb_mcp.logs import configure_logging
-from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
+from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit, narrowed
 from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.reports import parse_report
 from qb_mcp.responses import to_data
-from qb_mcp.stamp import AS_OF_TODAY, DEFAULT_NARROW_BY, TXN_DATE, Answer, date_range, stamped
+from qb_mcp.stamp import AS_OF_TODAY, DEFAULT_NARROW_BY, NO_CLOSING_DATE, TXN_DATE, Answer, date_range, stamped
 from qb_mcp.transport import Transport
 from qb_mcp.transports.unavailable import UnavailableTransport
 
@@ -98,12 +98,12 @@ def user_facing_errors(qb: QuickBooks) -> Callable[[Tool], Tool]:
     return decorate
 
 
-def closing_date_reader(qb: QuickBooks) -> Callable[[], Awaitable[date | None]]:
+def closing_date_reader(qb: QuickBooks) -> Callable[[], Awaitable[date | str | None]]:
     """Reads the Company File's closing date (Preferences > Accounting) once per session, then
-    caches it. None if QuickBooks has none set; also None, uncached, if the read fails."""
-    known: list[date | None] = []
+    caches it. `NO_CLOSING_DATE` if QuickBooks has none set; None, uncached, if the read fails."""
+    known: list[date | str] = []
 
-    async def closing_date() -> date | None:
+    async def closing_date() -> date | str | None:
         if not known:
             try:
                 (rs,) = await qb.lookup(query("PreferencesQueryRq", el("IncludeRetElement", "AccountingPreferences")))
@@ -111,7 +111,7 @@ def closing_date_reader(qb: QuickBooks) -> Callable[[], Awaitable[date | None]]:
                 return None  # unknown for now; read again on the next call
             prefs = rs.records[0] if rs.records else {}
             text = prefs.get("AccountingPreferences", {}).get("ClosingDate")
-            known.append(date.fromisoformat(text) if text else None)
+            known.append(date.fromisoformat(text) if text else NO_CLOSING_DATE)
         return known[0]
 
     return closing_date
@@ -129,12 +129,13 @@ def build_server(transport: Transport) -> MCPServer:
         description: str | None = None,
         errors: bool = True,
         dates: dict[str, Any] | None = None,
+        live_balances: bool = False,
     ):
         """Register a tool. Every tool is `stamped` (trust stamp) and names where to check it in QuickBooks;
         `errors` adds `user_facing` errors."""
 
         def register(fn: Tool) -> Tool:
-            wrapped = stamped(check_in_quickbooks, narrow_by, closing_date, dates)(fn)
+            wrapped = stamped(check_in_quickbooks, narrow_by, closing_date, dates, live_balances)(fn)
             return mcp.tool(description=description)(user_facing(wrapped) if errors else wrapped)
 
         return register
@@ -206,7 +207,7 @@ def build_server(transport: Transport) -> MCPServer:
         if more Vendors match than `limit`, `more_available` is true."""
         return await list_lookup("VendorQueryRq", records.vendor, name_contains, status, limit)
 
-    @tool(check_in.BILLS, narrow_by="date or Vendor")
+    @tool(check_in.BILLS, narrow_by="date or Vendor", live_balances=True)
     async def query_bills(
         from_date: date | None = None,
         to_date: date | None = None,
@@ -237,7 +238,8 @@ def build_server(transport: Transport) -> MCPServer:
         Company File; if a figure matters, check it against A/P Aging Detail.
         `is_paid` means open_balance is 0, and `paid_status` returns only Bills that agree with it.
         `is_void` marks a voided Bill: still listed, but left out of `totals` (sums of `amount` and
-        `open_balance`) and counted in the stamp's `voided_excluded`. No `totals` with `customer_job`
+        `open_balance`); the stamp counts them in `voided_listed` and, when there are `totals`,
+        `voided_excluded`. No `totals` with `customer_job`
         (a Bill's amount includes other Customer:Jobs' lines) or when capped."""
         if customer_job and not include_lines:
             raise ToolError("customer_job filters Bill lines, so it needs include_lines=true.")
@@ -252,12 +254,10 @@ def build_server(transport: Transport) -> MCPServer:
         # The cap applies to Bills scanned; report it even if `customer_job` leaves fewer than `limit`.
         out = capped([bills.bill(b, include_lines) for b in found], limit)
         if paid_status != "all":
-            kept = bills.with_paid_status(out["results"], paid_status)
-            out |= {"results": kept, "count": len(kept)}
+            out = narrowed(out, bills.with_paid_status(out["results"], paid_status), limit)
         if customer_job:
-            matched = bills.charged_to(out["results"], customer_job)
             # No totals: a Bill's amount includes its lines for other Customer:Jobs.
-            return out | {"results": matched, "count": len(matched)}
+            return narrowed(out, bills.charged_to(out["results"], customer_job), limit)
         return out | {"totals": bills.totals(out["results"])}
 
     @tool(check_in.CUSTOMER_JOBS, narrow_by="name_contains or status", dates=AS_OF_TODAY)
@@ -277,7 +277,7 @@ def build_server(transport: Transport) -> MCPServer:
         # QuickBooks can't filter by JobStatus, so fetch every name/status match and filter here;
         # the cap then counts matching records, so `count`/`more_available` stay exact.
         kept = [records.customer_job(tag, r) for tag, r in await jobs_in(job_status, name_contains, status)]
-        return capped(kept, limit) | {"filters": {"job_status": sorted(set(job_status))}}
+        return capped(kept, limit)
 
     @tool(check_in.ITEMS, narrow_by="name_contains or status")
     async def list_items(
@@ -310,6 +310,7 @@ def build_server(transport: Transport) -> MCPServer:
         to_date: date,
         customer_job: str | None = None,
         job_status: list[JobStatus] | None = None,
+        status: ListStatus = "all",
     ) -> Answer:
         """Run a QuickBooks job report (profitability, or estimates vs. actuals; summary or detail)
         for a date range, optionally limited to one Customer:Job (e.g. "Acme:Main St Paving") or a
@@ -319,8 +320,9 @@ def build_server(transport: Transport) -> MCPServer:
         (header, data, subtotal, total), a `label`, the full `name` when the row is for a customer,
         Customer:Job or Item, and `values` keyed by column title. A period with no activity gives
         a single TOTAL row of zeros; an unknown Customer:Job is a QuickBooks error (3120).
-        Optional `job_status` (e.g. ["awarded", "in_progress"]) limits the report to Customer:Jobs
-        (active or not) in those statuses, within `customer_job` if given; `filters` echoes it.
+        Optional `job_status` (e.g. ["awarded", "in_progress"]) limits the report to Customer:Jobs in
+        those statuses, and `status` (default all: active and inactive) to active or inactive ones; they
+        combine, within `customer_job` if given; the stamp's `filters` echo them.
         If none match, no report is run: `rows` is empty and `note` says why.
         The stamp's `basis` is the one QuickBooks ran the report on (qbXML can't choose it for job reports)."""
         if report.endswith("_detail") and not customer_job:
@@ -334,26 +336,26 @@ def build_server(transport: Transport) -> MCPServer:
             el("JobReportType", report_type),
             el("ReportPeriod", None, el("FromReportDate", from_date.isoformat()), el("ToReportDate", to_date.isoformat())),
         ]
-        if job_status:
-            # QuickBooks' reports can't filter by JobStatus either: name the matching Customer:Jobs.
-            names = [r["FullName"] for _, r in await jobs_in(job_status, None, "all")]
+        if job_status or status != "all":
+            # QuickBooks' reports can't filter by JobStatus or active status: name the matching Customer:Jobs.
+            names = [r["FullName"] for _, r in await jobs_in(job_status or list(JOB_STATUS), None, status)]
             if customer_job:  # the Customer:Job itself and everything under it (names are case-insensitive)
                 scope = customer_job.lower()
                 names = [n for n in names if n.lower() == scope or n.lower().startswith(scope + ":")]
-            applied = {"filters": {"job_status": sorted(set(job_status))}}
             if not names:
                 where = f" under {customer_job}" if customer_job else ""
-                note = f"No Customer:Job{where} has job status {', '.join(sorted(set(job_status)))}; no report run."
+                active = f"{status} " if status != "all" else ""
+                in_status = f" has job status {', '.join(sorted(set(job_status)))}" if job_status else ""
+                note = f"No {active}Customer:Job{where}{in_status}; no report run."
                 return Answer(
-                    parse_report(None) | applied | {"note": note}, stamp=where_to_check | {"basis": "no report run"}
+                    parse_report(None) | {"note": note}, stamp=where_to_check | {"basis": "no report run"}
                 )
             children.append(el("ReportEntityFilter", None, *(el("FullName", n) for n in names)))
         elif customer_job:
             children.append(el("ReportEntityFilter", None, el("FullNameWithChildren", customer_job)))
         (rs,) = await qb.lookup(query("JobReportQueryRq", *children))
-        report = parse_report(rs.records[0] if rs.records else None)
-        stamp = where_to_check | {"basis": _report_basis(report)}
-        return Answer(report | applied if job_status else report, stamp=stamp)
+        parsed = parse_report(rs.records[0] if rs.records else None)
+        return Answer(parsed, stamp=where_to_check | {"basis": _report_basis(parsed)})
 
     @tool(check_in.RAW_QUERY, description=RUN_QUERY_DESCRIPTION)
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> Answer:
@@ -369,6 +371,8 @@ def build_server(transport: Transport) -> MCPServer:
         }
         if element.tag.endswith("ReportQueryRq"):
             stamp["basis"] = _report_basis(parse_report(rs.records[0] if rs.records else None))
+        if element.tag == "AgingReportQueryRq":
+            stamp["accounts"] = _aging_accounts(element)
         return Answer(result, stamp=stamp)
 
     return mcp
@@ -407,6 +411,21 @@ def _query_filters(element: ET.Element) -> dict[str, Any]:
         for child in element
         if child.tag not in ("MaxReturned", "OwnerID", "ReportBasis") and not child.tag.startswith("Include")
     }
+
+
+def _aging_accounts(element: ET.Element) -> str:
+    """The A/P or A/R accounts an aging report includes: all of them, unless its ReportAccountFilter
+    names some (FullName/ListID, with or without subaccounts) or an account type."""
+    kind = "A/R" if (element.findtext("AgingReportType") or "").startswith("AR") else "A/P"
+    account_filter = element.find("ReportAccountFilter")
+    if account_filter is None or len(account_filter) == 0:
+        return f"all {kind} accounts"
+    names = [(child.text or "").strip() for child in account_filter]
+    tag = account_filter[0].tag
+    if tag == "AccountTypeFilter":
+        return f"all {names[0]} accounts"
+    named = ", ".join(f"ListID {n}" if tag.startswith("ListID") else n for n in names)
+    return f"{named} and its subaccounts" if tag.endswith("WithChildren") else named
 
 
 def _report_type(element: ET.Element) -> str | None:

@@ -37,7 +37,7 @@ Whether a figure counts income and expenses when entered (accrual) or when paid 
 _Avoid_: method, accounting mode
 
 **Closing Date**:
-The date set in the Company File on or before which transactions are locked; figures for a later (open) period may still change.
+The date set in the Company File on or before which transactions are locked; figures for a later (open) period may still change. "No closing date set" (QuickBooks has none, so nothing is locked) is not "closing date unknown" (it couldn't be read).
 _Avoid_: lock date, period end, cutoff
 
 **Trust Stamp**:

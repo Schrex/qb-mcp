@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<OtherNameQueryRs statusCode="3120" statusSeverity="Error" statusMessage="Object &quot;80000120-1197760100&quot; specified in the request cannot be found." />
+</QBXMLMsgsRs>
+</QBXML>

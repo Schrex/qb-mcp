@@ -6,7 +6,7 @@
   (`QuickBooks.send`), so no tool (list, report, run_query) ever sees them.
   Report columns, whose values are attributes, are dropped by title
   (`reports.drop_sensitive_columns`). Payee addresses (`PAYEE_ADDRESS`) are dropped
-  on the same path unless the payee is confirmed a Vendor or Customer.
+  on the same path unless the payee is confirmed a Vendor, Customer or Other Name.
 - Result cap: ask QuickBooks for `fetch_limit(limit)` records (one more than
   `limit`), then `capped(records, limit)` keeps `limit` and says whether more exist.
 """
@@ -59,8 +59,8 @@ SENSITIVE_CHILDREN: dict[str, frozenset[str]] = {
 # Payee address fields, by record. A Check's payee may be an Employee (e.g. an expense
 # reimbursement), whose home address is personal data, but `PayeeEntityRef` holds only a
 # ListID and name, not the payee's type. So these are kept only for a payee QuickBooks
-# confirms is a Vendor or Customer (`QuickBooks.send` looks the payees up), and dropped
-# otherwise: Employees, Other Names, and any payee the lookup can't confirm (#30).
+# confirms is a Vendor, Customer or Other Name (`QuickBooks.send` looks the payees up), and
+# dropped otherwise: Employees, and any payee the lookup can't confirm (#30).
 PAYEE_ADDRESS: dict[str, frozenset[str]] = {
     "CheckRet": frozenset({"Address", "AddressBlock"}),
 }
@@ -88,8 +88,18 @@ def capped(records: list[Any], limit: int) -> dict[str, Any]:
     more = len(records) > limit
     out: dict[str, Any] = {"results": records[:limit], "count": min(len(records), limit), "more_available": more}
     if more:
-        out["note"] = (
-            f"Showing the first {limit} results; more exist. "
-            "Narrow the question (e.g. a name filter) or raise the limit."
-        )
+        out["note"] = _more_note(f"the first {limit}")
+    return out
+
+
+def _more_note(shown: str) -> str:
+    return f"Showing {shown} results; more exist. Narrow the question (e.g. a name filter) or raise the limit."
+
+
+def narrowed(out: dict[str, Any], kept: list[Any], limit: int) -> dict[str, Any]:
+    """`capped` output after a filter applied to its results (one QuickBooks can't apply): `results`
+    and `count` are what is kept; a capped note says how many of the records scanned matched."""
+    out = out | {"results": kept, "count": len(kept)}
+    if out["more_available"]:
+        out["note"] = _more_note(f"{len(kept)} found in the first {limit} scanned")
     return out
