@@ -1,0 +1,116 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#31): Customer:Jobs in every JobStatus, active and inactive. -->
+<QBXML>
+<QBXMLMsgsRs>
+<CustomerQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<CustomerRet>
+<ListID>80000000-1700000000</ListID>
+<Name>Acme Paving</Name>
+<FullName>Acme Paving</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>None</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000001-1700000000</ListID>
+<Name>Main St</Name>
+<FullName>Acme Paving:Main St</FullName>
+<IsActive>true</IsActive>
+<ParentRef><FullName>Acme Paving</FullName></ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>Pending</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000002-1700000000</ListID>
+<Name>Elm Ave</Name>
+<FullName>Acme Paving:Elm Ave</FullName>
+<IsActive>true</IsActive>
+<ParentRef><FullName>Acme Paving</FullName></ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>Awarded</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000003-1700000000</ListID>
+<Name>Oak Rd</Name>
+<FullName>Acme Paving:Oak Rd</FullName>
+<IsActive>true</IsActive>
+<ParentRef><FullName>Acme Paving</FullName></ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>InProgress</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000004-1700000000</ListID>
+<Name>Pine Ct</Name>
+<FullName>Acme Paving:Pine Ct</FullName>
+<IsActive>true</IsActive>
+<ParentRef><FullName>Acme Paving</FullName></ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>Closed</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000005-1700000000</ListID>
+<Name>Birch Ln</Name>
+<FullName>Acme Paving:Birch Ln</FullName>
+<IsActive>true</IsActive>
+<ParentRef><FullName>Acme Paving</FullName></ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>NotAwarded</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000006-1700000000</ListID>
+<Name>Brook Homes</Name>
+<FullName>Brook Homes</FullName>
+<IsActive>true</IsActive>
+<Sublevel>0</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>None</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000007-1700000000</ListID>
+<Name>Lot 7</Name>
+<FullName>Brook Homes:Lot 7</FullName>
+<IsActive>false</IsActive>
+<ParentRef><FullName>Brook Homes</FullName></ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>Closed</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000008-1700000000</ListID>
+<Name>Lot 8</Name>
+<FullName>Brook Homes:Lot 8</FullName>
+<IsActive>true</IsActive>
+<ParentRef><FullName>Brook Homes</FullName></ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>InProgress</JobStatus>
+</CustomerRet>
+<CustomerRet>
+<ListID>80000009-1700000000</ListID>
+<Name>Lot 9</Name>
+<FullName>Brook Homes:Lot 9</FullName>
+<IsActive>false</IsActive>
+<ParentRef><FullName>Brook Homes</FullName></ParentRef>
+<Sublevel>1</Sublevel>
+<Balance>0.00</Balance>
+<TotalBalance>0.00</TotalBalance>
+<JobStatus>InProgress</JobStatus>
+</CustomerRet>
+</CustomerQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
