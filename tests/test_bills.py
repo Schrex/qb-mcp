@@ -16,6 +16,7 @@ async def test_query_bills_returns_header_with_item_and_expense_lines(call):
     out = result.structured_content
     assert out["results"][0] == {
         "vendor": "Patton Hardware Supplies",
+        "ap_account": "Accounts Payable",
         "ref_number": "3847498",
         "date": "2024-12-02",
         "due_date": "2026-01-01",
@@ -303,3 +304,15 @@ async def test_query_bills_paid_status_follows_the_computed_open_amount(call, re
     assert [b["ref_number"] for b in paid["results"]] == ["PW-102", "PW-103"]
     assert paid["count"] == 2
     assert [b["ref_number"] for b in unpaid_ref["results"]] == ["PW-101", "PW-104", "PW-105"]
+
+
+async def test_query_bills_names_each_bills_ap_account(call, replay):
+    # Retainage withheld from a Vendor kept in its own A/P account (#32).
+    replay.respond_with("BillQueryRq", "BillQueryRq.apaccounts.xml")
+
+    out = (await call("query_bills", vendor="Timberloft Lumber", include_lines=False)).structured_content
+
+    assert [(b["ref_number"], b["ap_account"], b["amount"]) for b in out["results"]] == [
+        ("TL-501", "Accounts Payable", "9000.00"),
+        ("TL-501R", "Retainage Payable", "1000.00"),
+    ]

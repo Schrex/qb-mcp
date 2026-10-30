@@ -129,6 +129,7 @@ def bill(b: dict[str, Any], include_lines: bool = True) -> dict[str, Any]:
     open_amount = open_balance(b)
     header = {
         "vendor": ref_name(b.get("VendorRef")),
+        "ap_account": ref_name(b.get("APAccountRef")),
         "ref_number": b.get("RefNumber"),
         "date": b.get("TxnDate"),
         "due_date": b.get("DueDate"),

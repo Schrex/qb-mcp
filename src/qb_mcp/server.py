@@ -153,7 +153,8 @@ def build_server(transport: Transport) -> MCPServer:
         (`from_date`/`to_date`), exact `vendor` name, exact `ref_number` (the number on the Vendor's
         invoice; answers "is this Bill already entered?", empty result if not), `paid_status` (default
         all), `customer_job`, `include_lines` (default true), `limit` (default 100; `more_available` is
-        true if more exist). Each Bill has vendor, ref number, date, due date, amount, `open_amount`, memo,
+        true if more exist). Each Bill has vendor, `ap_account` (e.g. a separate retainage A/P account),
+        ref number, date, due date, amount, `open_amount`, memo,
         `is_paid` and, with lines, `expense_lines` (account) and `item_lines` (item, quantity, cost),
         each line with amount, Customer:Job, class and billable status.
         `customer_job` (e.g. "Acme:Main St Paving", or "Acme" for the customer and all its
