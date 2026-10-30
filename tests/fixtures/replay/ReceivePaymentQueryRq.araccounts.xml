@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#32). Customer payments into two A/R accounts: a progress payment, and the release
+     of retainage held in a separate A/R account. -->
+<QBXML>
+<QBXMLMsgsRs>
+<ReceivePaymentQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ReceivePaymentRet>
+<TxnID>5B01-1730000000</TxnID>
+<CustomerRef><ListID>800000B8-1197707458</ListID><FullName>Prentice, Adelaide:Bay Window</FullName></CustomerRef>
+<ARAccountRef><ListID>40000-933270541</ListID><FullName>Accounts Receivable</FullName></ARAccountRef>
+<TxnDate>2025-11-14</TxnDate>
+<RefNumber>8812</RefNumber>
+<TotalAmount>9000.00</TotalAmount>
+</ReceivePaymentRet>
+<ReceivePaymentRet>
+<TxnID>5B02-1730000000</TxnID>
+<CustomerRef><ListID>800000B8-1197707458</ListID><FullName>Prentice, Adelaide:Bay Window</FullName></CustomerRef>
+<ARAccountRef><ListID>8000005B-1197756991</ListID><FullName>Retainage Receivable</FullName></ARAccountRef>
+<TxnDate>2026-02-02</TxnDate>
+<RefNumber>9034</RefNumber>
+<TotalAmount>1000.00</TotalAmount>
+</ReceivePaymentRet>
+</ReceivePaymentQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

@@ -6,21 +6,29 @@ A local MCP server that lets Claude Desktop (Chat) do **Lookups** against the Qu
 
 Terms (Company File, Vendor, Customer:Job, Item, Bill, Attachment, Lookup) follow [GLOSSARY.md](GLOSSARY.md).
 
+**For Jeri:** [docs/jeri-support-sheet.md](docs/jeri-support-sheet.md) is a one-page, printable sheet: starter prompts, what Claude can't do, how to read the trust stamp, who to call. Every starter prompt is checked by `tests/test_support_sheet.py`.
+
 ## Tools
 
 | Tool | What it does |
 |---|---|
-| `qb_status` | Connection check: reachable?, QuickBooks product and version, supported qbXML versions, company name, Company File path, last error (and when). |
+| `qb_status` | Connection check: reachable?, QuickBooks product and version, supported qbXML versions, company name, Company File path, this server's version (`server_version`), last error (and when). |
 | `get_company_info` | Company name, legal name, address, fiscal year start month. |
 | `list_vendors` | Vendors with active flag, balance, contact basics. Filters: `name_contains`, `status`, `limit`. |
 | `list_customer_jobs` | Customers and their Customer:Jobs with parent, job status, balance, total balance. Same filters. |
 | `list_items` | Items of every kind with full name, kind, purchase description, cost, expense account. Same filters. |
 | `list_accounts` | Chart-of-accounts Accounts with type, number, balance, total balance. Filters: `account_type`, `name_contains`, `status`, `limit`. |
-| `query_bills` | Bills by date range, Vendor, ref number, paid status, Customer:Job; with item and expense lines (default on). |
-| `run_job_report` | Job profitability or job estimates-vs-actuals (summary or detail) for a date range, optionally one Customer:Job. |
-| `run_query` | One raw qbXML `*QueryRq` element for anything the other tools don't cover (invoices, checks, purchase orders...). |
+| `query_bills` | Bills by date range, Vendor, ref number, paid status, Customer:Job; each with its A/P account and open balance, and item and expense lines (default on). |
+| `run_job_report` | Job profitability or job estimates-vs-actuals (summary or detail) for a date range, optionally one Customer:Job, `job_status` and active `status` (default all). |
+| `run_query` | One raw qbXML `*QueryRq` element for anything the other tools don't cover (invoices, checks, purchase orders...). Invoices, payments received and credit memos also name their A/R account (`ar_account`). |
 
 List and query tools return at most `limit` (default 100) results and set `more_available` (plus a `note`) when more exist.
+
+`query_bills` filtered by `customer_job` returns no `totals`: a Bill's amount and open balance cover all its lines, and one Bill can be split across several Customer:Jobs, so summing them would overstate that job; only its lines for the job are kept. For a job's cost use `run_job_report` (job profitability).
+
+Every result carries a trust `stamp`: the `filters` applied and whether it is `complete`. A capped result says so in `cap_notice` ("showing the first N; more exist; totals incomplete", and how to narrow) and never carries a total.
+
+Voided transactions stay listed, marked `is_void`, but are left out of every total (e.g. `query_bills` `totals`). The stamp's `voided_listed` counts those listed; `voided_excluded` counts those left out of a total, and is `null` when the answer has no total (e.g. `run_query`). qbXML 16.0 has no void flag, so a transaction counts as voided when QuickBooks has zeroed its amount(s) and prefixed its memo `VOID:` (both must hold). Transactions carry `posting`: Estimates, Purchase Orders and Sales Orders are `posting: false` (non-posting) and never summed with posting transactions; the stamp's `non_posting_listed` counts them.
 
 ## Install on Jeri's PC
 
@@ -52,7 +60,7 @@ Note the full path `where.exe uvx` prints (usually `C:\Users\<Jeri>\.local\bin\u
 Optional pre-warm, so Claude's first launch isn't slow:
 
 ```powershell
-uvx --refresh --from git+https://github.com/Schrex/qb-mcp qb-mcp
+uvx --refresh --from git+https://github.com/Schrex/qb-mcp@v0.1.0 qb-mcp
 ```
 
 Once downloaded it sits silently waiting for MCP input; press Ctrl+C.
@@ -72,7 +80,7 @@ Claude Desktop > **Settings > Developer > Edit Config** opens `%APPDATA%\Claude\
   "mcpServers": {
     "qb": {
       "command": "uvx",
-      "args": ["--refresh", "--python", "3.12", "--from", "git+https://github.com/Schrex/qb-mcp", "qb-mcp"]
+      "args": ["--refresh", "--python", "3.12", "--from", "git+https://github.com/Schrex/qb-mcp@v0.1.0", "qb-mcp"]
     }
   }
 }
@@ -80,7 +88,7 @@ Claude Desktop > **Settings > Developer > Edit Config** opens `%APPDATA%\Claude\
 
 Save, then **fully quit** Claude Desktop (system tray icon > Quit, not just closing the window) and reopen it.
 
-**Microsoft Store build (verified on the test PC, #4):** the file is elsewhere and the order matters. The app keeps its settings and the `mcpServers` list in one file under `%LOCALAPPDATA%\Claude-Data\claude_<id>\claude_desktop_config.json` (the `%APPDATA%\Claude` folder stays empty and is not read), and it writes that file back from memory when it quits, so an edit made while it is running is lost. Quit Claude Desktop first, then add the `mcpServers` key next to the existing `preferences` key in that file, then reopen. **Settings > Developer > Edit config** opens the right folder either way.
+**Microsoft Store build (verified on the test PC, #4):** the file is elsewhere and the order matters. The app keeps its settings and the `mcpServers` list in one file under `%LOCALAPPDATA%\Claude-Data\claude_<id>\claude_desktop_config.json` (the `%APPDATA%\Claude` folder stays empty and is not read), and it writes that file back from memory when it quits, so an edit made while it is running is lost. Quit Claude Desktop first, then add the `mcpServers` key (the same `qb` entry as above, pinned to `git+https://github.com/Schrex/qb-mcp@v0.1.0`) next to the existing `preferences` key in that file, then reopen. **Settings > Developer > Edit config** opens the right folder either way.
 
 ### 4. First connect: authorize the integration
 
@@ -96,14 +104,109 @@ Save, then **fully quit** Claude Desktop (system tray icon > Quit, not just clos
 
 ### 5. Verify
 
-- **"run qb status"** shows `reachable: true`, product (QuickBooks Enterprise Solutions...), version, supported qbXML versions incl. `16.0`, and Jeri's company name and Company File path.
+- **"run qb status"** shows `reachable: true`, product (QuickBooks Enterprise Solutions...), version, supported qbXML versions incl. `16.0`, Jeri's company name and Company File path, and `server_version` matching the tag in the config (`0.1.0`).
 - Refusal check: ask Claude to use `run_query` with `<VendorAddRq><VendorAdd><Name>Test</Name></VendorAdd></VendorAddRq>`. It must be refused ("Refused: this server is read-only...").
 - Jeri asks one real budgeting question; check the answer against QuickBooks.
 - Show Jeri how to send the log file and `qb_status` output (see Troubleshooting).
+- Then do the live-file tie-out (step 6) before leaving.
+
+### 6. Live-file tie-out
+
+With Jeri, on her live Company File: check the server's answers against QuickBooks' own reports, and check that every "check in QuickBooks" path the server gives exists. About an hour. Everything happens on Jeri's screen; nothing from her file is copied off the PC.
+
+**Rule: no live data on GitHub.** No Vendor, customer, Customer:Job or Item names, no amounts, no ref numbers, no screenshots from the live file, in issues, comments, commits or PRs. GitHub gets the pass/fail table below (counts only) and, on a mismatch, the pattern in words. If something needs a closer look, write it on paper or in a file that stays on Jeri's PC.
+
+**Before you start**
+
+- `run qb status` works (step 5). Jeri logged into QuickBooks as herself.
+- Pick a **closed month**: one on or before the Company File's closing date. In QuickBooks: **Company > Set Closing Date** (or **Edit > Preferences > Accounting > Company Preferences**, Closing Date). If no closing date is set, pick a month Jeri says is finished and note "no closing date".
+- Pick **2–3 jobs** Jeri knows well, ideally one in progress and one finished, and their date range (e.g. the job's start to today, or the year to date).
+- For every answer, ask Claude to **"show the full trust stamp"** if it doesn't show it.
+
+**What to compare in each trust stamp**
+
+| Stamp field | Must match / check |
+|---|---|
+| `basis` | Same basis as the QuickBooks report (shown under the report title; **Customize Report > Display > Report Basis**). For job reports the server can't choose it: if QuickBooks' report shows the other basis, switch QuickBooks' report to the stamp's basis before comparing, and note it. |
+| `dates` | `from` / `to` / `field` are the dates you set in QuickBooks' report (Dates / From / To). A/P aging: as of today. |
+| `closing_date` / `period` | `closing_date` is QuickBooks' closing date (above); `period` is `closed` for the closed month's P&L. `closing date unknown` (the read failed) is a fail; `no closing date set; may still change` is right only if QuickBooks has none set. |
+| `filters` | Only the filters you asked for (job, Vendor, `paid_status`...), nothing extra or missing. |
+| `voided_listed` / `voided_excluded` / `non_posting_listed` | Plausible: voided Bills show in QuickBooks with a 0 amount and memo `VOID:`. `voided_excluded` (left out of `totals`) equals `voided_listed` when there are totals, else `null`. Note the counts. |
+| `accounts` | Aging reports only: `all A/P accounts` (or A/R) unless the query filtered an account; QuickBooks' aging report must include the same accounts (e.g. a separate retainage A/P account). |
+| `complete` / `cap_notice` | `complete: true` before comparing any total. If `cap_notice` is shown there are no totals: narrow (date range, Vendor) or ask with a bigger `limit`, then ask again. |
+| `check_in_quickbooks` | Opens the report you are comparing against (check A). |
+
+**Check A: "check in QuickBooks" menu paths exist.** These were written from memory, not from Enterprise 2024 (source: `src/qb_mcp/check_in.py`). In Jeri's QuickBooks, open each path below and mark it exists / wrong (and what the right path is; menu paths are not live data, they can go on GitHub):
+
+| Tool / query | Path to open |
+|---|---|
+| `qb_status` | Help > Product Information (F2) |
+| `get_company_info` | Company > My Company |
+| `list_vendors` | Vendors > Vendor Center; Reports > Vendors & Payables > Vendor Balance Summary |
+| `query_bills` | Reports > Vendors & Payables > Unpaid Bills Detail; A/P Aging Detail; Vendors > Enter Bills |
+| `list_customer_jobs` | Customers > Customer Center; Reports > Customers & Receivables > Customer Balance Summary |
+| `list_items` | Lists > Item List |
+| `list_accounts` | Lists > Chart of Accounts |
+| `run_job_report` | Reports > Jobs, Time & Mileage > Job Profitability Summary / Detail; Job Estimates vs. Actuals Summary / Detail |
+| `run_query` (reports) | Reports > Company & Financial > Profit & Loss Standard / Detail / by Class, Balance Sheet Standard / Summary; Reports > Jobs, Time & Mileage > Profit & Loss by Job; Reports > Vendors & Payables > A/P Aging Summary / Detail, Vendor Balance Summary; Reports > Customers & Receivables > A/R Aging Summary / Detail, Customer Balance Summary; Reports > Accountant & Taxes > Trial Balance, Journal; Reports > Budgets & Forecasts > Budget vs. Actual, Budget Overview |
+| `run_query` (lists, transactions) | Reports > Customers & Receivables > Open Invoices, Transaction List by Customer; Reports > Sales > Sales by Customer Detail; Reports > Jobs, Time & Mileage > Estimates by Job, Time by Job Detail; Reports > Purchases > Open Purchase Orders, Purchases by Vendor Detail; Reports > Vendors & Payables > Transaction List by Vendor; Reports > Banking > Check Detail, Deposit Detail; Reports > Inventory > Inventory Valuation Summary; Lists > Class List; Customers > Create Invoices / Enter Sales Receipts / Create Credit Memos/Refunds / Receive Payments; Banking > Enter Credit Card Charges |
+
+**Check B: Job Profitability Summary (2–3 jobs).** For each job, Jeri types:
+
+> Run the job profitability summary for *Customer:Job* from *start* to *end*, and show the trust stamp.
+
+(Claude calls `run_job_report` with `report: "job_profitability_summary"`, `customer_job`, `from_date`, `to_date`.) In QuickBooks: **Reports > Jobs, Time & Mileage > Job Profitability Summary**, set the same Dates, then **Customize Report > Filters > Name** = that job (or open the full report and find the job's row). Compare Act. Cost, Act. Revenue and ($) Diff. for the job and its TOTAL row. Pass = every figure equal to the cent and the stamp checks above hold.
+
+**Check C: A/P Aging Summary (ties to [#19](https://github.com/Schrex/qb-mcp/issues/19)).** Jeri types:
+
+> Use run_query to run `<AgingReportQueryRq><AgingReportType>APAgingSummary</AgingReportType><ReportDateMacro>Today</ReportDateMacro></AgingReportQueryRq>` and show the trust stamp.
+
+In QuickBooks: **Reports > Vendors & Payables > A/P Aging Summary**, as of today. Compare the TOTAL row's columns (Current, 1–30, 31–60, 61–90, > 90, TOTAL) and count the Vendor rows on each side. Then the per-Bill figure the server works out itself (#14, #19):
+
+> Find unpaid Bills with query_bills (`paid_status: "unpaid"`), with totals and the trust stamp.
+
+Its `totals.open_balance` (only if `complete: true`; else narrow by date range and add up) must equal the A/P Aging Summary TOTAL. Then pick **3–5 Bills with an early-pay discount, an applied Vendor credit, or a partial payment** (Jeri knows which), ask:
+
+> Show Bill *ref number* from *Vendor* with query_bills, with its open balance.
+
+and compare each `open_balance` with **Reports > Vendors & Payables > A/P Aging Detail > Open Balance** for that Bill. Pass = all equal to the cent. Record the counts in #19 (Bills checked, with discount / credit / partial payment, mismatches), no names or amounts.
+
+**Check D: one closed month's Profit & Loss.** Jeri types (dates = the closed month):
+
+> Use run_query to run `<GeneralSummaryReportQueryRq><GeneralSummaryReportType>ProfitAndLossStandard</GeneralSummaryReportType><ReportPeriod><FromReportDate>2026-09-01</FromReportDate><ToReportDate>2026-09-30</ToReportDate></ReportPeriod></GeneralSummaryReportQueryRq>` and show the trust stamp.
+
+That runs on accrual basis (stamp `basis: Accrual`). If Jeri's QuickBooks P&L is on cash basis (**Edit > Preferences > Reports & Graphs > Company Preferences > Summary Reports Basis**), add `<ReportBasis>Cash</ReportBasis>` just before `</GeneralSummaryReportQueryRq>` and ask again. In QuickBooks: **Reports > Company & Financial > Profit & Loss Standard**, same From/To, same basis. Compare Total Income, Total COGS, Gross Profit, Total Expense and Net Income, and the stamp's `period: closed`. Pass = all equal to the cent.
+
+**Record the result (this table, and only this, goes on GitHub: comment on [#10](https://github.com/Schrex/qb-mcp/issues/10), and the C rows on [#19](https://github.com/Schrex/qb-mcp/issues/19))**
+
+| Check | Items checked (count) | Matched | Mismatched | Stamp fields wrong (names only, e.g. `basis`) | Pass / fail |
+|---|---|---|---|---|---|
+| A. Menu paths | paths | | | n/a | |
+| B. Job Profitability Summary | jobs | | | | |
+| C. A/P Aging Summary (total, Vendor rows) | rows | | | | |
+| C. Per-Bill open balance (#19) | Bills (with discount / credit / partial) | | | | |
+| D. Closed-month P&L | totals compared | | | | |
+
+Plus: `server_version`, QuickBooks version (from `qb_status`), basis each report ran on, `voided_listed` / `voided_excluded` counts, whether any answer was capped. A wrong menu path goes in with the right path (no live data in it).
+
+**On a mismatch**
+
+1. **Stop** that check. Don't try other prompts until it "matches", and don't change anything in QuickBooks to make it match.
+2. **Note the pattern** on Jeri's PC, not GitHub: which check, which figure (column / total), roughly how far off (cents, one transaction, a whole line), and what the affected transactions have in common (discount, Vendor credit, credit-card or check payment, retainage A/P account, voided, a sub-job, an unusual date). Re-check the stamp first: a different `basis`, date range or filter is a setup mistake, not a bug; fix it and redo the check once.
+3. **File a bug without live data**: a new GitHub issue naming the check, the tool and its arguments (with names replaced by placeholders such as *Vendor A*), the stamp fields, and the pattern in words, e.g. "Bills with an applied Vendor credit: open_balance higher than A/P Aging Detail by the credit". Link it from #10 (and #19 for Bill balances). Then go on to the next check.
+4. Tell Jeri which kind of answer not to rely on until the bug is fixed.
 
 ## Updating
 
-Nothing to install. Claude Desktop runs `uvx --refresh`, so every time Claude is fully quit and reopened it fetches the latest version from GitHub. If a fix doesn't show up, quit Claude from the tray (not just the window) and reopen.
+The install is pinned to a release tag (`@v0.1.0`), so merges to `main` never reach Jeri's PC on their own. To update deliberately:
+
+1. In the Claude Desktop config (`%APPDATA%\Claude\claude_desktop_config.json`, or the Store build's file, see step 3), change the tag in `git+https://github.com/Schrex/qb-mcp@v0.1.0` to the new release, e.g. `@v0.2.0`. Save.
+2. **Fully quit** Claude Desktop (tray icon > Quit, not just the window) and reopen it. (Store build: quit first, then edit, then reopen.)
+3. Ask **"run qb status"**: `server_version` must show the new version.
+
+To roll back, put the previous tag back and restart the same way.
+
+Releasing (maintainer): bump `version` in `pyproject.toml` (that is what `server_version` reports), merge, then tag that commit `vX.Y.Z` and push the tag.
 
 ## Troubleshooting
 
@@ -131,7 +234,7 @@ Messages Claude may show, and what to do:
 
 **Log file:** `%LOCALAPPDATA%\qb-mcp\logs\qb-mcp.log` (paste that into Explorer's address bar). Rolls over at 1 MB, keeps 3 old files (`qb-mcp.log.1`..`.3`). Logs request types and errors only, never QuickBooks data. Set `QB_MCP_LOG_DIR` to log elsewhere.
 
-**Known issue: Bill open amounts (#14).** QuickBooks' own `OpenAmount` on a Bill turned out to be one Vendor-wide figure repeated on every Bill, so `query_bills` ignores it and works out each Bill's `open_amount` itself: the Bill amount less the bill payments and Vendor credits linked to it (0 if QuickBooks marks the Bill paid); `paid_status` and `is_paid` follow that figure. Verified to the cent against A/P Aging Detail on the Enterprise 2024 sample (28 unpaid Bills, 0 mismatches, incl. a partly paid Bill); the live file, which may have discounts and credits the sample doesn't, is still to confirm at the install visit. To sanity-check: ask Claude for one Vendor's unpaid Bills and compare each `open_amount` with the Open Balance column of **Reports > Vendors & Payables > A/P Aging Detail** in QuickBooks. If they differ (especially Bills with a credit or discount applied), tell Sumanth which Bill.
+**Known issue: Bill open balances (#14).** QuickBooks' own `OpenAmount` on a Bill turned out to be one Vendor-wide figure repeated on every Bill, so `query_bills` ignores it and works out each Bill's `open_balance` itself: the Bill amount less the bill payments and Vendor credits linked to it (0 if QuickBooks marks the Bill paid); `paid_status` and `is_paid` follow that figure. Verified to the cent against A/P Aging Detail on the Enterprise 2024 sample (28 unpaid Bills, 0 mismatches, incl. a partly paid Bill); the live file, which may have discounts and credits the sample doesn't, is still to confirm at the install visit ([step 6, check C](#6-live-file-tie-out)). To sanity-check: ask Claude for one Vendor's unpaid Bills and compare each `open_balance` with the Open Balance column of **Reports > Vendors & Payables > A/P Aging Detail** in QuickBooks. If they differ (especially Bills with a credit or discount applied), tell Sumanth which Bill.
 
 **What to send Sumanth:** the `qb-mcp.log` file(s), the full `run qb status` output from Claude, the exact error message, and roughly when it happened.
 

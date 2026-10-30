@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#32). Credit memos on two A/R accounts: a regular credit, and one against retainage
+     held in a separate A/R account. -->
+<QBXML>
+<QBXMLMsgsRs>
+<CreditMemoQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<CreditMemoRet>
+<TxnID>5C01-1730000000</TxnID>
+<CustomerRef><ListID>800000B8-1197707458</ListID><FullName>Prentice, Adelaide:Bay Window</FullName></CustomerRef>
+<ARAccountRef><ListID>40000-933270541</ListID><FullName>Accounts Receivable</FullName></ARAccountRef>
+<TxnDate>2025-11-20</TxnDate>
+<RefNumber>CM-31</RefNumber>
+<Subtotal>250.00</Subtotal>
+</CreditMemoRet>
+<CreditMemoRet>
+<TxnID>5C02-1730000000</TxnID>
+<CustomerRef><ListID>800000B8-1197707458</ListID><FullName>Prentice, Adelaide:Bay Window</FullName></CustomerRef>
+<ARAccountRef><ListID>8000005B-1197756991</ListID><FullName>Retainage Receivable</FullName></ARAccountRef>
+<TxnDate>2025-11-20</TxnDate>
+<RefNumber>CM-32</RefNumber>
+<Subtotal>100.00</Subtotal>
+</CreditMemoRet>
+</CreditMemoQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

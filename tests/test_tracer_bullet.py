@@ -29,7 +29,24 @@ async def test_qb_status_reports_quickbooks_and_company_file(call):
         ],
         "company_name": "Rock Castle Construction",
         "company_file": r"C:\QB\Rock Castle Construction.QBW",
+        "server_version": "0.1.0",
         "last_error": None,
+        "stamp": {
+            "filters": {},
+            "complete": True,
+            "cap_notice": None,
+            "closing_date": "2023-12-31",
+            "period": "may still change",
+            "voided_excluded": None,
+            "voided_listed": 0,
+            "non_posting_listed": 0,
+            "basis": "not a report; basis does not apply",
+            "dates": None,
+            "check_in_quickbooks": (
+                "Help > Product Information (press F2 in QuickBooks): product, version and Company File location"
+            ),
+            "accounts": None,
+        },
     }
 
 
@@ -48,6 +65,20 @@ async def test_get_company_info_returns_name_address_and_fiscal_year_start(call)
             "Country": "US",
         },
         "fiscal_year_start_month": "January",
+        "stamp": {
+            "filters": {},
+            "complete": True,
+            "cap_notice": None,
+            "closing_date": "2023-12-31",
+            "period": "may still change",
+            "voided_excluded": None,
+            "voided_listed": 0,
+            "non_posting_listed": 0,
+            "basis": "not a report; basis does not apply",
+            "dates": None,
+            "check_in_quickbooks": "Company > My Company",
+            "accounts": None,
+        },
     }
 
 
@@ -66,6 +97,12 @@ async def test_qb_status_reports_unreachable_when_quickbooks_is_closed(call, rep
     assert not result.is_error
     assert result.structured_content["reachable"] is False
     assert "QuickBooks isn't running" in result.structured_content["error"]
+
+
+async def test_qb_status_reports_server_version_even_when_quickbooks_is_closed(call, replay):
+    replay.fail_with(TransportError(TransportFailure.QB_NOT_RUNNING))
+
+    assert (await call("qb_status")).structured_content["server_version"] == "0.1.0"
 
 
 @pytest.mark.parametrize(

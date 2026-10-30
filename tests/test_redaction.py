@@ -91,3 +91,89 @@ async def test_run_query_report_drops_sensitive_columns(call, replay):
     assert "2520.00" in text
     assert not any(secret in text for secret in REPORT_SECRETS)
     assert "Tax ID" not in text and "Card" not in text
+
+
+# Hours by Customer:Job are job costing; the pay rate and payroll item reveal pay (#30, #18).
+async def test_run_query_time_tracking_drops_rate_and_payroll_item(call, replay):
+    replay.respond_with("TimeTrackingQueryRq", "TimeTrackingQueryRq.sensitive.xml")
+
+    result = await call("run_query", query="<TimeTrackingQueryRq><MaxReturned>101</MaxReturned></TimeTrackingQueryRq>")
+
+    entries = result.structured_content["results"]
+    hours = [
+        (e["TxnDate"], e["EntityRef"]["FullName"], e["CustomerRef"]["FullName"], e["ItemServiceRef"]["FullName"], e["Duration"])
+        for e in entries
+    ]
+    assert hours == [
+        ("2024-03-04", "Gregg O. Schneider", "Acme:Main St Paving", "Excavation", "PT8H30M0S"),
+        ("2024-03-05", "Gregg O. Schneider", "Acme:Main St Paving", "Excavation", "PT6H0M0S"),
+    ]
+    assert entries[0]["Notes"] == "Grading east lot"
+    text = result.content[0].text + json.dumps(result.structured_content)
+    assert "48.75" not in text and "Rate" not in text
+    assert "PayrollItemWageRef" not in text and "Operator Hourly" not in text
+
+
+CHECKS = "<CheckQueryRq><MaxReturned>101</MaxReturned></CheckQueryRq>"
+
+
+# A Check's PayeeEntityRef doesn't say whether the payee is an Employee, so the payee is looked
+# up: the address is kept only for a payee found among Vendors, Customers or Other Names (#30).
+async def test_run_query_check_to_an_employee_drops_the_payee_address(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+
+    result = await call("run_query", query=CHECKS)
+
+    checks = {c["RefNumber"]: c for c in result.structured_content["results"]}
+    employee = checks["519"]
+    assert employee["PayeeEntityRef"]["FullName"] == "Gregg O. Schneider"
+    assert employee["Amount"] == "86.40" and employee["Memo"] == "Mileage reimbursement"
+    assert "Address" not in employee and "AddressBlock" not in employee
+    text = result.content[0].text + json.dumps(result.structured_content)
+    assert "Willow" not in text and "94482" not in text
+
+
+async def test_run_query_check_to_a_vendor_or_customer_keeps_the_payee_address(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+
+    checks = {c["RefNumber"]: c for c in (await call("run_query", query=CHECKS)).structured_content["results"]}
+
+    assert checks["517"]["Address"]["Addr2"] == "4872 County Rd"
+    assert checks["517"]["AddressBlock"]["Addr3"] == "Bayshore, CA 94326"
+    assert checks["517"]["Memo"] == "Ticket 88123 culvert parts"
+    assert checks["518"]["Address"]["Addr2"] == "5647 Cypress Hill Rd"
+
+
+async def test_run_query_check_to_an_other_name_keeps_the_payee_address(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+
+    checks = {c["RefNumber"]: c for c in (await call("run_query", query=CHECKS)).structured_content["results"]}
+
+    assert checks["520"]["Address"]["Addr2"] == "300 Harbor Blvd"
+    other_names = [rq for rq in replay.sent if "<OtherNameQueryRq" in rq]
+    assert other_names and all("<IncludeRetElement>ListID</IncludeRetElement>" in rq for rq in other_names)
+
+
+async def test_run_query_check_drops_an_other_name_payee_address_when_its_lookup_fails(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+    replay.respond_with("OtherNameQueryRq", "OtherNameQueryRq.error3120.xml")
+
+    checks = {c["RefNumber"]: c for c in (await call("run_query", query=CHECKS)).structured_content["results"]}
+
+    assert "Address" not in checks["520"]
+    assert checks["517"]["Address"]["Addr2"] == "4872 County Rd"  # its Vendor lookup succeeded
+
+
+# Fail safe: a payee that can't be confirmed as a Vendor or Customer loses the address.
+async def test_run_query_check_drops_the_payee_address_when_the_payee_lookup_fails(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+    replay.respond_with("VendorQueryRq", "VendorQueryRq.error3120.xml")
+
+    result = await call("run_query", query=CHECKS)
+
+    assert not result.is_error
+    checks = {c["RefNumber"]: c for c in result.structured_content["results"]}
+    assert "Address" not in checks["517"] and "AddressBlock" not in checks["517"]
+    assert "Address" not in checks["519"] and "AddressBlock" not in checks["519"]
+    assert checks["517"]["Memo"] == "Ticket 88123 culvert parts"
+    assert checks["518"]["Address"]["Addr2"] == "5647 Cypress Hill Rd"  # its Customer lookup succeeded

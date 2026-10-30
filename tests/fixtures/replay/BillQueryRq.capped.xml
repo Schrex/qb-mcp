@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<!-- Hand-written. Three unpaid Bills for one Vendor: asked for with limit=2, the result is capped (#25),
+     so any total over it would be incomplete. -->
+<QBXML>
+<QBXMLMsgsRs>
+<BillQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="3">
+<BillRet>
+<TxnID>3C01-1720000000</TxnID>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-11-03</TxnDate>
+<DueDate>2025-12-31</DueDate>
+<AmountDue>1000.00</AmountDue>
+<RefNumber>CAP-1</RefNumber>
+<IsPaid>false</IsPaid>
+</BillRet>
+<BillRet>
+<TxnID>3C02-1720000000</TxnID>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-11-04</TxnDate>
+<DueDate>2025-12-31</DueDate>
+<AmountDue>200.00</AmountDue>
+<RefNumber>CAP-2</RefNumber>
+<IsPaid>false</IsPaid>
+</BillRet>
+<BillRet>
+<TxnID>3C03-1720000000</TxnID>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-11-05</TxnDate>
+<DueDate>2025-12-31</DueDate>
+<AmountDue>30.00</AmountDue>
+<RefNumber>CAP-3</RefNumber>
+<IsPaid>false</IsPaid>
+</BillRet>
+</BillQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

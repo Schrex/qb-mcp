@@ -148,3 +148,28 @@ def test_default_log_dir_is_in_local_app_data_on_windows(monkeypatch, tmp_path):
     monkeypatch.setattr("sys.platform", "win32")
 
     assert default_log_dir() == tmp_path / "qb-mcp" / "logs"
+
+
+# --- The payee lookup behind a Check's payee address (#30) records its failures too ---
+
+CHECKS = "<CheckQueryRq><MaxReturned>101</MaxReturned></CheckQueryRq>"
+
+
+async def test_a_failed_payee_lookup_is_reported_as_last_error(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+    replay.respond_with("VendorQueryRq", "VendorQueryRq.error3120.xml")
+
+    result = await call("run_query", query=CHECKS)
+    status = (await call("qb_status")).structured_content
+
+    assert not result.is_error  # the Checks are still returned (without the unconfirmed addresses)
+    assert "3120" in status["last_error"]["message"]
+    assert "VendorQueryRq" in status["last_error"]["message"]
+
+
+async def test_a_payee_lookup_that_succeeds_leaves_no_last_error(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+
+    await call("run_query", query=CHECKS)
+
+    assert (await call("qb_status")).structured_content["last_error"] is None

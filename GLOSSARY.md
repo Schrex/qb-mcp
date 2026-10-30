@@ -24,6 +24,26 @@ _Avoid_: product, material code
 A Vendor's invoice as recorded in QuickBooks; money Schreiber owes.
 _Avoid_: invoice (that is money owed *to* Schreiber), expense
 
+**Open Balance**:
+What is still owed on one Bill after the payments and credits applied to it; the Open Balance column of QuickBooks' A/P Aging Detail report.
+_Avoid_: open amount, balance due, amount remaining
+
+**Posting / Non-posting**:
+A posting transaction (Bill, Invoice, Check) changes account balances; a non-posting one (Estimate, Purchase Order, Sales Order) only records a quote or commitment and is never summed with posting ones.
+_Avoid_: actual / committed (as kinds of transaction), draft
+
+**Basis**:
+Whether a figure counts income and expenses when entered (accrual) or when paid (cash).
+_Avoid_: method, accounting mode
+
+**Closing Date**:
+The date set in the Company File on or before which transactions are locked; figures for a later (open) period may still change. "No closing date set" (QuickBooks has none, so nothing is locked) is not "closing date unknown" (it couldn't be read).
+_Avoid_: lock date, period end, cutoff
+
+**Trust Stamp**:
+The statement carried by every answer of what it is based on: basis, dates, Closing Date, filters, what was excluded, and where in QuickBooks to check it.
+_Avoid_: metadata, footer, disclaimer
+
 **Attachment**:
 A source file (PDF, scan) linked to a QuickBooks transaction through QuickBooks' own Attach File feature.
 _Avoid_: document, upload

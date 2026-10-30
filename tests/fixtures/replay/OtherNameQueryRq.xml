@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<OtherNameQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="1">
+<OtherNameRet>
+<ListID>80000120-1197760100</ListID>
+<TimeCreated>2008-01-05T09:10:00-08:00</TimeCreated>
+<TimeModified>2023-06-01T08:30:00-08:00</TimeModified>
+<EditSequence>1685633400</EditSequence>
+<Name>Bayshore Water District</Name>
+<IsActive>true</IsActive>
+</OtherNameRet>
+</OtherNameQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

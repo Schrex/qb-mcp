@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#28). qbXML 16.0 has no void flag: QuickBooks voids a Bill by zeroing its amounts and
+     prefixing its memo "VOID:". PW-201 is open in full, PW-202 has 100.00 paid (open 150.00), PW-203 is voided. -->
+<QBXML>
+<QBXMLMsgsRs>
+<BillQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="3">
+<BillRet>
+<TxnID>3C01-1720000000</TxnID>
+<TimeCreated>2025-11-03T09:00:00-05:00</TimeCreated>
+<TimeModified>2025-11-03T09:00:00-05:00</TimeModified>
+<EditSequence>1720000000</EditSequence>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<APAccountRef><ListID>8000002F-1197757058</ListID><FullName>Accounts Payable</FullName></APAccountRef>
+<TxnDate>2025-11-03</TxnDate>
+<DueDate>2025-12-03</DueDate>
+<AmountDue>1000.00</AmountDue>
+<RefNumber>PW-201</RefNumber>
+<Memo>Windows, lot 4</Memo>
+<IsPaid>false</IsPaid>
+</BillRet>
+<BillRet>
+<TxnID>3C02-1720000000</TxnID>
+<TimeCreated>2025-11-05T09:00:00-05:00</TimeCreated>
+<TimeModified>2025-11-20T09:00:00-05:00</TimeModified>
+<EditSequence>1720000001</EditSequence>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<APAccountRef><ListID>8000002F-1197757058</ListID><FullName>Accounts Payable</FullName></APAccountRef>
+<TxnDate>2025-11-05</TxnDate>
+<DueDate>2025-12-05</DueDate>
+<AmountDue>250.00</AmountDue>
+<RefNumber>PW-202</RefNumber>
+<IsPaid>false</IsPaid>
+<LinkedTxn><TxnID>4F01-1720000000</TxnID><TxnType>BillPaymentCheck</TxnType><TxnDate>2025-11-20</TxnDate><RefNumber>5101</RefNumber><LinkType>AMTTYPE</LinkType><Amount>-100.00</Amount></LinkedTxn>
+</BillRet>
+<BillRet>
+<TxnID>3C03-1720000000</TxnID>
+<TimeCreated>2025-11-06T09:00:00-05:00</TimeCreated>
+<TimeModified>2025-11-07T09:00:00-05:00</TimeModified>
+<EditSequence>1720000002</EditSequence>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<APAccountRef><ListID>8000002F-1197757058</ListID><FullName>Accounts Payable</FullName></APAccountRef>
+<TxnDate>2025-11-06</TxnDate>
+<DueDate>2025-12-06</DueDate>
+<AmountDue>0.00</AmountDue>
+<RefNumber>PW-203</RefNumber>
+<Memo>VOID: entered twice</Memo>
+<IsPaid>true</IsPaid>
+<ExpenseLineRet>
+<TxnLineID>3C03-1</TxnLineID>
+<AccountRef><ListID>80000020-1197757058</ListID><FullName>Job Expenses:Job Materials</FullName></AccountRef>
+<Amount>0.00</Amount>
+<Memo>Windows, lot 4</Memo>
+</ExpenseLineRet>
+</BillRet>
+</BillQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

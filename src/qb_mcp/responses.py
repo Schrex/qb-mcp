@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from qb_mcp.errors import QuickBooksStatusError
-from qb_mcp.output import is_sensitive
+from qb_mcp.output import PAYEE_ADDRESS, PAYEE_REF, is_sensitive
 from qb_mcp.reports import drop_sensitive_columns
 
 # Elements that are lists in the schema even when only one occurs. Extend as needed.
@@ -71,6 +71,30 @@ def to_data(element: ET.Element) -> Any:
         else:
             data[child.tag] = value
     return data
+
+
+def payees_with_address(results: list[QueryResult]) -> set[str]:
+    """ListIDs of the payees of records carrying a payee address (`output.PAYEE_ADDRESS`)."""
+    return {
+        data[PAYEE_REF]["ListID"]
+        for result in results
+        for tag, data in result.rets
+        if tag in PAYEE_ADDRESS
+        and any(f in data for f in PAYEE_ADDRESS[tag])
+        and isinstance(data.get(PAYEE_REF), dict)
+        and data[PAYEE_REF].get("ListID")
+    }
+
+
+def drop_payee_addresses(results: list[QueryResult], keep_for: set[str]) -> None:
+    """Drop payee addresses, in place, except where the payee's ListID is in `keep_for`."""
+    for result in results:
+        for tag, data in result.rets:
+            fields = PAYEE_ADDRESS.get(tag, ())
+            payee = data.get(PAYEE_REF)
+            if fields and not (isinstance(payee, dict) and payee.get("ListID") in keep_for):
+                for f in fields:
+                    data.pop(f, None)
 
 
 def _ret_data(ret: ET.Element) -> Any:
