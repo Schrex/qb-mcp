@@ -38,7 +38,7 @@ QUERY_TAG = re.compile(r"[A-Z][A-Za-z0-9]*QueryRq")
 # payroll and card data out of reach. Types a dedicated tool covers (Vendor, Bill,
 # Customer, Item, Account, JobReport, Company) are left to that tool.
 # Deliberately absent: Employee*, Paycheck, Payroll* (pay, SSN, bank data);
-# CreditCardCharge/Credit, BillPaymentCreditCard, ARRefundCreditCard (card data);
+# BillPaymentCreditCard, ARRefundCreditCard (card data);
 # Transaction, GeneralDetailReport, CustomDetail/SummaryReport (can list paychecks per employee).
 ALLOWED_QUERIES = frozenset(
     {
@@ -54,6 +54,8 @@ ALLOWED_QUERIES = frozenset(
         "VendorCreditQueryRq",  # credits that reduce job cost
         "BillPaymentCheckQueryRq",  # which Bills were paid, when
         "CheckQueryRq",  # direct-paid costs; bank reconciliation input (non-Vendor/Customer payee address stripped)
+        "CreditCardChargeQueryRq",  # fuel and parts on company cards (#29); card data is stripped
+        "CreditCardCreditQueryRq",  # refunds to company cards (#29); card data is stripped
         "DepositQueryRq",  # bank reconciliation input
         "JournalEntryQueryRq",  # cost reallocations and accruals between jobs
         "TimeTrackingQueryRq",  # hours by Customer:Job (labour job costing); Rate and payroll item stripped

@@ -37,6 +37,16 @@ async def test_run_query_sends_the_element_inside_the_servers_own_envelope(call,
     assert rq.findtext("RefNumber") == "A&B"
 
 
+@pytest.mark.parametrize("rq_type", ["InvoiceQueryRq", "ReceivePaymentQueryRq", "CreditMemoQueryRq"])
+async def test_run_query_names_the_ar_account_of_invoices_payments_and_credit_memos(call, replay, rq_type):
+    # Retainage receivable kept in its own A/R account (#32).
+    replay.respond_with(rq_type, f"{rq_type}.araccounts.xml")
+
+    out = (await call("run_query", query=f"<{rq_type}><MaxReturned>101</MaxReturned></{rq_type}>")).structured_content
+
+    assert [r["ar_account"] for r in out["results"]] == ["Accounts Receivable", "Retainage Receivable"]
+
+
 async def test_run_query_strips_sensitive_fields(call, replay):
     replay.respond_with("InvoiceQueryRq", "InvoiceQueryRq.sensitive.xml")
 
@@ -90,6 +100,78 @@ async def test_run_query_description_lists_the_allowed_query_types(client):
     for tag in ["InvoiceQueryRq", "CheckQueryRq", "PurchaseOrderQueryRq", "EstimateQueryRq", "SalesReceiptQueryRq"]:
         assert tag in tool.description
     assert "EmployeeQueryRq" not in tool.description
+
+
+# --- Company credit card charges and credits: fuel and parts on cards are job cost (#29) ---
+
+CARD_CHARGES = "<CreditCardChargeQueryRq><MaxReturned>101</MaxReturned></CreditCardChargeQueryRq>"
+CARD_CREDITS = "<CreditCardCreditQueryRq><MaxReturned>101</MaxReturned></CreditCardCreditQueryRq>"
+
+
+async def test_run_query_returns_credit_card_charges_with_vendor_job_account_amount_and_memo(call):
+    result = await call("run_query", query=CARD_CHARGES)
+
+    assert not result.is_error
+    out = result.structured_content
+    assert out["count"] == 2
+    fuel, parts = out["results"]
+    assert fuel["PayeeEntityRef"]["FullName"] == "Bayshore CalOil Service"
+    assert fuel["AccountRef"]["FullName"] == "QuickBooks Credit Card"
+    assert fuel["Amount"] == "86.50"
+    assert fuel["Memo"] == "Fuel for truck"
+    (expense,) = fuel["ExpenseLineRet"]
+    assert expense["AccountRef"]["FullName"] == "Job Expenses:Equipment Rental"
+    assert expense["CustomerRef"]["FullName"] == "Burch, Jason:Room Addition"
+    assert expense["Amount"] == "86.50"
+    (item,) = parts["ItemLineRet"]
+    assert item["ItemRef"]["FullName"] == "Hardware:Doorknobs Std"
+    assert item["CustomerRef"]["FullName"] == "Abercrombie, Kristy:Remodel Bathroom"
+    assert parts["Memo"] == "Doorknobs"
+
+
+async def test_run_query_strips_card_data_from_credit_card_charges(call, replay):
+    replay.respond_with("CreditCardChargeQueryRq", "CreditCardChargeQueryRq.sensitive.xml")
+
+    result = await call("run_query", query=CARD_CHARGES)
+
+    assert not result.is_error
+    text = result.content[0].text
+    assert "Bayshore CalOil Service" in text  # the record itself still comes back
+    for card_data in ["4111111111111111", "5500005555555559", "Rock Castle Owner", "94326-1111", "TX-88213"]:
+        assert card_data not in text
+    for tag in ["CreditCardTxnInfo", "CreditCardNumber", "ExpirationYear", "NameOnCard", "CreditCardTransID"]:
+        assert tag not in text
+
+
+async def test_run_query_returns_credit_card_credits_with_vendor_job_account_amount_and_memo(call):
+    result = await call("run_query", query=CARD_CREDITS)
+
+    assert not result.is_error
+    out = result.structured_content
+    assert out["count"] == 1
+    (refund,) = out["results"]
+    assert refund["PayeeEntityRef"]["FullName"] == "Patton Hardware Supplies"
+    assert refund["AccountRef"]["FullName"] == "QuickBooks Credit Card"
+    assert refund["Amount"] == "27.00"
+    assert refund["Memo"] == "Returned doorknob"
+    (expense,) = refund["ExpenseLineRet"]
+    assert expense["AccountRef"]["FullName"] == "Job Expenses:Job Materials"
+    assert expense["CustomerRef"]["FullName"] == "Abercrombie, Kristy:Remodel Bathroom"
+    assert expense["Amount"] == "27.00"
+
+
+async def test_run_query_strips_card_data_from_credit_card_credits(call, replay):
+    replay.respond_with("CreditCardCreditQueryRq", "CreditCardCreditQueryRq.sensitive.xml")
+
+    result = await call("run_query", query=CARD_CREDITS)
+
+    assert not result.is_error
+    text = result.content[0].text
+    assert "Patton Hardware Supplies" in text  # the record itself still comes back
+    for card_data in ["4111111111111111", "5500005555555559", "Rock Castle Owner", "94326-1111", "TX-88213"]:
+        assert card_data not in text
+    for tag in ["CreditCardTxnInfo", "CreditCardNumber", "ExpirationYear", "NameOnCard", "CreditCardTransID"]:
+        assert tag not in text
 
 
 # --- Refusals: nothing caller-supplied but one plain *QueryRq ever reaches QuickBooks ---
@@ -166,8 +248,6 @@ OFF_LIST = [
     "PayrollItemWageQueryRq",
     "PayrollItemQueryRq",
     "PayrollSummaryReportQueryRq",
-    "CreditCardChargeQueryRq",
-    "CreditCardCreditQueryRq",
     "BillQueryRq",  # query_bills covers it
     "VendorQueryRq",  # list_vendors covers it
     "TransactionQueryRq",  # lists paychecks

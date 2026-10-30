@@ -26,6 +26,8 @@ EXPECTED_FILES = {
     "AccountQueryRq.xml",
     "BillQueryRq.xml",
     "InvoiceQueryRq.xml",
+    "CreditCardChargeQueryRq.xml",
+    "CreditCardCreditQueryRq.xml",
     "JobReportQueryRq.xml",
     "JobReportQueryRq.profitability_detail.xml",
     "JobReportQueryRq.estimates.xml",
@@ -94,6 +96,23 @@ async def test_refuses_a_report_with_values_in_sensitive_columns(clean_quickbook
         assert f"'{title}'" in printed
     assert "94-1234567" not in printed and "4111111111111111" not in printed
     assert not (out / "JobReportQueryRq.xml").exists()
+
+
+@pytest.mark.parametrize("rq_type", ["CreditCardChargeQueryRq", "CreditCardCreditQueryRq"])
+async def test_refuses_a_fixture_with_card_data_and_never_prints_it(clean_quickbooks, out, capsys, rq_type):
+    sensitive = {
+        "CreditCardChargeQueryRq": "CreditCardChargeQueryRq.sensitive.xml",
+        "CreditCardCreditQueryRq": "CreditCardCreditQueryRq.sensitive.xml",
+    }
+    clean_quickbooks.respond_with(rq_type, sensitive[rq_type])
+
+    code = await record_fixtures.run(clean_quickbooks, out)
+
+    printed = capsys.readouterr().out
+    assert code == 1
+    assert f"REFUSED {rq_type}.xml" in printed and "CreditCardTxnInputInfo/CreditCardNumber" in printed
+    assert "4111111111111111" not in printed and "Rock Castle Owner" not in printed
+    assert not (out / f"{rq_type}.xml").exists()
 
 
 @pytest.mark.parametrize(

@@ -26,6 +26,17 @@ def first_present(*values: Any) -> Any:
     return next((v for v in values if v not in (None, "")), None)
 
 
+# Transactions posted to an A/R account; `run_query` names it as `ar_account` (retainage may have its own).
+POSTS_TO_AR = frozenset({"InvoiceRet", "ReceivePaymentRet", "CreditMemoRet"})
+
+
+def raw(tag: str, record: Any) -> Any:
+    """A `run_query` record: QuickBooks' own data, plus `ar_account` on A/R transactions."""
+    if tag in POSTS_TO_AR and isinstance(record, dict):
+        return record | {"ar_account": ref_name(record.get("ARAccountRef"))}
+    return record
+
+
 def vendor(_tag: str, v: dict[str, Any]) -> dict[str, Any]:
     return {
         "name": full_name(v),

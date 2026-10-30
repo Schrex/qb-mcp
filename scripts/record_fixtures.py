@@ -67,6 +67,8 @@ TOOL_CALLS = [
     ToolCall("list_accounts", {"status": "all", "limit": LIMIT}),
     ToolCall("query_bills", {"limit": 10}),
     ToolCall("run_query", {"query": "<InvoiceQueryRq><MaxReturned>11</MaxReturned></InvoiceQueryRq>", "limit": 10}),
+    ToolCall("run_query", {"query": "<CreditCardChargeQueryRq><MaxReturned>11</MaxReturned></CreditCardChargeQueryRq>", "limit": 10}),
+    ToolCall("run_query", {"query": "<CreditCardCreditQueryRq><MaxReturned>11</MaxReturned></CreditCardCreditQueryRq>", "limit": 10}),
     ToolCall("run_job_report", {"report": "job_profitability_summary", **REPORT_PERIOD}),
     ToolCall("run_job_report", {"report": "job_profitability_detail", **DETAIL_JOB}, "profitability_detail"),
     ToolCall("run_job_report", {"report": "job_estimates_vs_actuals_summary", **REPORT_PERIOD}, "estimates"),
