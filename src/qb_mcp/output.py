@@ -49,6 +49,9 @@ SENSITIVE_CHILDREN: dict[str, frozenset[str]] = {
     # A Vendor's AccountNumber is Schreiber's account at that Vendor, which for a card
     # issuer (e.g. Amex) is the credit-card number.
     "VendorRet": frozenset({"AccountNumber"}),
+    # Hours, employee, Customer:Job and Item stay (job costing); the pay rate and the
+    # payroll item reveal pay (#30). `Rate` elsewhere (e.g. an item line's price) is kept.
+    "TimeTrackingRet": frozenset({"Rate", "PayrollItemWageRef"}),
 }
 
 

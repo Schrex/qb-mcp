@@ -91,3 +91,24 @@ async def test_run_query_report_drops_sensitive_columns(call, replay):
     assert "2520.00" in text
     assert not any(secret in text for secret in REPORT_SECRETS)
     assert "Tax ID" not in text and "Card" not in text
+
+
+# Hours by Customer:Job are job costing; the pay rate and payroll item reveal pay (#30, #18).
+async def test_run_query_time_tracking_drops_rate_and_payroll_item(call, replay):
+    replay.respond_with("TimeTrackingQueryRq", "TimeTrackingQueryRq.sensitive.xml")
+
+    result = await call("run_query", query="<TimeTrackingQueryRq><MaxReturned>101</MaxReturned></TimeTrackingQueryRq>")
+
+    entries = result.structured_content["results"]
+    hours = [
+        (e["TxnDate"], e["EntityRef"]["FullName"], e["CustomerRef"]["FullName"], e["ItemServiceRef"]["FullName"], e["Duration"])
+        for e in entries
+    ]
+    assert hours == [
+        ("2024-03-04", "Gregg O. Schneider", "Acme:Main St Paving", "Excavation", "PT8H30M0S"),
+        ("2024-03-05", "Gregg O. Schneider", "Acme:Main St Paving", "Excavation", "PT6H0M0S"),
+    ]
+    assert entries[0]["Notes"] == "Grading east lot"
+    text = result.content[0].text + json.dumps(result.structured_content)
+    assert "48.75" not in text and "Rate" not in text
+    assert "PayrollItemWageRef" not in text and "Operator Hourly" not in text
