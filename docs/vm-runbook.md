@@ -147,3 +147,31 @@ Review before committing:
 ## 10. Shut down
 
 Stop/deallocate the VM. Update #4 with: smoke test result, `qb_status` output, observed HRESULTs, Python bitness, the view-only answer, and the XSD file names/location found.
+
+## 11. Run log
+
+One entry per session on the VM: what was run, what came out, what it changed, and what the Mac side still has to do. Newest first.
+
+### 2026-10-30 — smoke test, record run, Contact fix (branch `customer-contact-and-recorder-keep-list`)
+
+**Setup.** `main` fast-forwarded 55 commits (7eaad2d → 1355759, the pre-install fixes, trust stamp, redaction and support-sheet work). Rock Castle open as `C:\Users\Sumanth\Desktop\sample_product-based business.QBW`, Enterprise Solutions: Contractor 24.0 trial, qbXML up to 17.0. `xsd/` holds the 16.0 schemas, so every request in the test suite here was schema-validated.
+
+**Smoke test** passed (`qb_status`, `list_vendors`).
+
+**First record run** exited 1 and broke the suite: 17 failures where `main` had 395 passing. Causes, all confirmed:
+
+1. Four base fixtures on `main` were hand-written and carry the names the recorder writes, so it overwrote them: `PreferencesQueryRq.xml` (closing date 2023-12-31; the sample file has none), `AccountQueryRq.xml` (3 accounts vs 26 real), `CreditCardChargeQueryRq.xml` (2 vs 11), `CreditCardCreditQueryRq.xml` (1; the sample file has **no** credit card credits, QuickBooks answers status 1 "did not find a matching object"). 15 of the 17 failures.
+2. `CustomerQueryRq.xml` came back without `Contact`, `AltContact`, `ShipToAddress`, `AdditionalContactRef`, `ContactsRet` for the same 26 records at the same `EditSequence` as the committed fixture. Probed QuickBooks directly (qbXML 16.0 and 13.0): an unfiltered `CustomerQueryRq`, even an empty one, omits them; `FullName`, `NameFilter` or `IncludeRetElement` queries return them. So in production `list_customer_jobs` returned `contact: null` for every row unless `name_contains` was given; `tests/test_kept_fields.py` passed only because the committed fixture had the field. The other 2 failures.
+3. `CompanyQueryRq.xml` and `VendorQueryRq.xml` refused as on 2026-10-28 (EIN; 11 account numbers, 2 tax IDs). `AccountQueryRq.xml` was **not** refused this time (no `BankNumber` reported), unlike 2026-10-28; it is kept anyway, see below.
+
+**Fix, committed as 91034e1 on the branch above** (all 397 tests pass on the VM with the XSD):
+
+- `server.py`: `CUSTOMER_RET_ELEMENTS` + `_customer_includes()`; both `CustomerQueryRq` call sites (`list_lookup` and `jobs_in`) append one `IncludeRetElement` per element `records.customer_job` reads. `ListID` is in the list because `QuickBooks._payees_not_employees` confirms payees by `ListID` and Replay answers that lookup with the base Customer fixture (the two `test_redaction.py` check-address tests fail without it). Verified against real QuickBooks: `list_customer_jobs` now returns `Kristy Abercrombie` as the first contact.
+- `record_fixtures.py`: `HAND_WRITTEN_BASE` names the four fixtures with reasons; the recorder prints `KEPT` and leaves them alone. The sensitive-value check still runs before the keep check, so the card-data refusal tests still hold.
+- Fixtures re-recorded with the new request: `CustomerQueryRq.xml` (now only the requested elements) and `BillQueryRq.xml` (gains the `LinkedTxn` blocks `query_bills` has asked for since #14; the committed fixture predated that). `HostQueryRq.xml`, `ItemQueryRq.xml`, `InvoiceQueryRq.xml` and the four job reports recorded identical to `main`.
+- Tests: `test_list_lookups.py` expects the `IncludeRetElement` list and has a new test that the unfiltered request asks for `Contact`; `test_record_fixtures_script.py` splits `RECORDED_FILES` from `HAND_WRITTEN_BASE` and adds a test that a differing QuickBooks answer leaves the kept fixtures byte-identical.
+- README section "On the Windows VM" and section 9 above updated.
+
+**Still to do (Mac).** Review the branch diff, open the PR, merge. Expected on the Mac: `QBXML_XSD_DIR=~/qbxml-xsd/16.0 uv run pytest` → 397 passed. Nothing in the branch depends on Windows. The recorder still exits 1 on the sample file for the two refusals in point 3; that stays the accepted outcome.
+
+**Not done / open.** Whether to make the recorder redact (blank) EIN and Vendor account numbers instead of refusing, so a clean run can exit 0, is a design question for a ticket, not this branch. No `.sensitive.xml` or other hand-written variant was touched.
