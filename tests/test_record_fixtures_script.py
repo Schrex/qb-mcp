@@ -32,6 +32,7 @@ EXPECTED_FILES = {
     "JobReportQueryRq.profitability_detail.xml",
     "JobReportQueryRq.estimates.xml",
     "JobReportQueryRq.estimates_detail.xml",
+    "PreferencesQueryRq.xml",  # the trust stamp's closing-date read (#26)
 }
 
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#28). qbXML 16.0 has no void flag: QuickBooks voids a Check by zeroing its amounts and
+     prefixing its memo "VOID:". Check 6001 is a normal check; 6002 is voided. -->
+<QBXML>
+<QBXMLMsgsRs>
+<CheckQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="2">
+<CheckRet>
+<TxnID>5A01-1720000000</TxnID>
+<TimeCreated>2025-11-10T09:00:00-05:00</TimeCreated>
+<TimeModified>2025-11-10T09:00:00-05:00</TimeModified>
+<EditSequence>1720000010</EditSequence>
+<AccountRef><ListID>80000001-1197756768</ListID><FullName>Checking</FullName></AccountRef>
+<PayeeEntityRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></PayeeEntityRef>
+<RefNumber>6001</RefNumber>
+<TxnDate>2025-11-10</TxnDate>
+<Amount>420.50</Amount>
+<Memo>Window hardware</Memo>
+<IsToBePrinted>false</IsToBePrinted>
+</CheckRet>
+<CheckRet>
+<TxnID>5A02-1720000000</TxnID>
+<TimeCreated>2025-11-11T09:00:00-05:00</TimeCreated>
+<TimeModified>2025-11-12T09:00:00-05:00</TimeModified>
+<EditSequence>1720000011</EditSequence>
+<AccountRef><ListID>80000001-1197756768</ListID><FullName>Checking</FullName></AccountRef>
+<PayeeEntityRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></PayeeEntityRef>
+<RefNumber>6002</RefNumber>
+<TxnDate>2025-11-11</TxnDate>
+<Amount>0.00</Amount>
+<Memo>VOID: wrong vendor</Memo>
+<IsToBePrinted>false</IsToBePrinted>
+</CheckRet>
+</CheckQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

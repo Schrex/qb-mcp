@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#28): an Estimate is non-posting (a quote; it changes no account balance). -->
+<QBXML>
+<QBXMLMsgsRs>
+<EstimateQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="1">
+<EstimateRet>
+<TxnID>6A01-1720000000</TxnID>
+<TimeCreated>2025-10-01T09:00:00-05:00</TimeCreated>
+<TimeModified>2025-10-01T09:00:00-05:00</TimeModified>
+<EditSequence>1720000020</EditSequence>
+<CustomerRef><ListID>800000B8-1197707458</ListID><FullName>Prentice, Adelaide:Bay Window</FullName></CustomerRef>
+<TxnDate>2025-10-01</TxnDate>
+<RefNumber>E-301</RefNumber>
+<IsActive>true</IsActive>
+<Subtotal>8500.00</Subtotal>
+<TotalAmount>8500.00</TotalAmount>
+<Memo>Bay window, supply and install</Memo>
+</EstimateRet>
+</EstimateQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

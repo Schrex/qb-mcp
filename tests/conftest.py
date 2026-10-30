@@ -13,6 +13,11 @@ from qb_mcp.transports.replay import ReplayTransport
 FIXTURES = Path(__file__).parent / "fixtures" / "replay"
 
 
+def tool_requests(replay: ReplayTransport) -> list[str]:
+    """The requests the tools sent, without the trust stamp's once-per-session closing-date read."""
+    return [rq for rq in replay.sent if "<PreferencesQueryRq" not in rq]
+
+
 @pytest.fixture
 def anyio_backend() -> str:
     return "asyncio"

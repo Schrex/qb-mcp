@@ -8,7 +8,7 @@ from typing import Any, Literal
 
 from qb_mcp.output import fetch_limit
 from qb_mcp.qbxml import el, query
-from qb_mcp.records import is_true, ref_name
+from qb_mcp.records import is_true, is_void, ref_name
 
 PaidStatus = Literal["paid", "unpaid", "all"]
 PAID_STATUS = {"paid": "PaidOnly", "unpaid": "NotPaidOnly", "all": "All"}
@@ -78,6 +78,15 @@ def open_balance(b: dict[str, Any]) -> Decimal:
     return max(Decimal(b.get("AmountDue") or "0") - applied, Decimal("0")).quantize(Decimal("0.01"))
 
 
+def totals(bills: list[dict[str, Any]]) -> dict[str, str]:
+    """Sums of `amount` and `open_balance` over Bills (as returned by `bill`), voided Bills left out."""
+    posted = [b for b in bills if not b["is_void"]]
+    return {
+        name: f"{sum((Decimal(b[name] or '0') for b in posted), Decimal('0')):.2f}"
+        for name in ("amount", "open_balance")
+    }
+
+
 def charged_to(bills: list[dict[str, Any]], customer_job: str) -> list[dict[str, Any]]:
     """Bills (as returned by `bill`) cut down to their lines for `customer_job` or its
     sub-jobs; Bills with no such line are dropped."""
@@ -137,6 +146,8 @@ def bill(b: dict[str, Any], include_lines: bool = True) -> dict[str, Any]:
         "open_balance": f"{balance:.2f}",
         "memo": b.get("Memo"),
         "is_paid": balance <= PAID_TOLERANCE,
+        "is_void": is_void(b),
+        "posting": True,  # a Bill always posts (to A/P)
     }
     if not include_lines:
         return header

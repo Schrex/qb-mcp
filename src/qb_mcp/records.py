@@ -4,6 +4,7 @@ Each mapper takes a `*Ret` element's tag and data (the tag tells Item kinds apar
 """
 
 import re
+from decimal import Decimal
 from typing import Any
 
 
@@ -26,14 +27,41 @@ def first_present(*values: Any) -> Any:
     return next((v for v in values if v not in (None, "")), None)
 
 
+# A transaction's own amount fields (not line amounts), by transaction type.
+TXN_AMOUNTS = ("Amount", "AmountDue", "TotalAmount", "Subtotal")
+
+
+def is_void(txn: dict[str, Any]) -> bool:
+    """Whether QuickBooks has voided this transaction. qbXML 16.0 has no void flag; voiding keeps the
+    transaction but zeroes its amounts and prefixes its memo "VOID:". Both must hold, so a memo that
+    merely starts "VOID:" on a live amount is not taken for a void."""
+    memo = txn.get("Memo")
+    amounts = [txn[f] for f in TXN_AMOUNTS if txn.get(f) not in (None, "")]
+    return (
+        isinstance(memo, str)
+        and memo.upper().startswith("VOID:")
+        and bool(amounts)
+        and all(Decimal(a) == 0 for a in amounts)
+    )
+
+
+# Non-posting transactions (GLOSSARY: Posting / Non-posting): quotes and commitments that change no
+# account balance. Listed with `posting: false`, never summed with posting transactions.
+NON_POSTING = frozenset({"EstimateRet", "PurchaseOrderRet", "SalesOrderRet"})
+
 # Transactions posted to an A/R account; `run_query` names it as `ar_account` (retainage may have its own).
 POSTS_TO_AR = frozenset({"InvoiceRet", "ReceivePaymentRet", "CreditMemoRet"})
 
 
 def raw(tag: str, record: Any) -> Any:
-    """A `run_query` record: QuickBooks' own data, plus `ar_account` on A/R transactions."""
-    if tag in POSTS_TO_AR and isinstance(record, dict):
-        return record | {"ar_account": ref_name(record.get("ARAccountRef"))}
+    """A `run_query` record: QuickBooks' own data, plus `ar_account` on A/R transactions and
+    `is_void` on every transaction."""
+    if not isinstance(record, dict):
+        return record
+    if tag in POSTS_TO_AR:
+        record = record | {"ar_account": ref_name(record.get("ARAccountRef"))}
+    if "TxnID" in record:
+        record = record | {"posting": tag not in NON_POSTING, "is_void": is_void(record)}
     return record
 
 
@@ -61,6 +89,10 @@ def customer_job(_tag: str, c: dict[str, Any]) -> dict[str, Any]:
         "balance": c.get("Balance"),
         "total_balance": c.get("TotalBalance"),
         "job_description": c.get("JobDesc"),
+        "contact": c.get("Contact"),
+        "phone": c.get("Phone"),
+        "email": c.get("Email"),
+        "bill_address": c.get("BillAddress", {}),
     }
 
 

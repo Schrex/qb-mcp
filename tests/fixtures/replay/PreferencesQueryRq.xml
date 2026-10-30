@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<PreferencesQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<PreferencesRet>
+<AccountingPreferences>
+<IsUsingAccountNumbers>false</IsUsingAccountNumbers>
+<IsRequiringAccounts>true</IsRequiringAccounts>
+<IsUsingClassTracking>false</IsUsingClassTracking>
+<IsUsingAuditTrail>true</IsUsingAuditTrail>
+<IsAssigningJournalEntryNumbers>true</IsAssigningJournalEntryNumbers>
+<ClosingDate>2023-12-31</ClosingDate>
+</AccountingPreferences>
+</PreferencesRet>
+</PreferencesQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
