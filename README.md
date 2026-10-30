@@ -24,6 +24,8 @@ Terms (Company File, Vendor, Customer:Job, Item, Bill, Attachment, Lookup) follo
 
 List and query tools return at most `limit` (default 100) results and set `more_available` (plus a `note`) when more exist.
 
+`query_bills` filtered by `customer_job` returns no `totals`: a Bill's amount and open balance cover all its lines, and one Bill can be split across several Customer:Jobs, so summing them would overstate that job; only its lines for the job are kept. For a job's cost use `run_job_report` (job profitability).
+
 Every result carries a trust `stamp`: the `filters` applied and whether it is `complete`. A capped result says so in `cap_notice` ("showing the first N; more exist; totals incomplete", and how to narrow) and never carries a total.
 
 Voided transactions stay listed, marked `is_void`, but are left out of every total (e.g. `query_bills` `totals`). The stamp's `voided_listed` counts those listed; `voided_excluded` counts those left out of a total, and is `null` when the answer has no total (e.g. `run_query`). qbXML 16.0 has no void flag, so a transaction counts as voided when QuickBooks has zeroed its amount(s) and prefixed its memo `VOID:` (both must hold). Transactions carry `posting`: Estimates, Purchase Orders and Sales Orders are `posting: false` (non-posting) and never summed with posting transactions; the stamp's `non_posting_listed` counts them.

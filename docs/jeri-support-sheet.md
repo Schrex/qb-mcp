@@ -38,6 +38,8 @@ Every answer carries a short note of what it is based on. Ask "show me the trust
 
 If the stamp says *"Showing the first 100; more exist; totals incomplete"*, Claude only saw part of the list, so there is **no total**, and any total you work out from it is wrong. Ask again, narrower: one Vendor, one Customer:Job, or a shorter date range (e.g. one month). Repeat until the notice is gone.
 
+Bills for one Customer:Job never come with a total either: one Bill can be split across several Customer:Jobs, so its amount isn't all that job's cost. For a job's cost, ask for its job profitability report instead.
+
 ## Before you rely on a figure
 
 Open the "check in QuickBooks" report for the same dates and filters and compare. If they differ, trust QuickBooks and tell Sumanth.
