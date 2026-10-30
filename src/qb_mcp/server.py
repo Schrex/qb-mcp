@@ -92,16 +92,36 @@ def user_facing_errors(qb: QuickBooks) -> Callable[[Tool], Tool]:
     return decorate
 
 
+def closing_date_reader(qb: QuickBooks) -> Callable[[], Awaitable[date | None]]:
+    """Reads the Company File's closing date (Preferences > Accounting) once per session, then
+    caches it. None if QuickBooks has none set; also None, uncached, if the read fails."""
+    known: list[date | None] = []
+
+    async def closing_date() -> date | None:
+        if not known:
+            try:
+                (rs,) = await qb.lookup(query("PreferencesQueryRq", el("IncludeRetElement", "AccountingPreferences")))
+            except QBError:
+                return None  # unknown for now; read again on the next call
+            prefs = rs.records[0] if rs.records else {}
+            text = prefs.get("AccountingPreferences", {}).get("ClosingDate")
+            known.append(date.fromisoformat(text) if text else None)
+        return known[0]
+
+    return closing_date
+
+
 def build_server(transport: Transport) -> MCPServer:
     qb = QuickBooks(transport)
     mcp = MCPServer("qb-mcp", instructions=INSTRUCTIONS)
     user_facing = user_facing_errors(qb)
+    closing_date = closing_date_reader(qb)
 
     def tool(narrow_by: str = DEFAULT_NARROW_BY, description: str | None = None, errors: bool = True):
         """Register a tool. Every tool is `stamped` (trust stamp); `errors` adds `user_facing` errors."""
 
         def register(fn: Tool) -> Tool:
-            wrapped = stamped(narrow_by)(fn)
+            wrapped = stamped(narrow_by, closing_date)(fn)
             return mcp.tool(description=description)(user_facing(wrapped) if errors else wrapped)
 
         return register
@@ -236,7 +256,7 @@ def build_server(transport: Transport) -> MCPServer:
     ) -> dict[str, Any]:
         """List customers and their Customer:Jobs. Each has its full `name` ("Customer:Job" for a job),
         `kind` ("customer" or "job"), `parent`, `job_status`, own `balance` and `total_balance`
-        (including its Customer:Jobs). Optional: `name_contains` (case-insensitive substring),
+        (including its Customer:Jobs), `contact`, `phone`, `email` and `bill_address`. Optional: `name_contains` (case-insensitive substring),
         `status` (default active), `job_status` (keep only these, e.g. ["awarded", "in_progress"];
         combines with `status`), `limit` (default 100); if more match, `more_available` is true."""
         if not job_status:
