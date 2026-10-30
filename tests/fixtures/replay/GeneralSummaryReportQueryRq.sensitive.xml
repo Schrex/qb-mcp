@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<GeneralSummaryReportQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<ReportRet>
+<ReportTitle>Profit &amp; Loss</ReportTitle>
+<ReportSubtitle>January 1 through December 31, 2024</ReportSubtitle>
+<ReportBasis>Accrual</ReportBasis>
+<NumRows>1</NumRows>
+<NumColumns>7</NumColumns>
+<NumColTitleRows>1</NumColTitleRows>
+<ColDesc colID="1" dataType="STRTYPE">
+<ColTitle titleRow="1" />
+<ColType>Label</ColType>
+</ColDesc>
+<ColDesc colID="2" dataType="STRTYPE">
+<ColTitle titleRow="1" value="Name" />
+<ColType>Name</ColType>
+</ColDesc>
+<ColDesc colID="3" dataType="STRTYPE">
+<ColTitle titleRow="1" value="Tax ID" />
+<ColType>Text</ColType>
+</ColDesc>
+<ColDesc colID="4" dataType="STRTYPE">
+<ColTitle titleRow="1" value="Account No." />
+<ColType>Text</ColType>
+</ColDesc>
+<ColDesc colID="5" dataType="STRTYPE">
+<ColTitle titleRow="1" value="Credit Card No." />
+<ColType>Text</ColType>
+</ColDesc>
+<ColDesc colID="6" dataType="STRTYPE">
+<ColTitle titleRow="1" value="Bank Acct. No." />
+<ColType>Text</ColType>
+</ColDesc>
+<ColDesc colID="7" dataType="AMTTYPE">
+<ColTitle titleRow="1" value="Act. Cost" />
+<ColType>Amount</ColType>
+</ColDesc>
+<ReportData>
+<DataRow rowNumber="1">
+<RowData rowType="customer" value="Abercrombie, Kristy:Kitchen" />
+<ColData colID="1" value="Kitchen" />
+<ColData colID="2" value="Patton Hardware Supplies" />
+<ColData colID="3" value="94-1234567" />
+<ColData colID="4" value="371449635398431" />
+<ColData colID="5" value="4111111111111111" />
+<ColData colID="6" value="000123456789" />
+<ColData colID="7" value="2520.00" />
+</DataRow>
+</ReportData>
+</ReportRet>
+</GeneralSummaryReportQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

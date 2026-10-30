@@ -20,7 +20,7 @@ async def test_query_bills_returns_header_with_item_and_expense_lines(call):
         "date": "2024-12-02",
         "due_date": "2026-01-01",
         "amount": "13695.00",
-        "open_amount": "4479.20",
+        "open_amount": "0.00",  # paid; QuickBooks' OpenAmount (4479.20) is a Vendor-wide figure (#14)
         "memo": None,
         "is_paid": True,
         "expense_lines": [],
@@ -124,6 +124,7 @@ async def test_query_bills_sends_date_vendor_paid_filters_in_schema_order(call, 
         "EntityFilter",
         "PaidStatus",
         "IncludeLineItems",
+        "IncludeLinkedTxns",
     ]
     assert rq.findtext("MaxReturned") == "6"
     assert rq.findtext("TxnDateRangeFilter/FromTxnDate") == "2024-01-01"
@@ -137,7 +138,7 @@ async def test_query_bills_defaults_to_all_paid_statuses_with_lines_and_100(call
     await call("query_bills")
 
     rq = _sent_bill_query(replay)
-    assert [c.tag for c in rq] == ["MaxReturned", "PaidStatus", "IncludeLineItems"]
+    assert [c.tag for c in rq] == ["MaxReturned", "PaidStatus", "IncludeLineItems", "IncludeLinkedTxns"]
     assert rq.findtext("MaxReturned") == "101"
     assert rq.findtext("PaidStatus") == "All"
     assert rq.findtext("IncludeLineItems") == "true"
@@ -158,7 +159,7 @@ async def test_query_bills_ref_number_is_an_exact_lookup_sent_alone(call, replay
 
     rq = _sent_bill_query(replay)
     # qbXML: an exact RefNumber cannot be combined with MaxReturned or other filters.
-    assert [c.tag for c in rq] == ["RefNumber", "IncludeLineItems"]
+    assert [c.tag for c in rq] == ["RefNumber", "IncludeLineItems", "IncludeLinkedTxns"]
     assert rq.findtext("RefNumber") == "1001"
     assert [(b["vendor"], b["ref_number"]) for b in out["results"]] == [
         ("Patton Hardware Supplies", "1001"),
@@ -174,7 +175,7 @@ async def test_query_bills_ref_number_with_other_filters_applies_them_to_the_mat
     by_date = (await call("query_bills", ref_number="1001", from_date="2024-03-15", to_date="2024-12-31")).structured_content
     capped_out = (await call("query_bills", ref_number="1001", limit=1)).structured_content
 
-    assert [c.tag for c in _sent_bill_query(replay)] == ["RefNumber", "IncludeLineItems"]
+    assert [c.tag for c in _sent_bill_query(replay)] == ["RefNumber", "IncludeLineItems", "IncludeLinkedTxns"]
     assert [b["vendor"] for b in by_vendor["results"]] == ["Timberloft Lumber"]
     assert [b["vendor"] for b in by_paid["results"]] == ["Patton Hardware Supplies"]
     assert [b["vendor"] for b in by_date["results"]] == ["Timberloft Lumber"]
@@ -208,7 +209,7 @@ async def test_query_bills_customer_job_keeps_only_bills_and_lines_charged_to_it
 
     # BillQueryRq cannot filter by Customer:Job, so nothing job-related is sent.
     rq = _sent_bill_query(replay)
-    assert [c.tag for c in rq] == ["MaxReturned", "EntityFilter", "PaidStatus", "IncludeLineItems"]
+    assert [c.tag for c in rq] == ["MaxReturned", "EntityFilter", "PaidStatus", "IncludeLineItems", "IncludeLinkedTxns"]
     assert rq.findtext("IncludeLineItems") == "true"
     assert [b["ref_number"] for b in out["results"]] == ["INV-88213", "TL-5521"]
     patton, timberloft = out["results"]
@@ -263,3 +264,42 @@ async def test_query_bills_without_lines(call, replay):
     assert _sent_bill_query(replay).findtext("IncludeLineItems") == "false"
     assert "item_lines" not in out["results"][0]
     assert "expense_lines" not in out["results"][0]
+
+
+async def test_query_bills_open_amount_is_each_bills_own_balance_not_the_vendor_total(call, replay):
+    # On the test PC every Perry Windows & Doors Bill reported the same OpenAmount (#14);
+    # this hand-written response reproduces that with payments and credits linked to the Bills.
+    replay.respond_with("BillQueryRq", "BillQueryRq.vendortotal.xml")
+
+    out = (await call("query_bills", vendor="Perry Windows & Doors")).structured_content
+
+    assert [(b["ref_number"], b["amount"], b["open_amount"], b["is_paid"]) for b in out["results"]] == [
+        ("PW-101", "1800.00", "1300.00", False),  # partly paid by check: 1,800 - 500
+        ("PW-102", "2325.00", "0.00", True),  # paid in full by check
+        ("PW-103", "2400.00", "0.00", True),  # 400 Vendor credit + 2,000 check
+        ("PW-104", "130.00", "100.00", False),  # 30 credit; the linked item receipt is not a payment
+        ("PW-105", "50.00", "50.00", False),  # nothing applied
+    ]
+    assert "1450.00" not in str(out)  # QuickBooks' Vendor-wide OpenAmount is not passed off as a Bill's
+
+
+async def test_query_bills_asks_quickbooks_for_linked_transactions(call, replay):
+    await call("query_bills")
+    await call("query_bills", ref_number="1001")
+
+    assert _sent_bill_query(replay).findtext("IncludeLinkedTxns") == "true"
+    assert ET.fromstring(replay.sent[-2].encode()).findtext("QBXMLMsgsRq/BillQueryRq/IncludeLinkedTxns") == "true"
+
+
+async def test_query_bills_paid_status_follows_the_computed_open_amount(call, replay):
+    replay.respond_with("BillQueryRq", "BillQueryRq.vendortotal.xml")
+
+    unpaid = (await call("query_bills", paid_status="unpaid")).structured_content
+    paid = (await call("query_bills", paid_status="paid")).structured_content
+    unpaid_ref = (await call("query_bills", ref_number="PW-101", paid_status="unpaid")).structured_content
+
+    assert [b["ref_number"] for b in unpaid["results"]] == ["PW-101", "PW-104", "PW-105"]
+    assert unpaid["count"] == 3
+    assert [b["ref_number"] for b in paid["results"]] == ["PW-102", "PW-103"]
+    assert paid["count"] == 2
+    assert [b["ref_number"] for b in unpaid_ref["results"]] == ["PW-101", "PW-104", "PW-105"]

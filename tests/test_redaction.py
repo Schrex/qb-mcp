@@ -50,14 +50,6 @@ async def test_list_vendors_never_returns_the_vendor_account_number(call, replay
     assert "RC-5543" not in text and "account_number" not in text
 
 
-async def test_run_query_never_returns_the_vendor_account_number(call, replay):
-    replay.respond_with("VendorQueryRq", "VendorQueryRq.sensitive.xml")
-
-    text = (await call("run_query", query="<VendorQueryRq/>")).content[0].text
-
-    assert "RC-5543" not in text and "AccountNumber" not in text
-
-
 async def test_chart_of_accounts_numbers_are_kept(call):
     accounts = (await call("list_accounts", status="all")).structured_content["results"]
 
@@ -87,10 +79,11 @@ async def test_run_job_report_drops_tax_id_account_card_and_bank_columns(call, r
 
 
 async def test_run_query_report_drops_sensitive_columns(call, replay):
-    replay.respond_with("JobReportQueryRq", "JobReportQueryRq.sensitive.xml")
+    replay.respond_with("GeneralSummaryReportQueryRq", "GeneralSummaryReportQueryRq.sensitive.xml")
 
     result = await call(
-        "run_query", query="<JobReportQueryRq><JobReportType>JobProfitabilityDetail</JobReportType></JobReportQueryRq>"
+        "run_query",
+        query="<GeneralSummaryReportQueryRq><GeneralSummaryReportType>ProfitAndLossStandard</GeneralSummaryReportType></GeneralSummaryReportQueryRq>",
     )
 
     assert not result.is_error

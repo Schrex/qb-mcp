@@ -32,6 +32,40 @@ def ensure_read_only(request: str) -> list[str]:
 
 
 QUERY_TAG = re.compile(r"[A-Z][A-Za-z0-9]*QueryRq")
+
+# The only query types `run_query` sends (#12). With Admin in the QuickBooks window
+# nothing in QuickBooks narrows reads (ADR-0001), so this list is what keeps employee,
+# payroll and card data out of reach. Types a dedicated tool covers (Vendor, Bill,
+# Customer, Item, Account, JobReport, Company) are left to that tool.
+# Deliberately absent: Employee*, Paycheck, Payroll* (pay, SSN, bank data);
+# CreditCardCharge/Credit, BillPaymentCreditCard, ARRefundCreditCard (card data);
+# Transaction, GeneralDetailReport, CustomDetail/SummaryReport (can list paychecks per employee).
+ALLOWED_QUERIES = frozenset(
+    {
+        # money owed to Schreiber / job revenue
+        "InvoiceQueryRq",  # open invoices, billed to date per job
+        "SalesReceiptQueryRq",  # cash sales against a job
+        "CreditMemoQueryRq",  # credits that reduce job revenue
+        "ReceivePaymentQueryRq",  # what customers have paid (card details are stripped)
+        "EstimateQueryRq",  # job budgets as estimated
+        # job costs not on a Bill
+        "PurchaseOrderQueryRq",  # committed costs, received or not
+        "ItemReceiptQueryRq",  # material received before its Bill
+        "VendorCreditQueryRq",  # credits that reduce job cost
+        "BillPaymentCheckQueryRq",  # which Bills were paid, when
+        "CheckQueryRq",  # direct-paid costs; bank reconciliation input
+        "DepositQueryRq",  # bank reconciliation input
+        "JournalEntryQueryRq",  # cost reallocations and accruals between jobs
+        "TimeTrackingQueryRq",  # hours by Customer:Job (labour job costing); no pay amounts
+        # lists the dedicated tools don't cover
+        "ItemInventoryQueryRq",  # quantity on hand, average cost
+        "ClassQueryRq",  # class names used to split costs
+        # reports
+        "AgingReportQueryRq",  # A/R and A/P aging
+        "GeneralSummaryReportQueryRq",  # P&L, Balance Sheet (payroll appears only as account totals)
+        "BudgetSummaryReportQueryRq",  # budget vs. actual
+    }
+)
 # Attributes a caller may put on its query element. `requestID` is overwritten by
 # the envelope; `iterator`/`iteratorID` (stateful) and `onError` are refused.
 QUERY_ATTRIBUTES = frozenset({"requestID", "metaData"})
@@ -58,6 +92,10 @@ def parse_query_element(text: str) -> ET.Element:
     if not QUERY_TAG.fullmatch(rq.tag):
         raise ReadOnlyViolation(
             f"Refused: this server is read-only; run_query only sends a *QueryRq element, got {rq.tag}."
+        )
+    if rq.tag not in ALLOWED_QUERIES:
+        raise ReadOnlyViolation(
+            f"Refused: run_query does not send {rq.tag}. Allowed: {', '.join(sorted(ALLOWED_QUERIES))}."
         )
     extra = sorted(set(rq.attrib) - QUERY_ATTRIBUTES)
     if extra:
