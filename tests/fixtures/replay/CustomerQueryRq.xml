@@ -4,16 +4,9 @@
 <CustomerQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
 <CustomerRet>
 <ListID>150000-933272658</ListID>
-<TimeCreated>1999-07-29T14:24:18-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Abercrombie, Kristy</Name>
 <FullName>Abercrombie, Kristy</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Mrs.</Salutation>
-<FirstName>Kristy</FirstName>
-<LastName>Abercrombie</LastName>
 <BillAddress>
 <Addr1>Kristy Abercrombie</Addr1>
 <Addr2>5647 Cypress Hill Rd</Addr2>
@@ -21,102 +14,15 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<Addr3>Bayshore CA 94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-6579</Phone>
 <Email>kristy@samplename.com</Email>
 <Contact>Kristy Abercrombie</Contact>
-<AltContact>Steve Darcangelo</AltContact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-6579</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>kristy@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000owb</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Kristy Abercrombie</FirstName>
-</ContactsRet>
-<ContactsRet>
-<ListID>0000000000000owc</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Steve Darcangelo</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
-<AccountNumber>91-431</AccountNumber>
 <JobStatus>None</JobStatus>
-<JobStartDate>2019-09-23</JobStartDate>
-<JobProjectedEndDate>2019-09-23</JobProjectedEndDate>
-<JobEndDate>2019-09-23</JobEndDate>
-<Notes>9/15/2003:  Send Kristy estimate for den remodel.
-
-9/20/2003:  Called Kristy to discuss job:  Kristy is not interested at this time.  Estimate was competitive, not using another firm.
-
-10/15/2003:  Further discussion of bathroom remodel.  I offered 10% discount on project if she would sign the contract now.</Notes>
-<AdditionalNotesRet>
-<NoteID>0</NoteID>
-<Date>2011-07-27</Date>
-<Note>9/15/2003:  Send Kristy estimate for den remodel.
-
-9/20/2003:  Called Kristy to discuss job:  Kristy is not interested at this time.  Estimate was competitive, not using another firm.
-
-10/15/2003:  Further discussion of bathroom remodel.  I offered 10% discount on project if she would sign the contract now.</Note>
-</AdditionalNotesRet>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>160000-933272658</ListID>
-<TimeCreated>1999-07-29T14:24:18-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Family Room</Name>
 <FullName>Abercrombie, Kristy:Family Room</FullName>
 <IsActive>true</IsActive>
@@ -124,10 +30,6 @@
 <ListID>150000-933272658</ListID>
 <FullName>Abercrombie, Kristy</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mrs.</Salutation>
-<FirstName>Kristy</FirstName>
-<LastName>Abercrombie</LastName>
 <BillAddress>
 <Addr1>Kristy Abercrombie</Addr1>
 <Addr2>5647 Cypress Hill Rd</Addr2>
@@ -135,77 +37,16 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<Addr3>Bayshore CA 94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-6579</Phone>
 <Email>kristy@samplename.com</Email>
 <Contact>Kristy Abercrombie</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-6579</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>kristy@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000owf</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Kristy Abercrombie</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Closed</JobStatus>
 <JobDesc>Remodel family room: Drywall, re-carpet, add fireplace.</JobDesc>
-<JobTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Remodel</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>170000-933272658</ListID>
-<TimeCreated>1999-07-29T14:24:18-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Kitchen</Name>
 <FullName>Abercrombie, Kristy:Kitchen</FullName>
 <IsActive>true</IsActive>
@@ -213,10 +54,6 @@
 <ListID>150000-933272658</ListID>
 <FullName>Abercrombie, Kristy</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mrs.</Salutation>
-<FirstName>Kristy</FirstName>
-<LastName>Abercrombie</LastName>
 <BillAddress>
 <Addr1>Kristy Abercrombie</Addr1>
 <Addr2>5647 Cypress Hill Rd</Addr2>
@@ -224,77 +61,16 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<Addr3>Bayshore CA 94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-6579</Phone>
 <Email>kristy@samplename.com</Email>
 <Contact>Kristy Abercrombie</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-6579</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>kristy@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000owi</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Kristy Abercrombie</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Pending</JobStatus>
 <JobDesc>Fire restoration of kitchen: Replace counter, dishwasher, oven and paint.</JobDesc>
-<JobTypeRef>
-<ListID>30000-933272658</ListID>
-<FullName>Repairs</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>180000-933272658</ListID>
-<TimeCreated>1999-07-29T14:24:18-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Remodel Bathroom</Name>
 <FullName>Abercrombie, Kristy:Remodel Bathroom</FullName>
 <IsActive>true</IsActive>
@@ -302,11 +78,6 @@
 <ListID>150000-933272658</ListID>
 <FullName>Abercrombie, Kristy</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<CompanyName>Kristy Abercrombie</CompanyName>
-<Salutation>Mrs.</Salutation>
-<FirstName>Kristy</FirstName>
-<LastName>Abercrombie</LastName>
 <BillAddress>
 <Addr1>Kristy Abercrombie</Addr1>
 <Addr2>5647 Cypress Hill Rd</Addr2>
@@ -314,75 +85,19 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<Addr3>Bayshore CA 94326</Addr3>
-</BillAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Kristy Abercrombie</Addr1>
-<Addr2>5647 Cypress Hill Rd</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-6579</Phone>
 <Email>kristy@samplename.com</Email>
 <Contact>Kristy Abercrombie</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-6579</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>kristy@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000owl</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Kristy Abercrombie</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>InProgress</JobStatus>
-<JobStartDate>2026-10-23</JobStartDate>
-<JobProjectedEndDate>2026-12-11</JobProjectedEndDate>
-<JobEndDate>2026-12-23</JobEndDate>
 <JobDesc>Remodel master bathroom: Build new counter, Replace fixtures, Add whirlpool.</JobDesc>
-<JobTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Remodel</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>800000D0-1182061376</ListID>
-<TimeCreated>2007-06-17T02:22:56-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Allard, Robert</Name>
 <FullName>Allard, Robert</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Mrs.</Salutation>
-<FirstName>Amanda</FirstName>
-<LastName>Roberts</LastName>
 <BillAddress>
 <Addr1>Robert Allard</Addr1>
 <Addr2>92834 Chandler St.</Addr2>
@@ -390,94 +105,15 @@
 <State>CA</State>
 <PostalCode>94030</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Robert Allard</Addr1>
-<Addr2>92834 Chandler St.</Addr2>
-<Addr3>Millbrae, CA 94030</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Robert Allard</Addr1>
-<Addr2>92834 Chandler St.</Addr2>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Robert Allard</Addr1>
-<Addr2>92834 Chandler St.</Addr2>
-<Addr3>Millbrae, CA 94030</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Robert Allard</Addr1>
-<Addr2>92834 Chandler St.</Addr2>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>650-555-3422</Phone>
-<AltPhone>650-555-8349</AltPhone>
-<Fax>650-555-9804</Fax>
 <Email>rallard@myemail.com</Email>
 <Contact>Robert Allard</Contact>
-<AltContact>Rachel Fisher</AltContact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>650-555-3422</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Alt. Phone</ContactName>
-<ContactValue>650-555-8349</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Fax</ContactName>
-<ContactValue>650-555-9804</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>rallard@myemail.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000owo</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Robert Allard</FirstName>
-</ContactsRet>
-<ContactsRet>
-<ListID>0000000000000owp</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Rachel Fisher</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>14510.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>800000D1-1182061396</ListID>
-<TimeCreated>2007-06-17T02:23:16-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Remodel</Name>
 <FullName>Allard, Robert:Remodel</FullName>
 <IsActive>true</IsActive>
@@ -485,10 +121,6 @@
 <ListID>800000D0-1182061376</ListID>
 <FullName>Allard, Robert</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mrs.</Salutation>
-<FirstName>Amanda</FirstName>
-<LastName>Roberts</LastName>
 <BillAddress>
 <Addr1>Robert Allard</Addr1>
 <Addr2>92834 Chandler St.</Addr2>
@@ -496,82 +128,18 @@
 <State>CA</State>
 <PostalCode>94030</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Robert Allard</Addr1>
-<Addr2>92834 Chandler St.</Addr2>
-<Addr3>Millbrae, CA 94030</Addr3>
-</BillAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Robert Allard</Addr1>
-<Addr2>92834 Chandler St.</Addr2>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
 <Phone>650-555-3422</Phone>
-<AltPhone>650-555-8349</AltPhone>
-<Fax>650-555-9804</Fax>
 <Email>rallard@myemail.com</Email>
 <Contact>Robert Allard</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>650-555-3422</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Alt. Phone</ContactName>
-<ContactValue>650-555-8349</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Fax</ContactName>
-<ContactValue>650-555-9804</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>rallard@myemail.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000owu</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Robert Allard</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>14510.00</Balance>
 <TotalBalance>14510.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>800000C6-1182059711</ListID>
-<TimeCreated>2007-06-17T01:55:11-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Babcock's Music Shop</Name>
 <FullName>Babcock's Music Shop</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<CompanyName>Babcock's Music Shop</CompanyName>
-<Salutation>Ms.</Salutation>
-<FirstName>Kristie</FirstName>
-<LastName>Babcock</LastName>
 <BillAddress>
 <Addr1>Babcock's Music Shop</Addr1>
 <Addr2>Kristie Babcock</Addr2>
@@ -580,90 +148,15 @@
 <State>CA</State>
 <PostalCode>94030</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Babcock's Music Shop</Addr1>
-<Addr2>Kristie Babcock</Addr2>
-<Addr3>10923 Samson Dr.</Addr3>
-<Addr4>Millbrae, CA 94030</Addr4>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Babcock's Music Shop</Addr1>
-<Addr2>Kristie Babcock</Addr2>
-<Addr3>10923 Samson Dr.</Addr3>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Babcock's Music Shop</Addr1>
-<Addr2>Kristie Babcock</Addr2>
-<Addr3>10923 Samson Dr.</Addr3>
-<Addr4>Millbrae, CA 94030</Addr4>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Babcock's Music Shop</Addr1>
-<Addr2>Kristie Babcock</Addr2>
-<Addr3>10923 Samson Dr.</Addr3>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>650-555-2342</Phone>
-<AltPhone>650-555-0983</AltPhone>
-<Fax>650-555-9823</Fax>
 <Email>kbabcock@myemail.com</Email>
 <Contact>Kristie Babcock</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>650-555-2342</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Alt. Phone</ContactName>
-<ContactValue>650-555-0983</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Fax</ContactName>
-<ContactValue>650-555-9823</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>kbabcock@myemail.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000owz</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Kristie Babcock</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>10000-933272658</ListID>
-<FullName>Commercial</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>800000C7-1182059716</ListID>
-<TimeCreated>2007-06-17T01:55:16-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Remodel</Name>
 <FullName>Babcock's Music Shop:Remodel</FullName>
 <IsActive>true</IsActive>
@@ -671,11 +164,6 @@
 <ListID>800000C6-1182059711</ListID>
 <FullName>Babcock's Music Shop</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<CompanyName>Babcock's Music Shop</CompanyName>
-<Salutation>Ms.</Salutation>
-<FirstName>Bettie</FirstName>
-<LastName>Wilson</LastName>
 <BillAddress>
 <Addr1>Babcock's Music Shop</Addr1>
 <Addr2>Kristie Babcock</Addr2>
@@ -684,83 +172,18 @@
 <State>CA</State>
 <PostalCode>94030</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Babcock's Music Shop</Addr1>
-<Addr2>Kristie Babcock</Addr2>
-<Addr3>10923 Samson Dr.</Addr3>
-<Addr4>Millbrae, CA 94030</Addr4>
-</BillAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Babcock's Music Shop</Addr1>
-<Addr2>Kristie Babcock</Addr2>
-<Addr3>10923 Samson Dr.</Addr3>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
 <Phone>650-555-2342</Phone>
-<AltPhone>650-555-0983</AltPhone>
-<Fax>650-555-9823</Fax>
 <Email>kbabcock@myemail.com</Email>
 <Contact>Kristie Babcock</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>650-555-2342</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Alt. Phone</ContactName>
-<ContactValue>650-555-0983</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Fax</ContactName>
-<ContactValue>650-555-9823</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>kbabcock@myemail.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000ox4</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Kristie Babcock</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>10000-933272658</ListID>
-<FullName>Commercial</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>940000-1071506775</ListID>
-<TimeCreated>2003-12-15T11:46:15-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Baker, Chris</Name>
 <FullName>Baker, Chris</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Chris</FirstName>
-<LastName>Baker</LastName>
 <BillAddress>
 <Addr1>Baker, Chris</Addr1>
 <Addr2>415 W. Desert Bloom</Addr2>
@@ -768,56 +191,15 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Baker, Chris</Addr1>
-<Addr2>415 W. Desert Bloom</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
 <Phone>415-555-2253</Phone>
 <Email>ChrisB@samplename.com</Email>
 <Contact>Chris Baker</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-2253</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>ChrisB@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000ox9</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Chris Baker</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
-<AccountNumber>89-1295</AccountNumber>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>950000-1071506823</ListID>
-<TimeCreated>2003-12-15T11:47:03-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Family Room</Name>
 <FullName>Baker, Chris:Family Room</FullName>
 <IsActive>true</IsActive>
@@ -825,10 +207,6 @@
 <ListID>940000-1071506775</ListID>
 <FullName>Baker, Chris</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Chris</FirstName>
-<LastName>Baker</LastName>
 <BillAddress>
 <Addr1>Baker, Chris</Addr1>
 <Addr2>415 W. Desert Bloom</Addr2>
@@ -836,59 +214,16 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Baker, Chris</Addr1>
-<Addr2>415 W. Desert Bloom</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
 <Phone>415-555-2253</Phone>
 <Email>ChrisB@samplename.com</Email>
 <Contact>Chris Baker</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-2253</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>ChrisB@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxC</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Chris Baker</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Closed</JobStatus>
-<JobStartDate>2026-06-03</JobStartDate>
-<JobProjectedEndDate>2026-12-30</JobProjectedEndDate>
-<JobEndDate>2026-12-23</JobEndDate>
 <JobDesc>Family room extension: 500 sq ft.</JobDesc>
-<JobTypeRef>
-<ListID>40000-1071472363</ListID>
-<FullName>Extension</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>800000B9-1197733691</ListID>
-<TimeCreated>2007-12-15T10:48:11-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Garage Repair</Name>
 <FullName>Baker, Chris:Garage Repair</FullName>
 <IsActive>true</IsActive>
@@ -896,10 +231,6 @@
 <ListID>940000-1071506775</ListID>
 <FullName>Baker, Chris</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Chris</FirstName>
-<LastName>Baker</LastName>
 <BillAddress>
 <Addr1>Baker, Chris</Addr1>
 <Addr2>415 W. Desert Bloom</Addr2>
@@ -907,63 +238,18 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Baker, Chris</Addr1>
-<Addr2>415 W. Desert Bloom</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
 <Phone>415-555-2253</Phone>
 <Email>ChrisB@samplename.com</Email>
 <Contact>Chris Baker</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-2253</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>ChrisB@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxF</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Chris Baker</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
-<AccountNumber>89-1295</AccountNumber>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>960000-1071508305</ListID>
-<TimeCreated>2003-12-15T12:11:45-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Balak, Mike</Name>
 <FullName>Balak, Mike</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Mike</FirstName>
-<LastName>Balak</LastName>
 <BillAddress>
 <Addr1>Mike Balak</Addr1>
 <Addr2>8753 S. Mountain View</Addr2>
@@ -971,77 +257,15 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Mike Balak</Addr1>
-<Addr2>8753 S. Mountain View</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Mike Balak</Addr1>
-<Addr2>8753 S. Mountain View</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Mike Balak</Addr1>
-<Addr2>8753 S. Mountain View</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Mike Balak</Addr1>
-<Addr2>8753 S. Mountain View</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-6636</Phone>
 <Email>mbalak@samplename.com</Email>
 <Contact>Mike Balak</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-6636</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>mbalak@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxI</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Mike Balak</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
-<AccountNumber>92-2385</AccountNumber>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>970000-1071508343</ListID>
-<TimeCreated>2003-12-15T12:12:23-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Utility Shed</Name>
 <FullName>Balak, Mike:Utility Shed</FullName>
 <IsActive>true</IsActive>
@@ -1049,10 +273,6 @@
 <ListID>960000-1071508305</ListID>
 <FullName>Balak, Mike</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Mike</FirstName>
-<LastName>Balak</LastName>
 <BillAddress>
 <Addr1>Mike Balak</Addr1>
 <Addr2>8753 S. Mountain View</Addr2>
@@ -1060,83 +280,19 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Mike Balak</Addr1>
-<Addr2>8753 S. Mountain View</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Mike Balak</Addr1>
-<Addr2>8753 S. Mountain View</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Mike Balak</Addr1>
-<Addr2>8753 S. Mountain View</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Mike Balak</Addr1>
-<Addr2>8753 S. Mountain View</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-6636</Phone>
 <Email>mbalak@samplename.com</Email>
 <Contact>Mike Balak</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-6636</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>mbalak@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxL</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Mike Balak</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Closed</JobStatus>
-<JobStartDate>2026-01-10</JobStartDate>
-<JobProjectedEndDate>2026-02-04</JobProjectedEndDate>
-<JobEndDate>2026-01-20</JobEndDate>
 <JobDesc>A1 Utility Building</JobDesc>
-<JobTypeRef>
-<ListID>10000-933272658</ListID>
-<FullName>New Construction</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>920000-1071506140</ListID>
-<TimeCreated>2003-12-15T11:35:40-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Barley, Renee</Name>
 <FullName>Barley, Renee</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Ms.</Salutation>
-<FirstName>Renee</FirstName>
-<LastName>Barley</LastName>
 <BillAddress>
 <Addr1>Renee Barley</Addr1>
 <Addr2>4417 N. Sun Valley Rd</Addr2>
@@ -1144,55 +300,15 @@
 <State>CA</State>
 <PostalCode>94471</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Renee Barley</Addr1>
-<Addr2>4417 N. Sun Valley Rd</Addr2>
-<Addr3>Middlefield, CA  94471</Addr3>
-</BillAddressBlock>
 <Phone>415-555-7262</Phone>
 <Email>renee@samplename.com</Email>
 <Contact>Renee Barley</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-7262</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>renee@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxO</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Renee Barley</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>930000-1071506202</ListID>
-<TimeCreated>2003-12-15T11:36:42-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Repairs</Name>
 <FullName>Barley, Renee:Repairs</FullName>
 <IsActive>true</IsActive>
@@ -1200,10 +316,6 @@
 <ListID>920000-1071506140</ListID>
 <FullName>Barley, Renee</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Ms.</Salutation>
-<FirstName>Renee</FirstName>
-<LastName>Barley</LastName>
 <BillAddress>
 <Addr1>Renee Barley</Addr1>
 <Addr2>4417 N. Sun Valley Rd</Addr2>
@@ -1211,66 +323,19 @@
 <State>CA</State>
 <PostalCode>94471</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Renee Barley</Addr1>
-<Addr2>4417 N. Sun Valley Rd</Addr2>
-<Addr3>Middlefield, CA  94471</Addr3>
-</BillAddressBlock>
 <Phone>415-555-7262</Phone>
 <Email>renee@samplename.com</Email>
 <Contact>Renee Barley</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-7262</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>renee@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxR</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Renee Barley</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Closed</JobStatus>
-<JobStartDate>2026-01-06</JobStartDate>
-<JobProjectedEndDate>2026-12-17</JobProjectedEndDate>
-<JobEndDate>2026-12-17</JobEndDate>
 <JobDesc>Re-wire familyroom electrical</JobDesc>
-<JobTypeRef>
-<ListID>30000-933272658</ListID>
-<FullName>Repairs</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>900000-1071504455</ListID>
-<TimeCreated>2003-12-15T11:07:35-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Bauman, Mark</Name>
 <FullName>Bauman, Mark</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Mr</Salutation>
-<FirstName>Mark</FirstName>
-<LastName>Bauman</LastName>
 <BillAddress>
 <Addr1>Mark Bauman</Addr1>
 <Addr2>910 S. Ivy</Addr2>
@@ -1278,80 +343,15 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Mark Bauman</Addr1>
-<Addr2>910 S. Ivy</Addr2>
-<Addr3>Bayshore, CA   94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Mark Bauman</Addr1>
-<Addr2>910 S. Ivy</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Mark Bauman</Addr1>
-<Addr2>910 S. Ivy</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Mark Bauman</Addr1>
-<Addr2>910 S. Ivy</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-8669</Phone>
 <Email>mbauman@samplename.com</Email>
 <Contact>Mark Bauman</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-8669</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>mbauman@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxU</ListID>
-<TimeCreated>2012-07-26T08:46:23-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:23-05:00</TimeModified>
-<EditSequence>1343306783</EditSequence>
-<FirstName>Mark Bauman</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<JobTypeRef>
-<ListID>30000-933272658</ListID>
-<FullName>Repairs</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>780000-1071507712</ListID>
-<TimeCreated>2003-12-15T12:01:52-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Home Remodel</Name>
 <FullName>Bauman, Mark:Home Remodel</FullName>
 <IsActive>true</IsActive>
@@ -1359,10 +359,6 @@
 <ListID>900000-1071504455</ListID>
 <FullName>Bauman, Mark</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mr</Salutation>
-<FirstName>Mark</FirstName>
-<LastName>Bauman</LastName>
 <BillAddress>
 <Addr1>Mark Bauman</Addr1>
 <Addr2>910 S. Ivy</Addr2>
@@ -1370,87 +366,19 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Mark Bauman</Addr1>
-<Addr2>910 S. Ivy</Addr2>
-<Addr3>Bayshore, CA   94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Mark Bauman</Addr1>
-<Addr2>910 S. Ivy</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Mark Bauman</Addr1>
-<Addr2>910 S. Ivy</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Mark Bauman</Addr1>
-<Addr2>910 S. Ivy</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-8669</Phone>
 <Email>mbauman@samplename.com</Email>
 <Contact>Mark Bauman</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-8669</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>mbauman@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxX</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Mark Bauman</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Closed</JobStatus>
-<JobStartDate>2026-12-20</JobStartDate>
-<JobProjectedEndDate>2026-12-20</JobProjectedEndDate>
-<JobEndDate>2026-12-20</JobEndDate>
 <JobDesc>Repair facia - north side of house</JobDesc>
-<JobTypeRef>
-<ListID>30000-933272658</ListID>
-<FullName>Repairs</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>490000-1071522962</ListID>
-<TimeCreated>2003-12-15T16:16:02-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Bolinski, Rafal</Name>
 <FullName>Bolinski, Rafal</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Rafal</FirstName>
-<LastName>Bolinski</LastName>
 <BillAddress>
 <Addr1>Rafal Bolinski</Addr1>
 <Addr2>1421 Silverbell Ave</Addr2>
@@ -1458,64 +386,15 @@
 <State>CA</State>
 <PostalCode>94327</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Rafal Bolinski</Addr1>
-<Addr2>1421 Silverbell Ave</Addr2>
-<Addr3>East Bayshore CA 94327</Addr3>
-</BillAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Rafal Bolinski</Addr1>
-<Addr2>1421 Silverbell Ave</Addr2>
-<City>East Bayshore</City>
-<State>CA</State>
-<PostalCode>94327</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-3262</Phone>
 <Email>r2b2@samplename.com</Email>
 <Contact>Rafal Bolinski</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-3262</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>r2b2@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxa</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Rafal Bolinski</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>590000-1071526363</ListID>
-<TimeCreated>2003-12-15T17:12:43-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>2nd story addition</Name>
 <FullName>Bolinski, Rafal:2nd story addition</FullName>
 <IsActive>true</IsActive>
@@ -1523,10 +402,6 @@
 <ListID>490000-1071522962</ListID>
 <FullName>Bolinski, Rafal</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Rafal</FirstName>
-<LastName>Bolinski</LastName>
 <BillAddress>
 <Addr1>Rafal Bolinski</Addr1>
 <Addr2>1421 Silverbell Ave</Addr2>
@@ -1534,79 +409,18 @@
 <State>CA</State>
 <PostalCode>94327</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Rafal Bolinski</Addr1>
-<Addr2>1421 Silverbell Ave</Addr2>
-<Addr3>East Bayshore CA 94327</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Rafal Bolinski</Addr1>
-<Addr2>1421 Silverbell Ave</Addr2>
-<City>East Bayshore</City>
-<State>CA</State>
-<PostalCode>94327</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Rafal Bolinski</Addr1>
-<Addr2>1421 Silverbell Ave</Addr2>
-<Addr3>East Bayshore, CA 94327</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Rafal Bolinski</Addr1>
-<Addr2>1421 Silverbell Ave</Addr2>
-<City>East Bayshore</City>
-<State>CA</State>
-<PostalCode>94327</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-3262</Phone>
 <Email>r2b2@samplename.com</Email>
 <Contact>Rafal Bolinski</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-3262</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>r2b2@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxd</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Rafal Bolinski</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Closed</JobStatus>
-<JobTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Remodel</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>8B0000-1071532693</ListID>
-<TimeCreated>2003-12-15T18:58:13-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Bristol, Sonya</Name>
 <FullName>Bristol, Sonya</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Mrs.</Salutation>
-<FirstName>Sonya</FirstName>
-<LastName>Bristol</LastName>
 <BillAddress>
 <Addr1>Sonya Bristol</Addr1>
 <Addr2>5920 N. Lighthouse</Addr2>
@@ -1614,85 +428,15 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
-<ShipToAddress>
-<Name>Ship To 2</Name>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-5239</Phone>
 <Email>sonyab@samplename.com</Email>
 <Contact>Sonya Bristol</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-5239</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>sonyab@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxg</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Sonya Bristol</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>910000-1071505273</ListID>
-<TimeCreated>2003-12-15T11:21:13-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Repairs</Name>
 <FullName>Bristol, Sonya:Repairs</FullName>
 <IsActive>true</IsActive>
@@ -1700,10 +444,6 @@
 <ListID>8B0000-1071532693</ListID>
 <FullName>Bristol, Sonya</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mrs.</Salutation>
-<FirstName>Sonya</FirstName>
-<LastName>Bristol</LastName>
 <BillAddress>
 <Addr1>Sonya Bristol</Addr1>
 <Addr2>5920 N. Lighthouse</Addr2>
@@ -1711,82 +451,16 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
-<ShipToAddress>
-<Name>Ship To 2</Name>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-5239</Phone>
 <Email>sonyab@samplename.com</Email>
 <Contact>Sonya Bristol</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-5239</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>sonyab@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxj</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Sonya Bristol</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Closed</JobStatus>
 <JobDesc>Repair toilet in master bath</JobDesc>
-<JobTypeRef>
-<ListID>30000-933272658</ListID>
-<FullName>Repairs</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>8C0000-1071532703</ListID>
-<TimeCreated>2003-12-15T18:58:23-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Utility Shed</Name>
 <FullName>Bristol, Sonya:Utility Shed</FullName>
 <IsActive>true</IsActive>
@@ -1794,10 +468,6 @@
 <ListID>8B0000-1071532693</ListID>
 <FullName>Bristol, Sonya</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mrs.</Salutation>
-<FirstName>Sonya</FirstName>
-<LastName>Bristol</LastName>
 <BillAddress>
 <Addr1>Sonya Bristol</Addr1>
 <Addr2>5920 N. Lighthouse</Addr2>
@@ -1805,72 +475,18 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
-<ShipToAddress>
-<Name>Ship To 2</Name>
-<Addr1>Sonya Bristol</Addr1>
-<Addr2>5920 N. Lighthouse</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-5239</Phone>
 <Email>sonyab@samplename.com</Email>
 <Contact>Sonya Bristol</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-5239</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>sonyab@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxm</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Sonya Bristol</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
 <Balance>0.00</Balance>
 <TotalBalance>0.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>980000-1071509186</ListID>
-<TimeCreated>2003-12-15T12:26:26-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Burch, Jason</Name>
 <FullName>Burch, Jason</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Jason</FirstName>
-<LastName>Burch</LastName>
 <BillAddress>
 <Addr1>Jason Burch</Addr1>
 <Addr2>5960 N. Wetmore</Addr2>
@@ -1878,85 +494,15 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
-<ShipToAddress>
-<Name>Ship To 2</Name>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-2351</Phone>
 <Email>mr-b@samplename.com</Email>
 <Contact>Jason Burch</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-2351</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>mr-b@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxp</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Jason Burch</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>1005.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>990000-1071509249</ListID>
-<TimeCreated>2003-12-15T12:27:29-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Room Addition</Name>
 <FullName>Burch, Jason:Room Addition</FullName>
 <IsActive>true</IsActive>
@@ -1964,10 +510,6 @@
 <ListID>980000-1071509186</ListID>
 <FullName>Burch, Jason</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Mr.</Salutation>
-<FirstName>Jason</FirstName>
-<LastName>Burch</LastName>
 <BillAddress>
 <Addr1>Jason Burch</Addr1>
 <Addr2>5960 N. Wetmore</Addr2>
@@ -1975,93 +517,19 @@
 <State>CA</State>
 <PostalCode>94326</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<Addr3>Bayshore, CA  94326</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<Addr3>Bayshore, CA 94326</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>false</DefaultShipTo>
-</ShipToAddress>
-<ShipToAddress>
-<Name>Ship To 2</Name>
-<Addr1>Jason Burch</Addr1>
-<Addr2>5960 N. Wetmore</Addr2>
-<City>Bayshore</City>
-<State>CA</State>
-<PostalCode>94326</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>415-555-2351</Phone>
 <Email>mr-b@samplename.com</Email>
 <Contact>Jason Burch</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>415-555-2351</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>mr-b@samplename.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxs</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Jason Burch</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>10000-933272658</ListID>
-<FullName>Net 30</FullName>
-</TermsRef>
 <Balance>1005.00</Balance>
 <TotalBalance>1005.00</TotalBalance>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>Closed</JobStatus>
 <JobDesc>Bedroom Addition</JobDesc>
-<JobTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Remodel</FullName>
-</JobTypeRef>
-<PreferredDeliveryMethod>Email</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>800000D2-1182061810</ListID>
-<TimeCreated>2007-06-17T02:30:10-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Campbell, Heather</Name>
 <FullName>Campbell, Heather</FullName>
 <IsActive>true</IsActive>
-<Sublevel>0</Sublevel>
-<Salutation>Ms.</Salutation>
-<FirstName>Heather</FirstName>
-<LastName>Campbell</LastName>
 <BillAddress>
 <Addr1>Heather Campbell</Addr1>
 <Addr2>98342 Sharondale Rd.</Addr2>
@@ -2069,86 +537,15 @@
 <State>CA</State>
 <PostalCode>94030</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Heather Campbell</Addr1>
-<Addr2>98342 Sharondale Rd.</Addr2>
-<Addr3>Millbrae, CA 94030</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Heather Campbell</Addr1>
-<Addr2>98342 Sharondale Rd.</Addr2>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Heather Campbell</Addr1>
-<Addr2>98342 Sharondale Rd.</Addr2>
-<Addr3>Millbrae, CA 94030</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Heather Campbell</Addr1>
-<Addr2>98342 Sharondale Rd.</Addr2>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>650-555-3423</Phone>
-<AltPhone>650-555-0934</AltPhone>
-<Fax>650-555-5923</Fax>
 <Email>hcampbell@myemail.com</Email>
 <Contact>Heather Campbell</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>650-555-3423</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Alt. Phone</ContactName>
-<ContactValue>650-555-0934</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Fax</ContactName>
-<ContactValue>650-555-5923</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>hcampbell@myemail.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oxv</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Heather Campbell</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>0.00</Balance>
 <TotalBalance>13900.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
 </CustomerRet>
 <CustomerRet>
 <ListID>800000D3-1182061817</ListID>
-<TimeCreated>2007-06-17T02:30:17-05:00</TimeCreated>
-<TimeModified>2025-12-15T02:38:20-05:00</TimeModified>
-<EditSequence>1765784300</EditSequence>
 <Name>Remodel</Name>
 <FullName>Campbell, Heather:Remodel</FullName>
 <IsActive>true</IsActive>
@@ -2156,10 +553,6 @@
 <ListID>800000D2-1182061810</ListID>
 <FullName>Campbell, Heather</FullName>
 </ParentRef>
-<Sublevel>1</Sublevel>
-<Salutation>Ms.</Salutation>
-<FirstName>Heather</FirstName>
-<LastName>Campbell</LastName>
 <BillAddress>
 <Addr1>Heather Campbell</Addr1>
 <Addr2>98342 Sharondale Rd.</Addr2>
@@ -2167,80 +560,12 @@
 <State>CA</State>
 <PostalCode>94030</PostalCode>
 </BillAddress>
-<BillAddressBlock>
-<Addr1>Heather Campbell</Addr1>
-<Addr2>98342 Sharondale Rd.</Addr2>
-<Addr3>Millbrae, CA 94030</Addr3>
-</BillAddressBlock>
-<ShipAddress>
-<Addr1>Heather Campbell</Addr1>
-<Addr2>98342 Sharondale Rd.</Addr2>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-</ShipAddress>
-<ShipAddressBlock>
-<Addr1>Heather Campbell</Addr1>
-<Addr2>98342 Sharondale Rd.</Addr2>
-<Addr3>Millbrae, CA 94030</Addr3>
-</ShipAddressBlock>
-<ShipToAddress>
-<Name>Ship To 1</Name>
-<Addr1>Heather Campbell</Addr1>
-<Addr2>98342 Sharondale Rd.</Addr2>
-<City>Millbrae</City>
-<State>CA</State>
-<PostalCode>94030</PostalCode>
-<DefaultShipTo>true</DefaultShipTo>
-</ShipToAddress>
 <Phone>650-555-3423</Phone>
-<AltPhone>650-555-0934</AltPhone>
-<Fax>650-555-5923</Fax>
 <Email>hcampbell@myemail.com</Email>
 <Contact>Heather Campbell</Contact>
-<AdditionalContactRef>
-<ContactName>Main Phone</ContactName>
-<ContactValue>650-555-3423</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Alt. Phone</ContactName>
-<ContactValue>650-555-0934</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Fax</ContactName>
-<ContactValue>650-555-5923</ContactValue>
-</AdditionalContactRef>
-<AdditionalContactRef>
-<ContactName>Main Email</ContactName>
-<ContactValue>hcampbell@myemail.com</ContactValue>
-</AdditionalContactRef>
-<ContactsRet>
-<ListID>0000000000000oy0</ListID>
-<TimeCreated>2012-07-26T08:46:24-05:00</TimeCreated>
-<TimeModified>2012-07-26T08:46:24-05:00</TimeModified>
-<EditSequence>1343306784</EditSequence>
-<FirstName>Heather Campbell</FirstName>
-</ContactsRet>
-<CustomerTypeRef>
-<ListID>20000-933272658</ListID>
-<FullName>Residential</FullName>
-</CustomerTypeRef>
-<TermsRef>
-<ListID>20000-933272658</ListID>
-<FullName>Net 15</FullName>
-</TermsRef>
 <Balance>13900.00</Balance>
 <TotalBalance>13900.00</TotalBalance>
-<SalesTaxCodeRef>
-<ListID>10000-999022286</ListID>
-<FullName>Tax</FullName>
-</SalesTaxCodeRef>
-<ItemSalesTaxRef>
-<ListID>2E0000-933272656</ListID>
-<FullName>San Tomas</FullName>
-</ItemSalesTaxRef>
 <JobStatus>None</JobStatus>
-<PreferredDeliveryMethod>None</PreferredDeliveryMethod>
 </CustomerRet>
 </CustomerQueryRs>
 </QBXMLMsgsRs>

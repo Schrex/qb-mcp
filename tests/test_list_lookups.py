@@ -7,6 +7,8 @@ import xml.etree.ElementTree as ET
 import pytest
 from conftest import tool_requests
 
+from qb_mcp.server import CUSTOMER_RET_ELEMENTS
+
 pytestmark = pytest.mark.anyio
 
 
@@ -160,10 +162,22 @@ async def test_list_customer_jobs_sends_name_filter_status_and_limit(call, repla
     await call("list_customer_jobs", name_contains="Abercrombie", status="all", limit=5)
 
     rq = _sent(replay, "CustomerQueryRq")
-    assert [c.tag for c in rq] == ["MaxReturned", "ActiveStatus", "NameFilter"]
+    includes = ["IncludeRetElement"] * len(CUSTOMER_RET_ELEMENTS)
+    assert [c.tag for c in rq] == ["MaxReturned", "ActiveStatus", "NameFilter", *includes]
     assert rq.findtext("MaxReturned") == "6"
     assert rq.findtext("ActiveStatus") == "All"
     assert rq.findtext("NameFilter/Name") == "Abercrombie"
+
+
+async def test_list_customer_jobs_asks_quickbooks_for_contact_by_name(call, replay):
+    """An unfiltered CustomerQueryRq comes back without Contact (and ShipToAddress, ContactsRet)
+    unless the elements are asked for; everything `records.customer_job` reads is."""
+    await call("list_customer_jobs")
+
+    rq = _sent(replay, "CustomerQueryRq")
+    asked = [e.text for e in rq.findall("IncludeRetElement")]
+    assert asked == list(CUSTOMER_RET_ELEMENTS)
+    assert {"Contact", "Phone", "Email", "BillAddress", "JobStatus", "FullName"} <= set(asked)
 
 
 async def test_list_customer_jobs_reports_the_cap(call):
