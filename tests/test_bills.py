@@ -21,7 +21,7 @@ async def test_query_bills_returns_header_with_item_and_expense_lines(call):
         "date": "2024-12-02",
         "due_date": "2026-01-01",
         "amount": "13695.00",
-        "open_amount": "0.00",  # paid; QuickBooks' OpenAmount (4479.20) is a Vendor-wide figure (#14)
+        "open_balance": "0.00",  # paid; QuickBooks' OpenAmount (4479.20) is a Vendor-wide figure (#14)
         "memo": None,
         "is_paid": True,
         "expense_lines": [],
@@ -267,14 +267,14 @@ async def test_query_bills_without_lines(call, replay):
     assert "expense_lines" not in out["results"][0]
 
 
-async def test_query_bills_open_amount_is_each_bills_own_balance_not_the_vendor_total(call, replay):
+async def test_query_bills_open_balance_is_each_bills_own_balance_not_the_vendor_total(call, replay):
     # On the test PC every Perry Windows & Doors Bill reported the same OpenAmount (#14);
     # this hand-written response reproduces that with payments and credits linked to the Bills.
     replay.respond_with("BillQueryRq", "BillQueryRq.vendortotal.xml")
 
     out = (await call("query_bills", vendor="Perry Windows & Doors")).structured_content
 
-    assert [(b["ref_number"], b["amount"], b["open_amount"], b["is_paid"]) for b in out["results"]] == [
+    assert [(b["ref_number"], b["amount"], b["open_balance"], b["is_paid"]) for b in out["results"]] == [
         ("PW-101", "1800.00", "1300.00", False),  # partly paid by check: 1,800 - 500
         ("PW-102", "2325.00", "0.00", True),  # paid in full by check
         ("PW-103", "2400.00", "0.00", True),  # 400 Vendor credit + 2,000 check
@@ -292,7 +292,7 @@ async def test_query_bills_asks_quickbooks_for_linked_transactions(call, replay)
     assert ET.fromstring(replay.sent[-2].encode()).findtext("QBXMLMsgsRq/BillQueryRq/IncludeLinkedTxns") == "true"
 
 
-async def test_query_bills_paid_status_follows_the_computed_open_amount(call, replay):
+async def test_query_bills_paid_status_follows_the_computed_open_balance(call, replay):
     replay.respond_with("BillQueryRq", "BillQueryRq.vendortotal.xml")
 
     unpaid = (await call("query_bills", paid_status="unpaid")).structured_content

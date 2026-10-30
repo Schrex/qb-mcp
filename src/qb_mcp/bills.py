@@ -46,7 +46,7 @@ def filtered(
         filters.append(el("EntityFilter", None, el("FullName", vendor)))
     filters.append(el("PaidStatus", PAID_STATUS[paid_status]))
     filters.append(el("IncludeLineItems", _bool(include_lines)))
-    filters.append(el("IncludeLinkedTxns", "true"))  # payments and credits, for `open_amount`
+    filters.append(el("IncludeLinkedTxns", "true"))  # payments and credits, for `open_balance`
     return query("BillQueryRq", *filters)
 
 
@@ -60,7 +60,7 @@ def matches(b: dict[str, Any], from_date: date | None, to_date: date | None, ven
 
 def with_paid_status(bills: list[dict[str, Any]], paid_status: PaidStatus) -> list[dict[str, Any]]:
     """Bills (as returned by `bill`) whose computed `is_paid` agrees with `paid_status`. QuickBooks'
-    own PaidStatus filter is sent too; this keeps the results consistent with `open_amount`."""
+    own PaidStatus filter is sent too; this keeps the results consistent with `open_balance`."""
     return [b for b in bills if paid_status == "all" or b["is_paid"] == (paid_status == "paid")]
 
 
@@ -126,7 +126,7 @@ def _item_line(line: dict[str, Any]) -> dict[str, Any]:
 
 
 def bill(b: dict[str, Any], include_lines: bool = True) -> dict[str, Any]:
-    open_amount = open_balance(b)
+    balance = open_balance(b)
     header = {
         "vendor": ref_name(b.get("VendorRef")),
         "ap_account": ref_name(b.get("APAccountRef")),
@@ -134,9 +134,9 @@ def bill(b: dict[str, Any], include_lines: bool = True) -> dict[str, Any]:
         "date": b.get("TxnDate"),
         "due_date": b.get("DueDate"),
         "amount": b.get("AmountDue"),
-        "open_amount": f"{open_amount:.2f}",
+        "open_balance": f"{balance:.2f}",
         "memo": b.get("Memo"),
-        "is_paid": open_amount <= PAID_TOLERANCE,
+        "is_paid": balance <= PAID_TOLERANCE,
     }
     if not include_lines:
         return header
