@@ -6,6 +6,8 @@ A local MCP server that lets Claude Desktop (Chat) do **Lookups** against the Qu
 
 Terms (Company File, Vendor, Customer:Job, Item, Bill, Attachment, Lookup) follow [GLOSSARY.md](GLOSSARY.md).
 
+**For Jeri:** [docs/jeri-support-sheet.md](docs/jeri-support-sheet.md) is a one-page, printable sheet: starter prompts, what Claude can't do, how to read the trust stamp, who to call. Every starter prompt is checked by `tests/test_support_sheet.py`.
+
 ## Tools
 
 | Tool | What it does |
