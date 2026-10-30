@@ -131,6 +131,8 @@ Messages Claude may show, and what to do:
 
 **Log file:** `%LOCALAPPDATA%\qb-mcp\logs\qb-mcp.log` (paste that into Explorer's address bar). Rolls over at 1 MB, keeps 3 old files (`qb-mcp.log.1`..`.3`). Logs request types and errors only, never QuickBooks data. Set `QB_MCP_LOG_DIR` to log elsewhere.
 
+**Known issue: Bill open amounts (#14).** QuickBooks' own `OpenAmount` on a Bill turned out to be one Vendor-wide figure repeated on every Bill, so `query_bills` ignores it and works out each Bill's `open_amount` itself: the Bill amount less the bill payments and Vendor credits linked to it (0 if QuickBooks marks the Bill paid); `paid_status` and `is_paid` follow that figure. Not yet checked on a real Company File. To sanity-check: ask Claude for one Vendor's unpaid Bills and compare each `open_amount` with the Open Balance column of **Reports > Vendors & Payables > A/P Aging Detail** in QuickBooks. If they differ (especially Bills with a credit or discount applied), tell Sumanth which Bill.
+
 **What to send Sumanth:** the `qb-mcp.log` file(s), the full `run qb status` output from Claude, the exact error message, and roughly when it happened.
 
 ## Development on macOS

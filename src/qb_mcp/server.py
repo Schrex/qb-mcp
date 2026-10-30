@@ -153,19 +153,24 @@ def build_server(transport: Transport) -> MCPServer:
         (`from_date`/`to_date`), exact `vendor` name, exact `ref_number` (the number on the Vendor's
         invoice; answers "is this Bill already entered?", empty result if not), `paid_status` (default
         all), `customer_job`, `include_lines` (default true), `limit` (default 100; `more_available` is
-        true if more exist). Each Bill has vendor, ref number, date, due date, amount, open amount, memo,
-        paid flag and, with lines, `expense_lines` (account) and `item_lines` (item, quantity, cost),
+        true if more exist). Each Bill has vendor, ref number, date, due date, amount, `open_amount`, memo,
+        `is_paid` and, with lines, `expense_lines` (account) and `item_lines` (item, quantity, cost),
         each line with amount, Customer:Job, class and billable status.
         `customer_job` (e.g. "Acme:Main St Paving", or "Acme" for the customer and all its
         Customer:Jobs) keeps only Bills with a line charged to it, and only those lines. QuickBooks
         cannot filter Bills by Customer:Job, so this is applied after fetching up to `limit` Bills:
         `limit` counts Bills scanned, not matched. Add a date range or Vendor to scan fewer Bills.
-        Needs include_lines."""
+        Needs include_lines.
+        `open_amount` is this Bill's own balance, worked out here: amount less the bill payments and
+        Vendor credits linked to the Bill (0 if QuickBooks marks it paid). QuickBooks' own OpenAmount
+        is not returned: it showed one Vendor-wide total on every Bill. Not yet verified against a real
+        Company File; if a figure matters, check it against QuickBooks' A/P Aging Detail report.
+        `is_paid` means open_amount is 0, and `paid_status` returns only Bills that agree with it."""
         if customer_job and not include_lines:
             raise ToolError("customer_job filters Bill lines, so it needs include_lines=true.")
         if ref_number:
             (bill_rs,) = await qb.lookup(bills.by_ref_number(ref_number, include_lines))
-            found = [b for b in bill_rs.records if bills.matches(b, from_date, to_date, vendor, paid_status)]
+            found = [b for b in bill_rs.records if bills.matches(b, from_date, to_date, vendor)]
         else:
             (bill_rs,) = await qb.lookup(
                 bills.filtered(from_date, to_date, vendor, paid_status, include_lines, limit)
@@ -173,6 +178,9 @@ def build_server(transport: Transport) -> MCPServer:
             found = bill_rs.records
         # The cap applies to Bills scanned; report it even if `customer_job` leaves fewer than `limit`.
         out = capped([bills.bill(b, include_lines) for b in found], limit)
+        if paid_status != "all":
+            kept = bills.with_paid_status(out["results"], paid_status)
+            out |= {"results": kept, "count": len(kept)}
         if customer_job:
             matched = bills.charged_to(out["results"], customer_job)
             out |= {"results": matched, "count": len(matched)}
