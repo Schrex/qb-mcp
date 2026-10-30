@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<CreditCardCreditQueryRs requestID="1" statusCode="0" statusSeverity="Info" statusMessage="Status OK">
+<CreditCardCreditRet>
+<TxnID>3A52-1071521150</TxnID>
+<TimeCreated>2003-12-15T16:12:30-05:00</TimeCreated>
+<TimeModified>2025-12-15T02:38:06-05:00</TimeModified>
+<EditSequence>1765784193</EditSequence>
+<TxnNumber>704</TxnNumber>
+<AccountRef>
+<ListID>9C0000-933270542</ListID>
+<FullName>QuickBooks Credit Card</FullName>
+</AccountRef>
+<PayeeEntityRef>
+<ListID>B0000-933272656</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</PayeeEntityRef>
+<TxnDate>2025-12-08</TxnDate>
+<Amount>27.00</Amount>
+<RefNumber>2812</RefNumber>
+<Memo>Returned doorknob</Memo>
+<CreditCardTxnInfo>
+<CreditCardTxnInputInfo>
+<CreditCardNumber>4111111111111111</CreditCardNumber>
+<ExpirationMonth>12</ExpirationMonth>
+<ExpirationYear>2028</ExpirationYear>
+<NameOnCard>Rock Castle Owner</NameOnCard>
+<CreditCardPostalCode>94326-1111</CreditCardPostalCode>
+</CreditCardTxnInputInfo>
+<CreditCardTxnResultInfo>
+<CreditCardTransID>TX-88213</CreditCardTransID>
+</CreditCardTxnResultInfo>
+</CreditCardTxnInfo>
+<ExpenseLineRet>
+<TxnLineID>3A54-1071521150</TxnLineID>
+<AccountRef>
+<ListID>4A0000-933270542</ListID>
+<FullName>Job Expenses:Job Materials</FullName>
+</AccountRef>
+<Amount>27.00</Amount>
+<Memo>Doorknob return</Memo>
+<CreditCardNumber>5500005555555559</CreditCardNumber>
+<CustomerRef>
+<ListID>8A0000-1071508857</ListID>
+<FullName>Abercrombie, Kristy:Remodel Bathroom</FullName>
+</CustomerRef>
+<ClassRef>
+<ListID>20000-933272658</ListID>
+<FullName>Remodel</FullName>
+</ClassRef>
+<BillableStatus>NotBillable</BillableStatus>
+</ExpenseLineRet>
+</CreditCardCreditRet>
+</CreditCardCreditQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

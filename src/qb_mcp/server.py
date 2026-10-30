@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from collections.abc import Awaitable, Callable
 from datetime import date
 from functools import wraps
+from importlib.metadata import version as package_version
 from pathlib import Path
 from typing import Any, Literal
 
@@ -54,6 +55,13 @@ AccountType = Literal[
 
 ListStatus = Literal["active", "inactive", "all"]
 ACTIVE_STATUS = {"active": "ActiveOnly", "inactive": "InactiveOnly", "all": "All"}
+
+# QuickBooks' JobStatus values (qbXML `JobStatus`), snake_cased; "none" is QuickBooks' "None" (not set).
+JobStatus = Literal["pending", "awarded", "in_progress", "closed", "not_awarded", "none"]
+JOB_STATUS = {
+    "pending": "Pending", "awarded": "Awarded", "in_progress": "InProgress",
+    "closed": "Closed", "not_awarded": "NotAwarded", "none": "None",
+}
 
 Tool = Callable[..., Awaitable[Any]]
 RecordMapper = Callable[[str, dict[str, Any]], dict[str, Any]]
@@ -106,10 +114,21 @@ def build_server(transport: Transport) -> MCPServer:
         (rs,) = await qb.lookup(query(rq_type, *_list_filters(name_contains, status, limit), *extra_filters))
         return capped([to_output(tag, record) for tag, record in rs.rets], limit)
 
+    async def jobs_in(
+        job_status: list[JobStatus], name_contains: str | None, status: ListStatus
+    ) -> list[tuple[str, dict[str, Any]]]:
+        """Every customer/Customer:Job (tag, record) matching name and active status whose
+        JobStatus is one of `job_status`. Uncapped: QuickBooks can't filter by JobStatus."""
+        wanted = {JOB_STATUS[s] for s in job_status}
+        (rs,) = await qb.lookup(query("CustomerQueryRq", *_list_filters(name_contains, status, None)))
+        return [(tag, r) for tag, r in rs.rets if r.get("JobStatus", "None") in wanted]
+
     @tool(errors=False)
     async def qb_status() -> dict[str, Any]:
         """Check the QuickBooks connection: whether QuickBooks is reachable, its product and version,
-        the qbXML versions it supports, which Company File is open, and the last error (and when)."""
+        the qbXML versions it supports, which Company File is open, this server's version, and the
+        last error (and when)."""
+        server_version = package_version("qb-mcp")
         try:
             with qb.answering():
                 host_rs, company_rs = await qb.lookup(query("HostQueryRq"), query("CompanyQueryRq"))
@@ -122,9 +141,15 @@ def build_server(transport: Transport) -> MCPServer:
                     "supported_qbxml_versions": host["SupportedQBXMLVersion"],
                     "company_name": company["CompanyName"],
                     "company_file": company_file,
+                    "server_version": server_version,
                 }
         except QBError as e:
-            return {"reachable": False, "error": str(e), "last_error": qb.last_error.as_dict()}
+            return {
+                "reachable": False,
+                "error": str(e),
+                "server_version": server_version,
+                "last_error": qb.last_error.as_dict(),
+            }
         return status | {"last_error": qb.last_error and qb.last_error.as_dict()}
 
     @tool()
@@ -198,13 +223,22 @@ def build_server(transport: Transport) -> MCPServer:
 
     @tool(narrow_by="name_contains or status")
     async def list_customer_jobs(
-        name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
+        name_contains: str | None = None,
+        status: ListStatus = "active",
+        job_status: list[JobStatus] | None = None,
+        limit: int = DEFAULT_LIMIT,
     ) -> dict[str, Any]:
         """List customers and their Customer:Jobs. Each has its full `name` ("Customer:Job" for a job),
         `kind` ("customer" or "job"), `parent`, `job_status`, own `balance` and `total_balance`
         (including its Customer:Jobs). Optional: `name_contains` (case-insensitive substring),
-        `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
-        return await list_lookup("CustomerQueryRq", records.customer_job, name_contains, status, limit)
+        `status` (default active), `job_status` (keep only these, e.g. ["awarded", "in_progress"];
+        combines with `status`), `limit` (default 100); if more match, `more_available` is true."""
+        if not job_status:
+            return await list_lookup("CustomerQueryRq", records.customer_job, name_contains, status, limit)
+        # QuickBooks can't filter by JobStatus, so fetch every name/status match and filter here;
+        # the cap then counts matching records, so `count`/`more_available` stay exact.
+        kept = [records.customer_job(tag, r) for tag, r in await jobs_in(job_status, name_contains, status)]
+        return capped(kept, limit) | {"filters": {"job_status": sorted(set(job_status))}}
 
     @tool(narrow_by="name_contains or status")
     async def list_items(
@@ -236,6 +270,7 @@ def build_server(transport: Transport) -> MCPServer:
         from_date: date,
         to_date: date,
         customer_job: str | None = None,
+        job_status: list[JobStatus] | None = None,
     ) -> dict[str, Any]:
         """Run a QuickBooks job report (profitability, or estimates vs. actuals; summary or detail)
         for a date range, optionally limited to one Customer:Job (e.g. "Acme:Main St Paving") or a
@@ -244,7 +279,10 @@ def build_server(transport: Transport) -> MCPServer:
         Customer:Job). Returns the report's column titles and its rows: each row has a `kind`
         (header, data, subtotal, total), a `label`, the full `name` when the row is for a customer,
         Customer:Job or Item, and `values` keyed by column title. A period with no activity gives
-        a single TOTAL row of zeros; an unknown Customer:Job is a QuickBooks error (3120)."""
+        a single TOTAL row of zeros; an unknown Customer:Job is a QuickBooks error (3120).
+        Optional `job_status` (e.g. ["awarded", "in_progress"]) limits the report to Customer:Jobs
+        (active or not) in those statuses, within `customer_job` if given; `filters` echoes it.
+        If none match, no report is run: `rows` is empty and `note` says why."""
         if report.endswith("_detail") and not customer_job:
             raise ToolError(
                 f"{report} needs customer_job: QuickBooks runs detail job reports for one Customer:Job "
@@ -254,10 +292,24 @@ def build_server(transport: Transport) -> MCPServer:
             el("JobReportType", _job_report_type(report)),
             el("ReportPeriod", None, el("FromReportDate", from_date.isoformat()), el("ToReportDate", to_date.isoformat())),
         ]
-        if customer_job:
+        if job_status:
+            # QuickBooks' reports can't filter by JobStatus either: name the matching Customer:Jobs.
+            names = [r["FullName"] for _, r in await jobs_in(job_status, None, "all")]
+            if customer_job:  # the Customer:Job itself and everything under it (names are case-insensitive)
+                scope = customer_job.lower()
+                names = [n for n in names if n.lower() == scope or n.lower().startswith(scope + ":")]
+            applied = {"filters": {"job_status": sorted(set(job_status))}}
+            if not names:
+                where = f" under {customer_job}" if customer_job else ""
+                return parse_report(None) | applied | {
+                    "note": f"No Customer:Job{where} has job status {', '.join(sorted(set(job_status)))}; no report run."
+                }
+            children.append(el("ReportEntityFilter", None, *(el("FullName", n) for n in names)))
+        elif customer_job:
             children.append(el("ReportEntityFilter", None, el("FullNameWithChildren", customer_job)))
         (rs,) = await qb.lookup(query("JobReportQueryRq", *children))
-        return parse_report(rs.records[0] if rs.records else None)
+        report = parse_report(rs.records[0] if rs.records else None)
+        return report | applied if job_status else report
 
     @tool(description=RUN_QUERY_DESCRIPTION)
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> Answer:
@@ -292,9 +344,11 @@ def _query_filters(element: ET.Element) -> dict[str, Any]:
     }
 
 
-def _list_filters(name_contains: str | None, status: ListStatus, limit: int) -> list[Any]:
-    """Shared list-query filter group, in schema order: MaxReturned, ActiveStatus, NameFilter."""
-    filters = [el("MaxReturned", fetch_limit(limit)), el("ActiveStatus", ACTIVE_STATUS[status])]
+def _list_filters(name_contains: str | None, status: ListStatus, limit: int | None) -> list[Any]:
+    """Shared list-query filter group, in schema order: MaxReturned (omitted when `limit` is
+    None: fetch all), ActiveStatus, NameFilter."""
+    filters = [el("MaxReturned", fetch_limit(limit))] if limit is not None else []
+    filters.append(el("ActiveStatus", ACTIVE_STATUS[status]))
     if name_contains:
         filters.append(el("NameFilter", None, el("MatchCriterion", "Contains"), el("Name", name_contains)))
     return filters
