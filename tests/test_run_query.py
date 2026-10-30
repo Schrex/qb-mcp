@@ -133,6 +133,37 @@ async def test_run_query_strips_card_data_from_credit_card_charges(call, replay)
         assert tag not in text
 
 
+async def test_run_query_returns_credit_card_credits_with_vendor_job_account_amount_and_memo(call):
+    result = await call("run_query", query=CARD_CREDITS)
+
+    assert not result.is_error
+    out = result.structured_content
+    assert out["count"] == 1
+    (refund,) = out["results"]
+    assert refund["PayeeEntityRef"]["FullName"] == "Patton Hardware Supplies"
+    assert refund["AccountRef"]["FullName"] == "QuickBooks Credit Card"
+    assert refund["Amount"] == "27.00"
+    assert refund["Memo"] == "Returned doorknob"
+    (expense,) = refund["ExpenseLineRet"]
+    assert expense["AccountRef"]["FullName"] == "Job Expenses:Job Materials"
+    assert expense["CustomerRef"]["FullName"] == "Abercrombie, Kristy:Remodel Bathroom"
+    assert expense["Amount"] == "27.00"
+
+
+async def test_run_query_strips_card_data_from_credit_card_credits(call, replay):
+    replay.respond_with("CreditCardCreditQueryRq", "CreditCardCreditQueryRq.sensitive.xml")
+
+    result = await call("run_query", query=CARD_CREDITS)
+
+    assert not result.is_error
+    text = result.content[0].text
+    assert "Patton Hardware Supplies" in text  # the record itself still comes back
+    for card_data in ["4111111111111111", "5500005555555559", "Rock Castle Owner", "94326-1111", "TX-88213"]:
+        assert card_data not in text
+    for tag in ["CreditCardTxnInfo", "CreditCardNumber", "ExpirationYear", "NameOnCard", "CreditCardTransID"]:
+        assert tag not in text
+
+
 # --- Refusals: nothing caller-supplied but one plain *QueryRq ever reaches QuickBooks ---
 
 XXE = (

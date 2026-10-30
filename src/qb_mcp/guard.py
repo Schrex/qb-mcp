@@ -54,7 +54,8 @@ ALLOWED_QUERIES = frozenset(
         "VendorCreditQueryRq",  # credits that reduce job cost
         "BillPaymentCheckQueryRq",  # which Bills were paid, when
         "CheckQueryRq",  # direct-paid costs; bank reconciliation input
-        "CreditCardChargeQueryRq",  # fuel and parts on company cards (#29); card data is stripped        "DepositQueryRq",  # bank reconciliation input
+        "CreditCardChargeQueryRq",  # fuel and parts on company cards (#29); card data is stripped
+        "CreditCardCreditQueryRq",  # refunds to company cards (#29); card data is stripped        "DepositQueryRq",  # bank reconciliation input
         "JournalEntryQueryRq",  # cost reallocations and accruals between jobs
         "TimeTrackingQueryRq",  # hours by Customer:Job (labour job costing); no pay amounts
         # lists the dedicated tools don't cover
