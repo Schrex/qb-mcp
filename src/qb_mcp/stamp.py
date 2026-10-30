@@ -10,7 +10,10 @@ what it can work out centrally:
 - `closing_date` / `period`: the Company File's closing date (from `closing_date`, read once per
   session by `build_server`) and whether the answer's date range is closed or may still change;
   "no closing date set" when QuickBooks has none, "closing date unknown" when it couldn't be read.
-- `voided_excluded`: how many listed records are voided (`is_void`); no total includes them (#28).
+- `voided_listed` / `non_posting_listed`: how many listed records are voided (`is_void`) or
+  non-posting (`posting: false`) (#28).
+- `voided_excluded`: how many voided records were left out of the result's `totals`; None when the
+  result carries no total (nothing was excluded from one).
 - `basis`: "not a report; basis does not apply" unless a report tool says Accrual or Cash.
 - `dates`: from `from_date`/`to_date` (transaction date) if the tool takes them, else the tool's
   registered default (`AS_OF_TODAY` for balances, None when no dates apply). A tool whose figures
@@ -58,7 +61,9 @@ class TrustStamp:
     cap_notice: str | None = None
     closing_date: str | None = None  # ISO date; None if none is set or it couldn't be read
     period: str = UNKNOWN  # or "closed" / "may still change" / NOT_SET
-    voided_excluded: int = 0
+    voided_listed: int = 0
+    voided_excluded: int | None = None  # None: no total was computed
+    non_posting_listed: int = 0
     # #27: what the figures are based on and where to check them.
     basis: str = NO_BASIS
     # {"from", "to", "field"} for a date range (None = open-ended), {"as_of"} for balances, None if no dates apply.
@@ -112,8 +117,9 @@ def _dates(arguments: dict[str, Any], default: dict[str, Any] | None, live_balan
     return default
 
 
-def _voided(result: dict[str, Any]) -> int:
-    return sum(1 for r in result.get("results", []) if isinstance(r, dict) and r.get("is_void") is True)
+def _listed(result: dict[str, Any], field: str, value: bool) -> int:
+    """How many listed records have `field` == `value` (e.g. `is_void` true, `posting` false)."""
+    return sum(1 for r in result.get("results", []) if isinstance(r, dict) and r.get(field) is value)
 
 
 def _period(filters: dict[str, Any], closed_through: date, live: bool) -> str:
@@ -162,7 +168,8 @@ def stamped(
             arguments = _arguments(tool, args, kwargs)
             stamp = TrustStamp(
                 filters=_applied_filters(arguments),
-                voided_excluded=_voided(result),
+                voided_listed=_listed(result, "is_void", True),
+                non_posting_listed=_listed(result, "posting", False),
                 dates=_dates(arguments, dates, live_balances),
                 check_in_quickbooks=check_in,
             )
@@ -171,6 +178,8 @@ def stamped(
                 notice = cap_notice(shown, narrow_by, arguments.get("limit"))
                 stamp = replace(stamp, complete=False, cap_notice=notice)
                 result.pop("totals", None)
+            if "totals" in result:
+                stamp = replace(stamp, voided_excluded=stamp.voided_listed)
             stamp = replace(stamp, **answer.stamp)
             closed_through = await closing_date() if closing_date else None
             if closed_through == NO_CLOSING_DATE:

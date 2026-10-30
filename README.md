@@ -26,7 +26,7 @@ List and query tools return at most `limit` (default 100) results and set `more_
 
 Every result carries a trust `stamp`: the `filters` applied and whether it is `complete`. A capped result says so in `cap_notice` ("showing the first N; more exist; totals incomplete", and how to narrow) and never carries a total.
 
-Voided transactions stay listed, marked `is_void`, but are left out of every total (e.g. `query_bills` `totals`); the stamp's `voided_excluded` counts them. qbXML 16.0 has no void flag, so a transaction counts as voided when QuickBooks has zeroed its amount(s) and prefixed its memo `VOID:` (both must hold). Transactions carry `posting`: Estimates, Purchase Orders and Sales Orders are `posting: false` (non-posting) and never summed with posting transactions.
+Voided transactions stay listed, marked `is_void`, but are left out of every total (e.g. `query_bills` `totals`). The stamp's `voided_listed` counts those listed; `voided_excluded` counts those left out of a total, and is `null` when the answer has no total (e.g. `run_query`). qbXML 16.0 has no void flag, so a transaction counts as voided when QuickBooks has zeroed its amount(s) and prefixed its memo `VOID:` (both must hold). Transactions carry `posting`: Estimates, Purchase Orders and Sales Orders are `posting: false` (non-posting) and never summed with posting transactions; the stamp's `non_posting_listed` counts them.
 
 ## Install on Jeri's PC
 
@@ -129,7 +129,7 @@ With Jeri, on her live Company File: check the server's answers against QuickBoo
 | `dates` | `from` / `to` / `field` are the dates you set in QuickBooks' report (Dates / From / To). A/P aging: as of today. |
 | `closing_date` / `period` | `closing_date` is QuickBooks' closing date (above); `period` is `closed` for the closed month's P&L. `closing date unknown` (the read failed) is a fail; `no closing date set; may still change` is right only if QuickBooks has none set. |
 | `filters` | Only the filters you asked for (job, Vendor, `paid_status`...), nothing extra or missing. |
-| `voided_excluded` | Plausible: voided Bills show in QuickBooks with a 0 amount and memo `VOID:`. Note the count. |
+| `voided_listed` / `voided_excluded` / `non_posting_listed` | Plausible: voided Bills show in QuickBooks with a 0 amount and memo `VOID:`. `voided_excluded` (left out of `totals`) equals `voided_listed` when there are totals, else `null`. Note the counts. |
 | `accounts` | Aging reports only: `all A/P accounts` (or A/R) unless the query filtered an account; QuickBooks' aging report must include the same accounts (e.g. a separate retainage A/P account). |
 | `complete` / `cap_notice` | `complete: true` before comparing any total. If `cap_notice` is shown there are no totals: narrow (date range, Vendor) or ask with a bigger `limit`, then ask again. |
 | `check_in_quickbooks` | Opens the report you are comparing against (check A). |
@@ -185,7 +185,7 @@ That runs on accrual basis (stamp `basis: Accrual`). If Jeri's QuickBooks P&L is
 | C. Per-Bill open balance (#19) | Bills (with discount / credit / partial) | | | | |
 | D. Closed-month P&L | totals compared | | | | |
 
-Plus: `server_version`, QuickBooks version (from `qb_status`), basis each report ran on, `voided_excluded` counts, whether any answer was capped. A wrong menu path goes in with the right path (no live data in it).
+Plus: `server_version`, QuickBooks version (from `qb_status`), basis each report ran on, `voided_listed` / `voided_excluded` counts, whether any answer was capped. A wrong menu path goes in with the right path (no live data in it).
 
 **On a mismatch**
 

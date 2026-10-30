@@ -238,7 +238,8 @@ def build_server(transport: Transport) -> MCPServer:
         Company File; if a figure matters, check it against A/P Aging Detail.
         `is_paid` means open_balance is 0, and `paid_status` returns only Bills that agree with it.
         `is_void` marks a voided Bill: still listed, but left out of `totals` (sums of `amount` and
-        `open_balance`) and counted in the stamp's `voided_excluded`. No `totals` with `customer_job`
+        `open_balance`); the stamp counts them in `voided_listed` and, when there are `totals`,
+        `voided_excluded`. No `totals` with `customer_job`
         (a Bill's amount includes other Customer:Jobs' lines) or when capped."""
         if customer_job and not include_lines:
             raise ToolError("customer_job filters Bill lines, so it needs include_lines=true.")

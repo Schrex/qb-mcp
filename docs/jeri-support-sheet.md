@@ -31,7 +31,7 @@ Every answer carries a short note of what it is based on. Ask "show me the trust
 - **Dates:** the date range the answer covers, or "as of today" for balances (a Bill's open balance is always as of today, whatever its date).
 - **Closing Date:** "closed" means those dates are locked. **"May still change"** means the dates run past the Closing Date, so new or edited entries can still move the figures. "No closing date set": nothing is locked. "Closing date unknown": Claude couldn't read it; tell Sumanth.
 - **Filters:** the Vendor, Customer:Job, dates or status the answer was limited to. Check these match what you asked.
-- **Voided:** voided transactions are listed but never added into a total; the stamp says how many.
+- **Voided / non-posting:** voided transactions, and estimates or purchase orders (non-posting), are listed but never added into a total; the stamp says how many are listed, and how many a total left out.
 - **Check in QuickBooks:** the report or screen to open to check the answer, e.g. Reports > Vendors & Payables > A/P Aging Detail.
 
 ## "Totals incomplete"
