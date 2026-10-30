@@ -5,6 +5,7 @@ import sys
 from collections.abc import Awaitable, Callable
 from datetime import date
 from functools import wraps
+from importlib.metadata import version as package_version
 from pathlib import Path
 from typing import Any, Literal
 
@@ -112,7 +113,9 @@ def build_server(transport: Transport) -> MCPServer:
     @mcp.tool()
     async def qb_status() -> dict[str, Any]:
         """Check the QuickBooks connection: whether QuickBooks is reachable, its product and version,
-        the qbXML versions it supports, which Company File is open, and the last error (and when)."""
+        the qbXML versions it supports, which Company File is open, this server's version, and the
+        last error (and when)."""
+        server_version = package_version("qb-mcp")
         try:
             with qb.answering():
                 host_rs, company_rs = await qb.lookup(query("HostQueryRq"), query("CompanyQueryRq"))
@@ -125,9 +128,15 @@ def build_server(transport: Transport) -> MCPServer:
                     "supported_qbxml_versions": host["SupportedQBXMLVersion"],
                     "company_name": company["CompanyName"],
                     "company_file": company_file,
+                    "server_version": server_version,
                 }
         except QBError as e:
-            return {"reachable": False, "error": str(e), "last_error": qb.last_error.as_dict()}
+            return {
+                "reachable": False,
+                "error": str(e),
+                "server_version": server_version,
+                "last_error": qb.last_error.as_dict(),
+            }
         return status | {"last_error": qb.last_error and qb.last_error.as_dict()}
 
     @mcp.tool()

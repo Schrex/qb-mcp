@@ -29,6 +29,7 @@ async def test_qb_status_reports_quickbooks_and_company_file(call):
         ],
         "company_name": "Rock Castle Construction",
         "company_file": r"C:\QB\Rock Castle Construction.QBW",
+        "server_version": "0.1.0",
         "last_error": None,
     }
 
@@ -66,6 +67,12 @@ async def test_qb_status_reports_unreachable_when_quickbooks_is_closed(call, rep
     assert not result.is_error
     assert result.structured_content["reachable"] is False
     assert "QuickBooks isn't running" in result.structured_content["error"]
+
+
+async def test_qb_status_reports_server_version_even_when_quickbooks_is_closed(call, replay):
+    replay.fail_with(TransportError(TransportFailure.QB_NOT_RUNNING))
+
+    assert (await call("qb_status")).structured_content["server_version"] == "0.1.0"
 
 
 @pytest.mark.parametrize(

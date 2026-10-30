@@ -10,7 +10,7 @@ Terms (Company File, Vendor, Customer:Job, Item, Bill, Attachment, Lookup) follo
 
 | Tool | What it does |
 |---|---|
-| `qb_status` | Connection check: reachable?, QuickBooks product and version, supported qbXML versions, company name, Company File path, last error (and when). |
+| `qb_status` | Connection check: reachable?, QuickBooks product and version, supported qbXML versions, company name, Company File path, this server's version (`server_version`), last error (and when). |
 | `get_company_info` | Company name, legal name, address, fiscal year start month. |
 | `list_vendors` | Vendors with active flag, balance, contact basics. Filters: `name_contains`, `status`, `limit`. |
 | `list_customer_jobs` | Customers and their Customer:Jobs with parent, job status, balance, total balance. Same filters. |
@@ -52,7 +52,7 @@ Note the full path `where.exe uvx` prints (usually `C:\Users\<Jeri>\.local\bin\u
 Optional pre-warm, so Claude's first launch isn't slow:
 
 ```powershell
-uvx --refresh --from git+https://github.com/Schrex/qb-mcp qb-mcp
+uvx --refresh --from git+https://github.com/Schrex/qb-mcp@v0.1.0 qb-mcp
 ```
 
 Once downloaded it sits silently waiting for MCP input; press Ctrl+C.
@@ -72,7 +72,7 @@ Claude Desktop > **Settings > Developer > Edit Config** opens `%APPDATA%\Claude\
   "mcpServers": {
     "qb": {
       "command": "uvx",
-      "args": ["--refresh", "--python", "3.12", "--from", "git+https://github.com/Schrex/qb-mcp", "qb-mcp"]
+      "args": ["--refresh", "--python", "3.12", "--from", "git+https://github.com/Schrex/qb-mcp@v0.1.0", "qb-mcp"]
     }
   }
 }
@@ -80,7 +80,7 @@ Claude Desktop > **Settings > Developer > Edit Config** opens `%APPDATA%\Claude\
 
 Save, then **fully quit** Claude Desktop (system tray icon > Quit, not just closing the window) and reopen it.
 
-**Microsoft Store build (verified on the test PC, #4):** the file is elsewhere and the order matters. The app keeps its settings and the `mcpServers` list in one file under `%LOCALAPPDATA%\Claude-Data\claude_<id>\claude_desktop_config.json` (the `%APPDATA%\Claude` folder stays empty and is not read), and it writes that file back from memory when it quits, so an edit made while it is running is lost. Quit Claude Desktop first, then add the `mcpServers` key next to the existing `preferences` key in that file, then reopen. **Settings > Developer > Edit config** opens the right folder either way.
+**Microsoft Store build (verified on the test PC, #4):** the file is elsewhere and the order matters. The app keeps its settings and the `mcpServers` list in one file under `%LOCALAPPDATA%\Claude-Data\claude_<id>\claude_desktop_config.json` (the `%APPDATA%\Claude` folder stays empty and is not read), and it writes that file back from memory when it quits, so an edit made while it is running is lost. Quit Claude Desktop first, then add the `mcpServers` key (the same `qb` entry as above, pinned to `git+https://github.com/Schrex/qb-mcp@v0.1.0`) next to the existing `preferences` key in that file, then reopen. **Settings > Developer > Edit config** opens the right folder either way.
 
 ### 4. First connect: authorize the integration
 
@@ -96,14 +96,22 @@ Save, then **fully quit** Claude Desktop (system tray icon > Quit, not just clos
 
 ### 5. Verify
 
-- **"run qb status"** shows `reachable: true`, product (QuickBooks Enterprise Solutions...), version, supported qbXML versions incl. `16.0`, and Jeri's company name and Company File path.
+- **"run qb status"** shows `reachable: true`, product (QuickBooks Enterprise Solutions...), version, supported qbXML versions incl. `16.0`, Jeri's company name and Company File path, and `server_version` matching the tag in the config (`0.1.0`).
 - Refusal check: ask Claude to use `run_query` with `<VendorAddRq><VendorAdd><Name>Test</Name></VendorAdd></VendorAddRq>`. It must be refused ("Refused: this server is read-only...").
 - Jeri asks one real budgeting question; check the answer against QuickBooks.
 - Show Jeri how to send the log file and `qb_status` output (see Troubleshooting).
 
 ## Updating
 
-Nothing to install. Claude Desktop runs `uvx --refresh`, so every time Claude is fully quit and reopened it fetches the latest version from GitHub. If a fix doesn't show up, quit Claude from the tray (not just the window) and reopen.
+The install is pinned to a release tag (`@v0.1.0`), so merges to `main` never reach Jeri's PC on their own. To update deliberately:
+
+1. In the Claude Desktop config (`%APPDATA%\Claude\claude_desktop_config.json`, or the Store build's file, see step 3), change the tag in `git+https://github.com/Schrex/qb-mcp@v0.1.0` to the new release, e.g. `@v0.2.0`. Save.
+2. **Fully quit** Claude Desktop (tray icon > Quit, not just the window) and reopen it. (Store build: quit first, then edit, then reopen.)
+3. Ask **"run qb status"**: `server_version` must show the new version.
+
+To roll back, put the previous tag back and restart the same way.
+
+Releasing (maintainer): bump `version` in `pyproject.toml` (that is what `server_version` reports), merge, then tag that commit `vX.Y.Z` and push the tag.
 
 ## Troubleshooting
 
