@@ -12,7 +12,8 @@ Safety:
   sample: "rock castle" in the file name, or Intuit's `sample_*` naming
   (`--i-confirm-not-live-data` overrides). Never record from a live file.
 - Refuses to write any fixture holding a non-empty sensitive value: an element on the
-  server's deny-list (`output.is_sensitive`, incl. a Vendor's AccountNumber) or a report
+  server's deny-list (`output.is_sensitive`, incl. a Vendor's AccountNumber), a payee
+  address (`output.is_payee_address`: a fixture can't show the payee isn't an Employee) or a report
   column titled like one (`reports.SENSITIVE_COLUMN_TITLE`). It lists what it found
   (element or column names, never the values).
 - Writes only `<RequestType>.xml` and the variants named in TOOL_CALLS, never a
@@ -33,7 +34,7 @@ from typing import Any
 
 from mcp import Client
 
-from qb_mcp.output import is_sensitive
+from qb_mcp.output import is_payee_address, is_sensitive
 from qb_mcp.reports import SENSITIVE_COLUMN_TITLE
 from qb_mcp.server import build_server
 from qb_mcp.transport import Transport
@@ -99,7 +100,9 @@ def sensitive_findings(rs: ET.Element) -> list[str]:
     found: Counter[str] = Counter()
     for parent in rs.iter():
         for child in parent:
-            if is_sensitive(child.tag, parent.tag) and "".join(child.itertext()).strip():
+            if (is_sensitive(child.tag, parent.tag) or is_payee_address(child.tag, parent.tag)) and "".join(
+                child.itertext()
+            ).strip():
                 found[f"{parent.tag}/{child.tag}"] += 1
     for report in rs.iter("ReportRet"):
         titles = {d.get("colID"): _column_title(d) for d in report.iter("ColDesc")}
