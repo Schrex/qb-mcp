@@ -19,7 +19,7 @@ Terms (Company File, Vendor, Customer:Job, Item, Bill, Attachment, Lookup) follo
 | `list_items` | Items of every kind with full name, kind, purchase description, cost, expense account. Same filters. |
 | `list_accounts` | Chart-of-accounts Accounts with type, number, balance, total balance. Filters: `account_type`, `name_contains`, `status`, `limit`. |
 | `query_bills` | Bills by date range, Vendor, ref number, paid status, Customer:Job; each with its A/P account and open balance, and item and expense lines (default on). |
-| `run_job_report` | Job profitability or job estimates-vs-actuals (summary or detail) for a date range, optionally one Customer:Job. |
+| `run_job_report` | Job profitability or job estimates-vs-actuals (summary or detail) for a date range, optionally one Customer:Job, `job_status` and active `status` (default all). |
 | `run_query` | One raw qbXML `*QueryRq` element for anything the other tools don't cover (invoices, checks, purchase orders...). Invoices, payments received and credit memos also name their A/R account (`ar_account`). |
 
 List and query tools return at most `limit` (default 100) results and set `more_available` (plus a `note`) when more exist.

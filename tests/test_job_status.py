@@ -99,6 +99,45 @@ async def test_run_job_report_with_no_job_in_the_status_runs_no_report(call, rep
     assert "No Customer:Job" in result.structured_content["note"]
 
 
+async def test_run_job_report_job_status_combines_with_active_status(call, replay):
+    # Replay ignores ActiveStatus, so QuickBooks' half of the combination is checked on the request.
+    result = await call(
+        "run_job_report", report="job_profitability_summary", from_date="2024-01-01", to_date="2024-12-31",
+        job_status=["in_progress"], status="inactive",
+    )
+
+    assert not result.is_error, result.content
+    customers = ET.fromstring(replay.sent[0].encode()).find("QBXMLMsgsRq/CustomerQueryRq")
+    assert customers.findtext("ActiveStatus") == "InactiveOnly"
+    filters = result.structured_content["stamp"]["filters"]
+    assert (filters["status"], filters["job_status"]) == ("inactive", ["in_progress"])
+
+
+async def test_run_job_report_active_status_alone_names_the_customer_jobs_to_report(call, replay):
+    result = await call(
+        "run_job_report", report="job_profitability_detail", from_date="2024-01-01", to_date="2024-12-31",
+        customer_job="Brook Homes", status="active",
+    )
+
+    assert not result.is_error, result.content
+    customers = ET.fromstring(replay.sent[0].encode()).find("QBXMLMsgsRq/CustomerQueryRq")
+    assert customers.findtext("ActiveStatus") == "ActiveOnly"
+    entities = _sent(replay, "JobReportQueryRq").find("ReportEntityFilter")
+    assert [e.text for e in entities] == ["Brook Homes", "Brook Homes:Lot 7", "Brook Homes:Lot 8", "Brook Homes:Lot 9"]
+    assert result.structured_content["stamp"]["filters"]["status"] == "active"
+
+
+async def test_run_job_report_covers_active_and_inactive_jobs_by_default(call, replay):
+    result = await call(
+        "run_job_report", report="job_profitability_detail", from_date="2024-01-01", to_date="2024-12-31",
+        customer_job="Brook Homes",
+    )
+
+    entities = _sent(replay, "JobReportQueryRq").find("ReportEntityFilter")
+    assert [e.tag for e in entities] == ["FullNameWithChildren"]
+    assert "status" not in result.structured_content["stamp"]["filters"]
+
+
 async def test_run_job_report_rejects_an_unknown_job_status(call):
     result = await call(
         "run_job_report", report="job_profitability_summary", from_date="2024-01-01", to_date="2024-12-31",

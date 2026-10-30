@@ -310,6 +310,7 @@ def build_server(transport: Transport) -> MCPServer:
         to_date: date,
         customer_job: str | None = None,
         job_status: list[JobStatus] | None = None,
+        status: ListStatus = "all",
     ) -> Answer:
         """Run a QuickBooks job report (profitability, or estimates vs. actuals; summary or detail)
         for a date range, optionally limited to one Customer:Job (e.g. "Acme:Main St Paving") or a
@@ -319,8 +320,9 @@ def build_server(transport: Transport) -> MCPServer:
         (header, data, subtotal, total), a `label`, the full `name` when the row is for a customer,
         Customer:Job or Item, and `values` keyed by column title. A period with no activity gives
         a single TOTAL row of zeros; an unknown Customer:Job is a QuickBooks error (3120).
-        Optional `job_status` (e.g. ["awarded", "in_progress"]) limits the report to Customer:Jobs
-        (active or not) in those statuses, within `customer_job` if given; `filters` echoes it.
+        Optional `job_status` (e.g. ["awarded", "in_progress"]) limits the report to Customer:Jobs in
+        those statuses, and `status` (default all: active and inactive) to active or inactive ones; they
+        combine, within `customer_job` if given; `filters` echoes `job_status`.
         If none match, no report is run: `rows` is empty and `note` says why.
         The stamp's `basis` is the one QuickBooks ran the report on (qbXML can't choose it for job reports)."""
         if report.endswith("_detail") and not customer_job:
@@ -334,16 +336,18 @@ def build_server(transport: Transport) -> MCPServer:
             el("JobReportType", report_type),
             el("ReportPeriod", None, el("FromReportDate", from_date.isoformat()), el("ToReportDate", to_date.isoformat())),
         ]
-        if job_status:
-            # QuickBooks' reports can't filter by JobStatus either: name the matching Customer:Jobs.
-            names = [r["FullName"] for _, r in await jobs_in(job_status, None, "all")]
+        if job_status or status != "all":
+            # QuickBooks' reports can't filter by JobStatus or active status: name the matching Customer:Jobs.
+            names = [r["FullName"] for _, r in await jobs_in(job_status or list(JOB_STATUS), None, status)]
             if customer_job:  # the Customer:Job itself and everything under it (names are case-insensitive)
                 scope = customer_job.lower()
                 names = [n for n in names if n.lower() == scope or n.lower().startswith(scope + ":")]
-            applied = {"filters": {"job_status": sorted(set(job_status))}}
+            applied = {"filters": {"job_status": sorted(set(job_status))}} if job_status else {}
             if not names:
                 where = f" under {customer_job}" if customer_job else ""
-                note = f"No Customer:Job{where} has job status {', '.join(sorted(set(job_status)))}; no report run."
+                active = f"{status} " if status != "all" else ""
+                in_status = f" has job status {', '.join(sorted(set(job_status)))}" if job_status else ""
+                note = f"No {active}Customer:Job{where}{in_status}; no report run."
                 return Answer(
                     parse_report(None) | applied | {"note": note}, stamp=where_to_check | {"basis": "no report run"}
                 )
@@ -353,7 +357,7 @@ def build_server(transport: Transport) -> MCPServer:
         (rs,) = await qb.lookup(query("JobReportQueryRq", *children))
         report = parse_report(rs.records[0] if rs.records else None)
         stamp = where_to_check | {"basis": _report_basis(report)}
-        return Answer(report | applied if job_status else report, stamp=stamp)
+        return Answer(report | applied if job_status or status != "all" else report, stamp=stamp)
 
     @tool(check_in.RAW_QUERY, description=RUN_QUERY_DESCRIPTION)
     async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> Answer:
