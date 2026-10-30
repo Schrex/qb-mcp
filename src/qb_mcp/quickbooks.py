@@ -16,7 +16,7 @@ from datetime import UTC, datetime
 from qb_mcp import qbxml
 from qb_mcp.errors import QBError, UnexpectedResponse
 from qb_mcp.guard import ensure_read_only
-from qb_mcp.responses import QueryResult, parse_response
+from qb_mcp.responses import QueryResult, drop_payee_addresses, parse_response, payees_with_address
 from qb_mcp.transport import Transport
 
 log = logging.getLogger(__name__)
@@ -58,10 +58,32 @@ class QuickBooks:
         except QBError as e:
             self._record(e)
             raise
+        payees = payees_with_address(results)
+        if payees:
+            drop_payee_addresses(results, keep_for=await self._vendors_or_customers(payees))
         warnings = _call_warnings.get()
         if warnings is not None:
             warnings.extend(r.warning for r in results if r.warning)
         return results
+
+    async def _vendors_or_customers(self, list_ids: set[str]) -> set[str]:
+        """Which of `list_ids` QuickBooks confirms are Vendors or Customers (so their payee
+        address may be kept). One query per ListID and list, continuing past "not found"
+        errors; only ListIDs are asked for. Any failure confirms nothing (addresses dropped)."""
+        requests = [
+            qbxml.query(rq, qbxml.el("ListID", list_id), qbxml.el("IncludeRetElement", "ListID"))
+            for list_id in sorted(list_ids)
+            for rq in ("VendorQueryRq", "CustomerQueryRq")
+        ]
+        try:
+            request = qbxml.envelope(*requests, on_error="continueOnError")
+            ensure_read_only(request)
+            root = ET.fromstring((await self.transport.send(request)).encode("utf-8"))
+        except (QBError, *MALFORMED):
+            log.warning("payee lookup failed; dropping payee addresses", exc_info=True)
+            return set()
+        found = {e.text.strip() for ret in ("VendorRet", "CustomerRet") for e in root.iterfind(f".//{ret}/ListID") if e.text}
+        return found & list_ids
 
     @contextmanager
     def answering(self) -> Iterator[list[str]]:

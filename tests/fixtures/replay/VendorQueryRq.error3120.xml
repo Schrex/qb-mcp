@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<VendorQueryRs statusCode="3120" statusSeverity="Error" statusMessage="Object &quot;80000005-1197759347&quot; specified in the request cannot be found." />
+</QBXMLMsgsRs>
+</QBXML>

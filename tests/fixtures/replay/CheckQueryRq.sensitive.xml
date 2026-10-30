@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<CheckQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="3">
+<CheckRet>
+<TxnID>6B1-1197761001</TxnID>
+<AccountRef>
+<ListID>10000-933270541</ListID>
+<FullName>Checking</FullName>
+</AccountRef>
+<PayeeEntityRef>
+<ListID>80000005-1197759347</ListID>
+<FullName>Patton Hardware Supplies</FullName>
+</PayeeEntityRef>
+<RefNumber>517</RefNumber>
+<TxnDate>2024-03-08</TxnDate>
+<Amount>412.30</Amount>
+<Memo>Ticket 88123 culvert parts</Memo>
+<Address>
+<Addr1>Patton Hardware Supplies</Addr1>
+<Addr2>4872 County Rd</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</Address>
+<AddressBlock>
+<Addr1>Patton Hardware Supplies</Addr1>
+<Addr2>4872 County Rd</Addr2>
+<Addr3>Bayshore, CA 94326</Addr3>
+</AddressBlock>
+<ExpenseLineRet>
+<TxnLineID>6B1-1197761004</TxnLineID>
+<AccountRef>
+<ListID>A0000-933270542</ListID>
+<FullName>Job Expenses:Job Materials</FullName>
+</AccountRef>
+<Amount>412.30</Amount>
+<Memo>PO 4471 lien waiver on file</Memo>
+<CustomerRef>
+<ListID>800000B8-1197707458</ListID>
+<FullName>Acme:Main St Paving</FullName>
+</CustomerRef>
+</ExpenseLineRet>
+<DataExtRet>
+<OwnerID>0</OwnerID>
+<DataExtName>Ticket No</DataExtName>
+<DataExtType>STR255TYPE</DataExtType>
+<DataExtValue>88123</DataExtValue>
+</DataExtRet>
+</CheckRet>
+<CheckRet>
+<TxnID>6B2-1197761002</TxnID>
+<AccountRef>
+<ListID>10000-933270541</ListID>
+<FullName>Checking</FullName>
+</AccountRef>
+<PayeeEntityRef>
+<ListID>150000-933272658</ListID>
+<FullName>Abercrombie, Kristy</FullName>
+</PayeeEntityRef>
+<RefNumber>518</RefNumber>
+<TxnDate>2024-03-09</TxnDate>
+<Amount>150.00</Amount>
+<Memo>Deposit refund</Memo>
+<Address>
+<Addr1>Kristy Abercrombie</Addr1>
+<Addr2>5647 Cypress Hill Rd</Addr2>
+<City>Bayshore</City>
+<State>CA</State>
+<PostalCode>94326</PostalCode>
+</Address>
+</CheckRet>
+<CheckRet>
+<TxnID>6B3-1197761003</TxnID>
+<AccountRef>
+<ListID>10000-933270541</ListID>
+<FullName>Checking</FullName>
+</AccountRef>
+<PayeeEntityRef>
+<ListID>80000099-1197760000</ListID>
+<FullName>Gregg O. Schneider</FullName>
+</PayeeEntityRef>
+<RefNumber>519</RefNumber>
+<TxnDate>2024-03-10</TxnDate>
+<Amount>86.40</Amount>
+<Memo>Mileage reimbursement</Memo>
+<Address>
+<Addr1>Gregg O. Schneider</Addr1>
+<Addr2>112 Willow Ln</Addr2>
+<City>Middlefield</City>
+<State>CA</State>
+<PostalCode>94482</PostalCode>
+</Address>
+<AddressBlock>
+<Addr1>Gregg O. Schneider</Addr1>
+<Addr2>112 Willow Ln</Addr2>
+<Addr3>Middlefield, CA 94482</Addr3>
+</AddressBlock>
+</CheckRet>
+</CheckQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

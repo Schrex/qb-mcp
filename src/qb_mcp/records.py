@@ -61,6 +61,10 @@ def customer_job(_tag: str, c: dict[str, Any]) -> dict[str, Any]:
         "balance": c.get("Balance"),
         "total_balance": c.get("TotalBalance"),
         "job_description": c.get("JobDesc"),
+        "contact": c.get("Contact"),
+        "phone": c.get("Phone"),
+        "email": c.get("Email"),
+        "bill_address": c.get("BillAddress", {}),
     }
 
 
