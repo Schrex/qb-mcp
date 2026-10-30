@@ -1,4 +1,5 @@
 import pytest
+from conftest import tool_requests
 
 pytestmark = pytest.mark.anyio
 
@@ -71,7 +72,7 @@ async def test_each_report_type_runs_for_one_customer_job_and_date_range(call, r
     )
 
     assert not result.is_error
-    (sent,) = replay.sent  # schema-validated by the Replay transport when the XSD is present
+    (sent,) = tool_requests(replay)  # schema-validated by the Replay transport when the XSD is present
     assert f"<JobReportType>{qb_type}</JobReportType>" in sent
     assert "<FromReportDate>2024-01-01</FromReportDate><ToReportDate>2024-06-30</ToReportDate>" in sent
     assert "<FullNameWithChildren>Acme:Main St Paving</FullNameWithChildren>" in sent
