@@ -22,7 +22,7 @@ from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.reports import parse_report
 from qb_mcp.responses import to_data
-from qb_mcp.stamp import AS_OF_TODAY, DEFAULT_NARROW_BY, TXN_DATE, Answer, date_range, stamped
+from qb_mcp.stamp import AS_OF_TODAY, DEFAULT_NARROW_BY, NO_CLOSING_DATE, TXN_DATE, Answer, date_range, stamped
 from qb_mcp.transport import Transport
 from qb_mcp.transports.unavailable import UnavailableTransport
 
@@ -98,12 +98,12 @@ def user_facing_errors(qb: QuickBooks) -> Callable[[Tool], Tool]:
     return decorate
 
 
-def closing_date_reader(qb: QuickBooks) -> Callable[[], Awaitable[date | None]]:
+def closing_date_reader(qb: QuickBooks) -> Callable[[], Awaitable[date | str | None]]:
     """Reads the Company File's closing date (Preferences > Accounting) once per session, then
-    caches it. None if QuickBooks has none set; also None, uncached, if the read fails."""
-    known: list[date | None] = []
+    caches it. `NO_CLOSING_DATE` if QuickBooks has none set; None, uncached, if the read fails."""
+    known: list[date | str] = []
 
-    async def closing_date() -> date | None:
+    async def closing_date() -> date | str | None:
         if not known:
             try:
                 (rs,) = await qb.lookup(query("PreferencesQueryRq", el("IncludeRetElement", "AccountingPreferences")))
@@ -111,7 +111,7 @@ def closing_date_reader(qb: QuickBooks) -> Callable[[], Awaitable[date | None]]:
                 return None  # unknown for now; read again on the next call
             prefs = rs.records[0] if rs.records else {}
             text = prefs.get("AccountingPreferences", {}).get("ClosingDate")
-            known.append(date.fromisoformat(text) if text else None)
+            known.append(date.fromisoformat(text) if text else NO_CLOSING_DATE)
         return known[0]
 
     return closing_date

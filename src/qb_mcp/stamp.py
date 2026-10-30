@@ -8,7 +8,8 @@ what it can work out centrally:
 - `complete` / `cap_notice`: from the result's `more_available` (see `output.capped`). A capped result
   gets a plain-words notice and loses any `totals`: no total is ever returned over a capped set.
 - `closing_date` / `period`: the Company File's closing date (from `closing_date`, read once per
-  session by `build_server`) and whether the answer's date range is closed or may still change.
+  session by `build_server`) and whether the answer's date range is closed or may still change;
+  "no closing date set" when QuickBooks has none, "closing date unknown" when it couldn't be read.
 - `voided_excluded`: how many listed records are voided (`is_void`); no total includes them (#28).
 - `basis`: "not a report; basis does not apply" unless a report tool says Accrual or Cash.
 - `dates`: from `from_date`/`to_date` (transaction date) if the tool takes them, else the tool's
@@ -28,7 +29,11 @@ from functools import wraps
 from typing import Any
 
 Tool = Callable[..., Awaitable[Any]]
-ClosingDate = Callable[[], Awaitable[date | None]]
+# What a closing-date read gives: the date, NO_CLOSING_DATE (QuickBooks has none set), or None (read failed).
+NO_CLOSING_DATE = "none set"
+ClosingDate = Callable[[], Awaitable[date | str | None]]
+UNKNOWN = "closing date unknown"
+NOT_SET = "no closing date set; may still change"
 
 # Arguments that shape the output rather than choose which records are in it.
 NOT_FILTERS = frozenset({"limit", "include_lines", "report", "query"})
@@ -44,8 +49,8 @@ class TrustStamp:
     filters: dict[str, Any] = field(default_factory=dict)
     complete: bool = True
     cap_notice: str | None = None
-    closing_date: str | None = None  # ISO date; None if QuickBooks returned none
-    period: str = "closing date unknown"  # or "closed" / "may still change"
+    closing_date: str | None = None  # ISO date; None if none is set or it couldn't be read
+    period: str = UNKNOWN  # or "closed" / "may still change" / NOT_SET
     voided_excluded: int = 0
     # #27: what the figures are based on and where to check them.
     basis: str = NO_BASIS
@@ -149,7 +154,9 @@ def stamped(
                 result.pop("totals", None)
             stamp = replace(stamp, **answer.stamp)
             closed_through = await closing_date() if closing_date else None
-            if closed_through:
+            if closed_through == NO_CLOSING_DATE:
+                stamp = replace(stamp, period=NOT_SET)
+            elif isinstance(closed_through, date):
                 stamp = replace(
                     stamp, closing_date=closed_through.isoformat(), period=_period(stamp.filters, closed_through)
                 )

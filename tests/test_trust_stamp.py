@@ -339,8 +339,17 @@ async def test_results_up_to_today_may_still_change(call, replay):
     assert vendors["stamp"]["period"] == "may still change"
 
 
-async def test_stamp_says_closing_date_unknown_when_quickbooks_has_none(call, replay):
+async def test_stamp_says_no_closing_date_is_set_when_quickbooks_has_none(call, replay):
     replay.respond_with("PreferencesQueryRq", NO_CLOSING_DATE)
+
+    stamp = (await call("query_bills", from_date="2024-01-01", to_date="2024-03-31")).structured_content["stamp"]
+
+    assert stamp["closing_date"] is None
+    assert stamp["period"] == "no closing date set; may still change"
+
+
+async def test_stamp_says_closing_date_unknown_when_it_cannot_be_read(call, replay):
+    replay.respond_with("PreferencesQueryRq", "PreferencesQueryRq.error3260.xml")
 
     stamp = (await call("query_bills", from_date="2024-01-01", to_date="2024-03-31")).structured_content["stamp"]
 

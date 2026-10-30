@@ -29,7 +29,7 @@ Every answer carries a short note of what it is based on. Ask "show me the trust
 
 - **Basis:** accrual (counted when entered) or cash (counted when paid). Lists and Bills say basis does not apply.
 - **Dates:** the date range the answer covers, or "as of today" for balances.
-- **Closing Date:** "closed" means those dates are locked. **"May still change"** means the dates run past the Closing Date, so new or edited entries can still move the figures.
+- **Closing Date:** "closed" means those dates are locked. **"May still change"** means the dates run past the Closing Date, so new or edited entries can still move the figures. "No closing date set": nothing is locked. "Closing date unknown": Claude couldn't read it; tell Sumanth.
 - **Filters:** the Vendor, Customer:Job, dates or status the answer was limited to. Check these match what you asked.
 - **Voided:** voided transactions are listed but never added into a total; the stamp says how many.
 - **Check in QuickBooks:** the report or screen to open to check the answer, e.g. Reports > Vendors & Payables > A/P Aging Detail.
