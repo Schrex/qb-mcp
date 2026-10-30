@@ -31,6 +31,7 @@ async def test_qb_status_reports_quickbooks_and_company_file(call):
         "company_file": r"C:\QB\Rock Castle Construction.QBW",
         "server_version": "0.1.0",
         "last_error": None,
+        "stamp": {"filters": {}, "complete": True, "cap_notice": None},
     }
 
 
@@ -49,6 +50,7 @@ async def test_get_company_info_returns_name_address_and_fiscal_year_start(call)
             "Country": "US",
         },
         "fiscal_year_start_month": "January",
+        "stamp": {"filters": {}, "complete": True, "cap_notice": None},
     }
 
 

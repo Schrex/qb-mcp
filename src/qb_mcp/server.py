@@ -2,6 +2,7 @@
 
 import os
 import sys
+import xml.etree.ElementTree as ET
 from collections.abc import Awaitable, Callable
 from datetime import date
 from functools import wraps
@@ -20,6 +21,8 @@ from qb_mcp.output import DEFAULT_LIMIT, capped, fetch_limit
 from qb_mcp.qbxml import el, query
 from qb_mcp.quickbooks import QuickBooks
 from qb_mcp.reports import parse_report
+from qb_mcp.responses import to_data
+from qb_mcp.stamp import DEFAULT_NARROW_BY, Answer, stamped
 from qb_mcp.transport import Transport
 from qb_mcp.transports.unavailable import UnavailableTransport
 
@@ -65,7 +68,8 @@ RecordMapper = Callable[[str, dict[str, Any]], dict[str, Any]]
 
 INSTRUCTIONS = (
     "Read-only Lookups against the QuickBooks Desktop Company File that is open on this PC. "
-    "Nothing here can change QuickBooks data."
+    "Nothing here can change QuickBooks data. Every result has a `stamp` (filters applied, `complete`); "
+    "when `complete` is false, say so and don't total the results: follow the stamp's `cap_notice` to narrow."
 )
 
 
@@ -93,6 +97,15 @@ def build_server(transport: Transport) -> MCPServer:
     mcp = MCPServer("qb-mcp", instructions=INSTRUCTIONS)
     user_facing = user_facing_errors(qb)
 
+    def tool(narrow_by: str = DEFAULT_NARROW_BY, description: str | None = None, errors: bool = True):
+        """Register a tool. Every tool is `stamped` (trust stamp); `errors` adds `user_facing` errors."""
+
+        def register(fn: Tool) -> Tool:
+            wrapped = stamped(narrow_by)(fn)
+            return mcp.tool(description=description)(user_facing(wrapped) if errors else wrapped)
+
+        return register
+
     async def list_lookup(
         rq_type: str, to_output: RecordMapper, name_contains: str | None, status: ListStatus, limit: int,
         *extra_filters: Any,
@@ -110,7 +123,7 @@ def build_server(transport: Transport) -> MCPServer:
         (rs,) = await qb.lookup(query("CustomerQueryRq", *_list_filters(name_contains, status, None)))
         return [(tag, r) for tag, r in rs.rets if r.get("JobStatus", "None") in wanted]
 
-    @mcp.tool()
+    @tool(errors=False)
     async def qb_status() -> dict[str, Any]:
         """Check the QuickBooks connection: whether QuickBooks is reachable, its product and version,
         the qbXML versions it supports, which Company File is open, this server's version, and the
@@ -139,8 +152,7 @@ def build_server(transport: Transport) -> MCPServer:
             }
         return status | {"last_error": qb.last_error and qb.last_error.as_dict()}
 
-    @mcp.tool()
-    @user_facing
+    @tool()
     async def get_company_info() -> dict[str, Any]:
         """Company name, address and fiscal year start month from the open Company File."""
         (company_rs,) = await qb.lookup(query("CompanyQueryRq"))
@@ -152,8 +164,7 @@ def build_server(transport: Transport) -> MCPServer:
             "fiscal_year_start_month": company.get("FirstMonthFiscalYear"),
         }
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="name_contains or status")
     async def list_vendors(
         name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
     ) -> dict[str, Any]:
@@ -162,8 +173,7 @@ def build_server(transport: Transport) -> MCPServer:
         if more Vendors match than `limit`, `more_available` is true."""
         return await list_lookup("VendorQueryRq", records.vendor, name_contains, status, limit)
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="date or Vendor")
     async def query_bills(
         from_date: date | None = None,
         to_date: date | None = None,
@@ -213,8 +223,7 @@ def build_server(transport: Transport) -> MCPServer:
             out |= {"results": matched, "count": len(matched)}
         return out
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="name_contains or status")
     async def list_customer_jobs(
         name_contains: str | None = None,
         status: ListStatus = "active",
@@ -233,8 +242,7 @@ def build_server(transport: Transport) -> MCPServer:
         kept = [records.customer_job(tag, r) for tag, r in await jobs_in(job_status, name_contains, status)]
         return capped(kept, limit) | {"filters": {"job_status": sorted(set(job_status))}}
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="name_contains or status")
     async def list_items(
         name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
     ) -> dict[str, Any]:
@@ -244,8 +252,7 @@ def build_server(transport: Transport) -> MCPServer:
         `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
         return await list_lookup("ItemQueryRq", records.item, name_contains, status, limit)
 
-    @mcp.tool()
-    @user_facing
+    @tool(narrow_by="account_type, name_contains or status")
     async def list_accounts(
         account_type: AccountType | None = None,
         name_contains: str | None = None,
@@ -259,8 +266,7 @@ def build_server(transport: Transport) -> MCPServer:
         extra = [el("AccountType", account_type)] if account_type else []
         return await list_lookup("AccountQueryRq", records.account, name_contains, status, limit, *extra)
 
-    @mcp.tool()
-    @user_facing
+    @tool()
     async def run_job_report(
         report: JobReport,
         from_date: date,
@@ -307,11 +313,12 @@ def build_server(transport: Transport) -> MCPServer:
         report = parse_report(rs.records[0] if rs.records else None)
         return report | applied if job_status else report
 
-    @mcp.tool(description=RUN_QUERY_DESCRIPTION)
-    @user_facing
-    async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> dict[str, Any]:
-        (rs,) = await qb.lookup(parse_query_element(query))
-        return capped([records.raw(tag, record) for tag, record in rs.rets], limit)
+    @tool(description=RUN_QUERY_DESCRIPTION)
+    async def run_query(query: str, limit: int = DEFAULT_LIMIT) -> Answer:
+        element = parse_query_element(query)
+        (rs,) = await qb.lookup(element)
+        result = capped([records.raw(tag, record) for tag, record in rs.rets], limit)
+        return Answer(result, stamp={"filters": _query_filters(element)})
 
     return mcp
 
@@ -331,6 +338,15 @@ Invoices, ReceivePayments and CreditMemos also carry `ar_account`, the A/R accou
 def _job_report_type(report: JobReport) -> str:
     """`job_estimates_vs_actuals_summary` -> `JobEstimatesVsActualsSummary`."""
     return "".join(word.capitalize() for word in report.split("_"))
+
+
+def _query_filters(element: ET.Element) -> dict[str, Any]:
+    """A raw query's filter elements, for the stamp: every child but MaxReturned and Include*/OwnerID options."""
+    return {
+        child.tag: to_data(child)
+        for child in element
+        if child.tag not in ("MaxReturned", "OwnerID") and not child.tag.startswith("Include")
+    }
 
 
 def _list_filters(name_contains: str | None, status: ListStatus, limit: int | None) -> list[Any]:
