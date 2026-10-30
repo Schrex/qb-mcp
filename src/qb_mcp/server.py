@@ -252,7 +252,7 @@ def build_server(transport: Transport) -> MCPServer:
     ) -> dict[str, Any]:
         """List customers and their Customer:Jobs. Each has its full `name` ("Customer:Job" for a job),
         `kind` ("customer" or "job"), `parent`, `job_status`, own `balance` and `total_balance`
-        (including its Customer:Jobs). Optional: `name_contains` (case-insensitive substring),
+        (including its Customer:Jobs), `contact`, `phone`, `email` and `bill_address`. Optional: `name_contains` (case-insensitive substring),
         `status` (default active), `job_status` (keep only these, e.g. ["awarded", "in_progress"];
         combines with `status`), `limit` (default 100); if more match, `more_available` is true."""
         if not job_status:

@@ -48,6 +48,33 @@ ROCK_CASTLE_CUSTOMER_JOBS = [
 ]
 
 
+# A customer's Customer:Jobs carry its contact details.
+KRISTY_CONTACT = {
+    "contact": "Kristy Abercrombie",
+    "phone": "415-555-6579",
+    "email": "kristy@samplename.com",
+    "bill_address": {
+        "Addr1": "Kristy Abercrombie",
+        "Addr2": "5647 Cypress Hill Rd",
+        "City": "Bayshore",
+        "State": "CA",
+        "PostalCode": "94326",
+    },
+}
+ALLARD_CONTACT = {
+    "contact": "Robert Allard",
+    "phone": "650-555-3422",
+    "email": "rallard@myemail.com",
+    "bill_address": {
+        "Addr1": "Robert Allard",
+        "Addr2": "92834 Chandler St.",
+        "City": "Millbrae",
+        "State": "CA",
+        "PostalCode": "94030",
+    },
+}
+
+
 async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs(call):
     result = await call("list_customer_jobs")
 
@@ -63,6 +90,7 @@ async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs
             "balance": "0.00",
             "total_balance": "0.00",
             "job_description": None,
+            **KRISTY_CONTACT,
         },
         {
             "name": "Abercrombie, Kristy:Family Room",
@@ -73,6 +101,7 @@ async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs
             "balance": "0.00",
             "total_balance": "0.00",
             "job_description": "Remodel family room: Drywall, re-carpet, add fireplace.",
+            **KRISTY_CONTACT,
         },
         {
             "name": "Abercrombie, Kristy:Kitchen",
@@ -83,6 +112,7 @@ async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs
             "balance": "0.00",
             "total_balance": "0.00",
             "job_description": "Fire restoration of kitchen: Replace counter, dishwasher, oven and paint.",
+            **KRISTY_CONTACT,
         },
         {
             "name": "Abercrombie, Kristy:Remodel Bathroom",
@@ -93,6 +123,7 @@ async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs
             "balance": "0.00",
             "total_balance": "0.00",
             "job_description": "Remodel master bathroom: Build new counter, Replace fixtures, Add whirlpool.",
+            **KRISTY_CONTACT,
         },
         {  # the customer's total_balance rolls up its job's balance
             "name": "Allard, Robert",
@@ -103,6 +134,7 @@ async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs
             "balance": "0.00",
             "total_balance": "14510.00",
             "job_description": None,
+            **ALLARD_CONTACT,
         },
         {
             "name": "Allard, Robert:Remodel",
@@ -113,6 +145,7 @@ async def test_list_customer_jobs_shows_full_names_and_tells_customers_from_jobs
             "balance": "14510.00",
             "total_balance": "14510.00",
             "job_description": None,
+            **ALLARD_CONTACT,
         },
     ]
     assert [c["name"] for c in out["results"]] == ROCK_CASTLE_CUSTOMER_JOBS

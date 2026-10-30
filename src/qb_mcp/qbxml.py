@@ -26,9 +26,9 @@ def query(rq_type: str, *children: ET.Element, **attrs: str) -> ET.Element:
     return rq
 
 
-def envelope(*requests: ET.Element) -> str:
+def envelope(*requests: ET.Element, on_error: str = "stopOnError") -> str:
     """Wrap requests in one message set; requestIDs are their 1-based positions."""
-    msgs = ET.Element("QBXMLMsgsRq", onError="stopOnError")
+    msgs = ET.Element("QBXMLMsgsRq", onError=on_error)
     for i, rq in enumerate(requests, start=1):
         rq.set("requestID", str(i))
         msgs.append(rq)

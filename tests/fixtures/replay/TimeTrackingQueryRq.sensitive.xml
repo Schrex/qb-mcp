@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<QBXML>
+<QBXMLMsgsRs>
+<TimeTrackingQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="2">
+<TimeTrackingRet>
+<TxnID>5A1-1197760001</TxnID>
+<TimeCreated>2024-03-04T16:02:11-08:00</TimeCreated>
+<TimeModified>2024-03-04T16:02:11-08:00</TimeModified>
+<EditSequence>1709596931</EditSequence>
+<TxnNumber>301</TxnNumber>
+<TxnDate>2024-03-04</TxnDate>
+<EntityRef>
+<ListID>80000099-1197760000</ListID>
+<FullName>Gregg O. Schneider</FullName>
+</EntityRef>
+<CustomerRef>
+<ListID>800000B8-1197707458</ListID>
+<FullName>Acme:Main St Paving</FullName>
+</CustomerRef>
+<ItemServiceRef>
+<ListID>250000-933272656</ListID>
+<FullName>Excavation</FullName>
+</ItemServiceRef>
+<Rate>48.75</Rate>
+<Duration>PT8H30M0S</Duration>
+<PayrollItemWageRef>
+<ListID>90000-933272659</ListID>
+<FullName>Operator Hourly Rate 2</FullName>
+</PayrollItemWageRef>
+<Notes>Grading east lot</Notes>
+<BillableStatus>Billable</BillableStatus>
+</TimeTrackingRet>
+<TimeTrackingRet>
+<TxnID>5A2-1197760002</TxnID>
+<TxnDate>2024-03-05</TxnDate>
+<EntityRef>
+<ListID>80000099-1197760000</ListID>
+<FullName>Gregg O. Schneider</FullName>
+</EntityRef>
+<CustomerRef>
+<ListID>800000B8-1197707458</ListID>
+<FullName>Acme:Main St Paving</FullName>
+</CustomerRef>
+<ItemServiceRef>
+<ListID>250000-933272656</ListID>
+<FullName>Excavation</FullName>
+</ItemServiceRef>
+<Rate>48.75</Rate>
+<Duration>PT6H0M0S</Duration>
+<PayrollItemWageRef>
+<ListID>90000-933272659</ListID>
+<FullName>Operator Hourly Rate 2</FullName>
+</PayrollItemWageRef>
+</TimeTrackingRet>
+</TimeTrackingQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
