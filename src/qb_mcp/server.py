@@ -255,6 +255,7 @@ def build_server(transport: Transport) -> MCPServer:
         from_date: date,
         to_date: date,
         customer_job: str | None = None,
+        job_status: list[JobStatus] | None = None,
     ) -> dict[str, Any]:
         """Run a QuickBooks job report (profitability, or estimates vs. actuals; summary or detail)
         for a date range, optionally limited to one Customer:Job (e.g. "Acme:Main St Paving") or a
@@ -263,7 +264,10 @@ def build_server(transport: Transport) -> MCPServer:
         Customer:Job). Returns the report's column titles and its rows: each row has a `kind`
         (header, data, subtotal, total), a `label`, the full `name` when the row is for a customer,
         Customer:Job or Item, and `values` keyed by column title. A period with no activity gives
-        a single TOTAL row of zeros; an unknown Customer:Job is a QuickBooks error (3120)."""
+        a single TOTAL row of zeros; an unknown Customer:Job is a QuickBooks error (3120).
+        Optional `job_status` (e.g. ["awarded", "in_progress"]) limits the report to Customer:Jobs
+        (active or not) in those statuses, within `customer_job` if given; `filters` echoes it.
+        If none match, no report is run: `rows` is empty and `note` says why."""
         if report.endswith("_detail") and not customer_job:
             raise ToolError(
                 f"{report} needs customer_job: QuickBooks runs detail job reports for one Customer:Job "
@@ -273,10 +277,24 @@ def build_server(transport: Transport) -> MCPServer:
             el("JobReportType", _job_report_type(report)),
             el("ReportPeriod", None, el("FromReportDate", from_date.isoformat()), el("ToReportDate", to_date.isoformat())),
         ]
-        if customer_job:
+        if job_status:
+            # QuickBooks' reports can't filter by JobStatus either: name the matching Customer:Jobs.
+            names = [r["FullName"] for _, r in await jobs_in(job_status, None, "all")]
+            if customer_job:  # the Customer:Job itself and everything under it (names are case-insensitive)
+                scope = customer_job.lower()
+                names = [n for n in names if n.lower() == scope or n.lower().startswith(scope + ":")]
+            applied = {"filters": {"job_status": sorted(set(job_status))}}
+            if not names:
+                where = f" under {customer_job}" if customer_job else ""
+                return parse_report(None) | applied | {
+                    "note": f"No Customer:Job{where} has job status {', '.join(sorted(set(job_status)))}; no report run."
+                }
+            children.append(el("ReportEntityFilter", None, *(el("FullName", n) for n in names)))
+        elif customer_job:
             children.append(el("ReportEntityFilter", None, el("FullNameWithChildren", customer_job)))
         (rs,) = await qb.lookup(query("JobReportQueryRq", *children))
-        return parse_report(rs.records[0] if rs.records else None)
+        report = parse_report(rs.records[0] if rs.records else None)
+        return report | applied if job_status else report
 
     @mcp.tool(description=RUN_QUERY_DESCRIPTION)
     @user_facing
