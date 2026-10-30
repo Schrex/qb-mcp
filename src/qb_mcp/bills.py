@@ -3,6 +3,7 @@ QuickBooks can't apply itself (by Customer:Job; the others alongside an exact Re
 
 import xml.etree.ElementTree as ET
 from datetime import date
+from decimal import Decimal
 from typing import Any, Literal
 
 from qb_mcp.output import fetch_limit
@@ -12,6 +13,10 @@ from qb_mcp.records import is_true, ref_name
 PaidStatus = Literal["paid", "unpaid", "all"]
 PAID_STATUS = {"paid": "PaidOnly", "unpaid": "NotPaidOnly", "all": "All"}
 
+# Linked transactions that pay down a Bill. Others (item receipts, purchase orders) only link quantities.
+APPLIED_TO_BILL = frozenset({"BillPaymentCheck", "BillPaymentCreditCard", "VendorCredit", "JournalEntry"})
+PAID_TOLERANCE = Decimal("0.005")
+
 
 def _bool(value: bool) -> str:
     return "true" if value else "false"
@@ -20,7 +25,9 @@ def _bool(value: bool) -> str:
 def by_ref_number(ref_number: str, include_lines: bool) -> ET.Element:
     """qbXML allows an exact RefNumber only on its own; the other filters are applied
     to its matches with `matches`."""
-    return query("BillQueryRq", el("RefNumber", ref_number), el("IncludeLineItems", _bool(include_lines)))
+    return query(
+        "BillQueryRq", el("RefNumber", ref_number), el("IncludeLineItems", _bool(include_lines)), el("IncludeLinkedTxns", "true")
+    )
 
 
 def filtered(
@@ -39,20 +46,36 @@ def filtered(
         filters.append(el("EntityFilter", None, el("FullName", vendor)))
     filters.append(el("PaidStatus", PAID_STATUS[paid_status]))
     filters.append(el("IncludeLineItems", _bool(include_lines)))
+    filters.append(el("IncludeLinkedTxns", "true"))  # payments and credits, for `open_amount`
     return query("BillQueryRq", *filters)
 
 
-def matches(
-    b: dict[str, Any], from_date: date | None, to_date: date | None, vendor: str | None, paid_status: PaidStatus
-) -> bool:
-    """Client-side equivalent of `filtered`'s date/vendor/paid filters (QuickBooks names are case-insensitive)."""
+def matches(b: dict[str, Any], from_date: date | None, to_date: date | None, vendor: str | None) -> bool:
+    """Client-side equivalent of `filtered`'s date/vendor filters (QuickBooks names are case-insensitive)."""
     txn_date = date.fromisoformat(b["TxnDate"])
     if (from_date and txn_date < from_date) or (to_date and txn_date > to_date):
         return False
-    if vendor and (ref_name(b.get("VendorRef")) or "").casefold() != vendor.casefold():
-        return False
-    is_paid = is_true(b.get("IsPaid"))
-    return paid_status == "all" or is_paid == (paid_status == "paid")
+    return not vendor or (ref_name(b.get("VendorRef")) or "").casefold() == vendor.casefold()
+
+
+def with_paid_status(bills: list[dict[str, Any]], paid_status: PaidStatus) -> list[dict[str, Any]]:
+    """Bills (as returned by `bill`) whose computed `is_paid` agrees with `paid_status`. QuickBooks'
+    own PaidStatus filter is sent too; this keeps the results consistent with `open_amount`."""
+    return [b for b in bills if paid_status == "all" or b["is_paid"] == (paid_status == "paid")]
+
+
+def open_balance(b: dict[str, Any]) -> Decimal:
+    """The Bill's own open balance: AmountDue less the bill payments and credits linked to it
+    (their LinkedTxn Amounts are negative; the sign is ignored). QuickBooks' BillRet/OpenAmount is
+    not used: on a real Company File it held one Vendor-wide figure on every Bill (#14).
+    A Bill QuickBooks marks paid is 0."""
+    if is_true(b.get("IsPaid")):
+        return Decimal("0.00")
+    applied = sum(
+        (abs(Decimal(t["Amount"])) for t in b.get("LinkedTxn", []) if t.get("TxnType") in APPLIED_TO_BILL),
+        Decimal("0"),
+    )
+    return max(Decimal(b.get("AmountDue") or "0") - applied, Decimal("0")).quantize(Decimal("0.01"))
 
 
 def charged_to(bills: list[dict[str, Any]], customer_job: str) -> list[dict[str, Any]]:
@@ -103,15 +126,16 @@ def _item_line(line: dict[str, Any]) -> dict[str, Any]:
 
 
 def bill(b: dict[str, Any], include_lines: bool = True) -> dict[str, Any]:
+    open_amount = open_balance(b)
     header = {
         "vendor": ref_name(b.get("VendorRef")),
         "ref_number": b.get("RefNumber"),
         "date": b.get("TxnDate"),
         "due_date": b.get("DueDate"),
         "amount": b.get("AmountDue"),
-        "open_amount": b.get("OpenAmount"),
+        "open_amount": f"{open_amount:.2f}",
         "memo": b.get("Memo"),
-        "is_paid": is_true(b.get("IsPaid")),
+        "is_paid": open_amount <= PAID_TOLERANCE,
     }
     if not include_lines:
         return header

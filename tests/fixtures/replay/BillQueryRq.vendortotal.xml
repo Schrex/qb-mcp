@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<!-- Hand-written. Reproduces the test-PC finding (#14): QuickBooks' OpenAmount on each Bill is the same
+     Vendor-wide figure (1,300 + 100 + 50 = 1,450.00 still owed to the Vendor), not the Bill's own balance.
+     LinkedTxn: bill payments and Vendor credits applied (negative Amounts), plus an item receipt (not a payment). -->
+<QBXML>
+<QBXMLMsgsRs>
+<BillQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="5">
+<BillRet>
+<TxnID>3B01-1720000000</TxnID>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-11-03</TxnDate>
+<DueDate>2025-12-31</DueDate>
+<AmountDue>1800.00</AmountDue>
+<RefNumber>PW-101</RefNumber>
+<IsPaid>false</IsPaid>
+<LinkedTxn><TxnID>4C01-1720000000</TxnID><TxnType>BillPaymentCheck</TxnType><TxnDate>2025-11-20</TxnDate><RefNumber>5012</RefNumber><LinkType>AMTTYPE</LinkType><Amount>-500.00</Amount></LinkedTxn>
+<OpenAmount>1450.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>3B02-1720000000</TxnID>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-11-05</TxnDate>
+<DueDate>2025-12-31</DueDate>
+<AmountDue>2325.00</AmountDue>
+<RefNumber>PW-102</RefNumber>
+<IsPaid>true</IsPaid>
+<LinkedTxn><TxnID>4C02-1720000000</TxnID><TxnType>BillPaymentCheck</TxnType><TxnDate>2025-11-20</TxnDate><RefNumber>5013</RefNumber><LinkType>AMTTYPE</LinkType><Amount>-2325.00</Amount></LinkedTxn>
+<OpenAmount>1450.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>3B03-1720000000</TxnID>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-11-10</TxnDate>
+<DueDate>2025-12-31</DueDate>
+<AmountDue>2400.00</AmountDue>
+<RefNumber>PW-103</RefNumber>
+<IsPaid>true</IsPaid>
+<LinkedTxn><TxnID>4D01-1720000000</TxnID><TxnType>VendorCredit</TxnType><TxnDate>2025-11-12</TxnDate><RefNumber>CR-7</RefNumber><LinkType>AMTTYPE</LinkType><Amount>-400.00</Amount></LinkedTxn>
+<LinkedTxn><TxnID>4C03-1720000000</TxnID><TxnType>BillPaymentCheck</TxnType><TxnDate>2025-11-25</TxnDate><RefNumber>5020</RefNumber><LinkType>AMTTYPE</LinkType><Amount>-2000.00</Amount></LinkedTxn>
+<OpenAmount>1450.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>3B04-1720000000</TxnID>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-11-14</TxnDate>
+<DueDate>2025-12-31</DueDate>
+<AmountDue>130.00</AmountDue>
+<RefNumber>PW-104</RefNumber>
+<IsPaid>false</IsPaid>
+<LinkedTxn><TxnID>4E01-1720000000</TxnID><TxnType>ItemReceipt</TxnType><TxnDate>2025-11-14</TxnDate><RefNumber>IR-55</RefNumber><LinkType>QUANTYPE</LinkType><Amount>130.00</Amount></LinkedTxn>
+<LinkedTxn><TxnID>4D02-1720000000</TxnID><TxnType>VendorCredit</TxnType><TxnDate>2025-11-18</TxnDate><RefNumber>CR-8</RefNumber><LinkType>AMTTYPE</LinkType><Amount>-30.00</Amount></LinkedTxn>
+<OpenAmount>1450.00</OpenAmount>
+</BillRet>
+<BillRet>
+<TxnID>3B05-1720000000</TxnID>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-11-21</TxnDate>
+<DueDate>2025-12-31</DueDate>
+<AmountDue>50.00</AmountDue>
+<RefNumber>PW-105</RefNumber>
+<IsPaid>false</IsPaid>
+<OpenAmount>1450.00</OpenAmount>
+</BillRet>
+</BillQueryRs>
+</QBXMLMsgsRs>
+</QBXML>
