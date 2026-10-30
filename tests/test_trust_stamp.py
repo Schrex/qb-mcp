@@ -115,3 +115,150 @@ async def test_each_capped_tool_names_its_own_way_to_narrow(call):
     assert invoices["stamp"]["cap_notice"] == (
         "Showing the first 1; more exist; totals incomplete. Narrow by date, Vendor or Customer:Job."
     )
+
+
+# --- #27: basis, dates, where to check in QuickBooks -------------------------------------------
+
+
+async def test_job_report_stamp_states_the_basis_quickbooks_ran_it_on(call):
+    out = (await call("run_job_report", **MINIMAL_ARGS["run_job_report"])).structured_content
+
+    assert out["stamp"]["basis"] == "Accrual"
+
+
+PROFIT_AND_LOSS = (
+    "<GeneralSummaryReportQueryRq><GeneralSummaryReportType>ProfitAndLossStandard</GeneralSummaryReportType>"
+    "<ReportPeriod><FromReportDate>2024-01-01</FromReportDate><ToReportDate>2024-12-31</ToReportDate></ReportPeriod>"
+    "{basis}</GeneralSummaryReportQueryRq>"
+)
+
+
+async def test_report_query_runs_on_accrual_basis_unless_told_otherwise(call, replay):
+    replay.respond_with("GeneralSummaryReportQueryRq", "GeneralSummaryReportQueryRq.xml")
+
+    out = (await call("run_query", query=PROFIT_AND_LOSS.format(basis=""))).structured_content
+
+    (sent,) = replay.sent  # schema-validated by the Replay transport
+    assert "<ReportBasis>Accrual</ReportBasis>" in sent
+    assert out["stamp"]["basis"] == "Accrual"
+
+
+async def test_report_query_basis_can_be_overridden_per_call(call, replay):
+    replay.respond_with("GeneralSummaryReportQueryRq", "GeneralSummaryReportQueryRq.cash.xml")
+
+    out = (
+        await call("run_query", query=PROFIT_AND_LOSS.format(basis="<ReportBasis>Cash</ReportBasis>"))
+    ).structured_content
+
+    (sent,) = replay.sent
+    assert "<ReportBasis>Cash</ReportBasis>" in sent
+    assert "Accrual" not in sent
+    assert out["stamp"]["basis"] == "Cash"
+
+
+async def test_transaction_lists_say_basis_does_not_apply(call):
+    bills = (await call("query_bills")).structured_content
+    invoices = (await call("run_query", query=INVOICES)).structured_content
+
+    assert bills["stamp"]["basis"] == "not a report; basis does not apply"
+    assert invoices["stamp"]["basis"] == "not a report; basis does not apply"
+
+
+async def test_stamp_states_the_date_range_and_the_date_field_it_filtered(call):
+    report = (await call("run_job_report", **MINIMAL_ARGS["run_job_report"])).structured_content
+    bills = (await call("query_bills", from_date="2024-01-01")).structured_content
+    all_bills = (await call("query_bills")).structured_content
+
+    assert report["stamp"]["dates"] == {"from": "2024-01-01", "to": "2024-12-31", "field": "transaction date"}
+    assert bills["stamp"]["dates"] == {"from": "2024-01-01", "to": None, "field": "transaction date"}
+    assert all_bills["stamp"]["dates"] == {"from": None, "to": None, "field": "transaction date"}
+
+
+async def test_balances_are_stamped_as_of_today(call):
+    for tool in ("list_vendors", "list_customer_jobs", "list_accounts"):
+        out = (await call(tool)).structured_content
+        assert out["stamp"]["dates"] == {"as_of": "today"}, tool
+
+
+async def test_tools_without_dates_say_so(call):
+    for tool in ("qb_status", "get_company_info", "list_items"):
+        out = (await call(tool)).structured_content
+        assert out["stamp"]["dates"] is None, tool
+
+
+async def test_run_query_stamp_states_the_dates_in_the_query(call, replay):
+    by_txn = (
+        "<InvoiceQueryRq><MaxReturned>50</MaxReturned><TxnDateRangeFilter><FromTxnDate>2024-01-01</FromTxnDate>"
+        "<ToTxnDate>2024-03-31</ToTxnDate></TxnDateRangeFilter></InvoiceQueryRq>"
+    )
+    by_modified = (
+        "<InvoiceQueryRq><MaxReturned>50</MaxReturned><ModifiedDateRangeFilter>"
+        "<FromModifiedDate>2024-02-01</FromModifiedDate></ModifiedDateRangeFilter></InvoiceQueryRq>"
+    )
+    replay.respond_with("GeneralSummaryReportQueryRq", "GeneralSummaryReportQueryRq.xml")
+
+    txn = (await call("run_query", query=by_txn)).structured_content
+    modified = (await call("run_query", query=by_modified)).structured_content
+    undated = (await call("run_query", query=INVOICES)).structured_content
+    report = (await call("run_query", query=PROFIT_AND_LOSS.format(basis=""))).structured_content
+
+    assert txn["stamp"]["dates"] == {"from": "2024-01-01", "to": "2024-03-31", "field": "transaction date"}
+    assert modified["stamp"]["dates"] == {"from": "2024-02-01", "to": None, "field": "modified date"}
+    assert undated["stamp"]["dates"] == {"from": None, "to": None, "field": "transaction date"}
+    assert report["stamp"]["dates"] == {"from": "2024-01-01", "to": "2024-12-31", "field": "transaction date"}
+
+
+async def test_run_query_stamp_names_a_date_macro_rather_than_claiming_all_dates(call):
+    this_month = (
+        "<InvoiceQueryRq><MaxReturned>50</MaxReturned><TxnDateRangeFilter><DateMacro>ThisMonth</DateMacro>"
+        "</TxnDateRangeFilter></InvoiceQueryRq>"
+    )
+
+    out = (await call("run_query", query=this_month)).structured_content
+
+    assert out["stamp"]["dates"] == {"period": "ThisMonth", "field": "transaction date"}
+
+
+@pytest.mark.parametrize("tool", sorted(MINIMAL_ARGS))
+async def test_every_tool_says_where_to_check_it_in_quickbooks(call, tool):
+    stamp = (await call(tool, **MINIMAL_ARGS[tool])).structured_content["stamp"]
+
+    assert " > " in stamp["check_in_quickbooks"]  # a QuickBooks menu path
+
+
+async def test_bills_are_checked_against_the_payables_reports(call):
+    stamp = (await call("query_bills")).structured_content["stamp"]
+
+    assert stamp["check_in_quickbooks"] == (
+        "Reports > Vendors & Payables > Unpaid Bills Detail (open Bills) or A/P Aging Detail (Open Balance); "
+        "one Bill: Vendors > Enter Bills"
+    )
+
+
+@pytest.mark.parametrize(
+    ("report", "menu_path"),
+    [
+        ("job_profitability_summary", "Reports > Jobs, Time & Mileage > Job Profitability Summary"),
+        ("job_profitability_detail", "Reports > Jobs, Time & Mileage > Job Profitability Detail"),
+        ("job_estimates_vs_actuals_summary", "Reports > Jobs, Time & Mileage > Job Estimates vs. Actuals Summary"),
+        ("job_estimates_vs_actuals_detail", "Reports > Jobs, Time & Mileage > Job Estimates vs. Actuals Detail"),
+    ],
+)
+async def test_each_job_report_names_the_same_report_in_quickbooks(call, report, menu_path):
+    args = {"from_date": "2024-01-01", "to_date": "2024-12-31", "customer_job": "Acme:Main St Paving"}
+
+    stamp = (await call("run_job_report", report=report, **args)).structured_content["stamp"]
+
+    assert stamp["check_in_quickbooks"] == menu_path
+
+
+async def test_run_query_names_where_to_check_each_kind_of_query(call, replay):
+    replay.respond_with("GeneralSummaryReportQueryRq", "GeneralSummaryReportQueryRq.xml")
+
+    invoices = (await call("run_query", query=INVOICES)).structured_content["stamp"]
+    profit_and_loss = (await call("run_query", query=PROFIT_AND_LOSS.format(basis=""))).structured_content["stamp"]
+
+    assert invoices["check_in_quickbooks"] == (
+        "Reports > Customers & Receivables > Open Invoices; one Invoice: Customers > Create Invoices"
+    )
+    assert profit_and_loss["check_in_quickbooks"] == "Reports > Company & Financial > Profit & Loss Standard"
