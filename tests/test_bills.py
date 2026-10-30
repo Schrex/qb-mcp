@@ -25,6 +25,8 @@ async def test_query_bills_returns_header_with_item_and_expense_lines(call):
         "open_balance": "0.00",  # paid; QuickBooks' OpenAmount (4479.20) is a Vendor-wide figure (#14)
         "memo": None,
         "is_paid": True,
+        "is_void": False,
+        "posting": True,
         "expense_lines": [],
         "item_lines": [
             {
@@ -282,7 +284,8 @@ async def test_query_bills_open_balance_is_each_bills_own_balance_not_the_vendor
         ("PW-104", "130.00", "100.00", False),  # 30 credit; the linked item receipt is not a payment
         ("PW-105", "50.00", "50.00", False),  # nothing applied
     ]
-    assert "1450.00" not in str(out)  # QuickBooks' Vendor-wide OpenAmount is not passed off as a Bill's
+    assert "1450.00" not in str(out["results"])  # QuickBooks' Vendor-wide OpenAmount is not passed off as a Bill's
+    assert out["totals"]["open_balance"] == "1450.00"  # ...but it is what the Bills still owe, summed
 
 
 async def test_query_bills_asks_quickbooks_for_linked_transactions(call, replay):

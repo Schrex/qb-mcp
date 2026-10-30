@@ -24,6 +24,8 @@ List and query tools return at most `limit` (default 100) results and set `more_
 
 Every result carries a trust `stamp`: the `filters` applied and whether it is `complete`. A capped result says so in `cap_notice` ("showing the first N; more exist; totals incomplete", and how to narrow) and never carries a total.
 
+Voided transactions stay listed, marked `is_void`, but are left out of every total (e.g. `query_bills` `totals`); the stamp's `voided_excluded` counts them. qbXML 16.0 has no void flag, so a transaction counts as voided when QuickBooks has zeroed its amount(s) and prefixed its memo `VOID:` (both must hold). Transactions carry `posting`: Estimates, Purchase Orders and Sales Orders are `posting: false` (non-posting) and never summed with posting transactions.
+
 ## Install on Jeri's PC
 
 One visit. Needs: Jeri's Windows login, a QuickBooks **Admin** login for the Company File, Claude Desktop already installed and signed in.

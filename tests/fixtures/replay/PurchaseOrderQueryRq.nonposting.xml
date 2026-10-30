@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<!-- Hand-written (#28): a Purchase Order is non-posting (a commitment; it changes no account balance). -->
+<QBXML>
+<QBXMLMsgsRs>
+<PurchaseOrderQueryRs statusCode="0" statusSeverity="Info" statusMessage="Status OK" retCount="1">
+<PurchaseOrderRet>
+<TxnID>7A01-1720000000</TxnID>
+<TimeCreated>2025-10-02T09:00:00-05:00</TimeCreated>
+<TimeModified>2025-10-02T09:00:00-05:00</TimeModified>
+<EditSequence>1720000030</EditSequence>
+<VendorRef><ListID>80000007-1197759360</ListID><FullName>Perry Windows &amp; Doors</FullName></VendorRef>
+<TxnDate>2025-10-02</TxnDate>
+<RefNumber>PO-88</RefNumber>
+<TotalAmount>3200.00</TotalAmount>
+<IsManuallyClosed>false</IsManuallyClosed>
+<IsFullyReceived>false</IsFullyReceived>
+<Memo>Bay window unit</Memo>
+</PurchaseOrderRet>
+</PurchaseOrderQueryRs>
+</QBXMLMsgsRs>
+</QBXML>

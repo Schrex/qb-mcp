@@ -9,6 +9,7 @@ what it can work out centrally:
   gets a plain-words notice and loses any `totals`: no total is ever returned over a capped set.
 - `closing_date` / `period`: the Company File's closing date (from `closing_date`, read once per
   session by `build_server`) and whether the answer's date range is closed or may still change.
+- `voided_excluded`: how many listed records are voided (`is_void`); no total includes them (#28).
 
 A tool adds facts only it knows by returning `Answer(result, stamp={...})`, whose keys override
 `TrustStamp` fields. New stamp facts (basis, dates, closing date, excluded counts, where to check in
@@ -38,6 +39,7 @@ class TrustStamp:
     cap_notice: str | None = None
     closing_date: str | None = None  # ISO date; None if QuickBooks returned none
     period: str = "closing date unknown"  # or "closed" / "may still change"
+    voided_excluded: int = 0
 
 
 @dataclass
@@ -64,6 +66,10 @@ def _applied_filters(arguments: dict[str, Any]) -> dict[str, Any]:
         for name, value in arguments.items()
         if name not in NOT_FILTERS and value is not None and value != "all"
     }
+
+
+def _voided(result: dict[str, Any]) -> int:
+    return sum(1 for r in result.get("results", []) if isinstance(r, dict) and r.get("is_void") is True)
 
 
 def _period(filters: dict[str, Any], closed_through: date) -> str:
@@ -94,7 +100,7 @@ def stamped(narrow_by: str = DEFAULT_NARROW_BY, closing_date: ClosingDate | None
             answer = out if isinstance(out, Answer) else Answer(out)
             result = dict(answer.result)
             arguments = _arguments(tool, args, kwargs)
-            stamp = TrustStamp(filters=_applied_filters(arguments))
+            stamp = TrustStamp(filters=_applied_filters(arguments), voided_excluded=_voided(result))
             if result.get("more_available"):
                 shown = arguments.get("limit", result.get("count"))
                 stamp = replace(stamp, complete=False, cap_notice=cap_notice(shown, narrow_by))
