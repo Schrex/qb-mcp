@@ -60,7 +60,8 @@ RecordMapper = Callable[[str, dict[str, Any]], dict[str, Any]]
 
 INSTRUCTIONS = (
     "Read-only Lookups against the QuickBooks Desktop Company File that is open on this PC. "
-    "Nothing here can change QuickBooks data."
+    "Nothing here can change QuickBooks data. Every result has a `stamp` (filters applied, `complete`); "
+    "when `complete` is false, say so and don't total the results: follow the stamp's `cap_notice` to narrow."
 )
 
 

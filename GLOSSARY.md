@@ -31,3 +31,7 @@ _Avoid_: document, upload
 **Lookup**:
 Any read of the Company File that cannot change it.
 _Avoid_: sync, pull, import
+
+**Trust Stamp**:
+The `stamp` on every tool result saying what the answer is based on: the filters applied, and whether it is complete or capped (then: "showing the first N; more exist; totals incomplete" and how to narrow). Later: basis, dates, closing date, excluded transactions, where to check in QuickBooks.
+_Avoid_: metadata, footer

@@ -22,6 +22,8 @@ Terms (Company File, Vendor, Customer:Job, Item, Bill, Attachment, Lookup) follo
 
 List and query tools return at most `limit` (default 100) results and set `more_available` (plus a `note`) when more exist.
 
+Every result carries a trust `stamp`: the `filters` applied and whether it is `complete`. A capped result says so in `cap_notice` ("showing the first N; more exist; totals incomplete", and how to narrow) and never carries a total.
+
 ## Install on Jeri's PC
 
 One visit. Needs: Jeri's Windows login, a QuickBooks **Admin** login for the Company File, Claude Desktop already installed and signed in.

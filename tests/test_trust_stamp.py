@@ -73,3 +73,45 @@ async def test_run_query_stamp_lists_the_filters_in_the_query(call):
         "TxnDateRangeFilter": {"FromTxnDate": "2024-01-01"},
         "EntityFilter": {"FullName": "Cook, Brian"},
     }
+
+
+async def test_capped_result_says_so_in_plain_words_and_how_to_narrow(call, replay):
+    replay.respond_with("BillQueryRq", "BillQueryRq.capped.xml")
+
+    out = (await call("query_bills", vendor="Perry Windows & Doors", limit=2)).structured_content
+
+    assert [b["ref_number"] for b in out["results"]] == ["CAP-1", "CAP-2"]
+    assert out["stamp"]["complete"] is False
+    assert out["stamp"]["cap_notice"] == (
+        "Showing the first 2; more exist; totals incomplete. Narrow by date or Vendor."
+    )
+
+
+async def test_capped_result_carries_no_total(call, replay):
+    replay.respond_with("BillQueryRq", "BillQueryRq.capped.xml")
+
+    out = (await call("query_bills", vendor="Perry Windows & Doors", limit=2)).structured_content
+
+    assert not [key for key in out if "total" in key.casefold() or "sum" in key.casefold()]
+
+
+async def test_uncapped_result_says_it_is_complete(call, replay):
+    replay.respond_with("BillQueryRq", "BillQueryRq.capped.xml")
+
+    out = (await call("query_bills", vendor="Perry Windows & Doors", limit=3)).structured_content
+
+    assert out["count"] == 3
+    assert out["stamp"]["complete"] is True
+    assert out["stamp"]["cap_notice"] is None
+
+
+async def test_each_capped_tool_names_its_own_way_to_narrow(call):
+    vendors = (await call("list_vendors", limit=1)).structured_content
+    invoices = (await call("run_query", query=INVOICES, limit=1)).structured_content
+
+    assert vendors["stamp"]["cap_notice"] == (
+        "Showing the first 1; more exist; totals incomplete. Narrow by name_contains or status."
+    )
+    assert invoices["stamp"]["cap_notice"] == (
+        "Showing the first 1; more exist; totals incomplete. Narrow by date, Vendor or Customer:Job."
+    )
