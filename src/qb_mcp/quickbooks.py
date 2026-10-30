@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 
 from qb_mcp import qbxml
-from qb_mcp.errors import QBError, UnexpectedResponse
+from qb_mcp.errors import QBError, QuickBooksStatusError, UnexpectedResponse
 from qb_mcp.guard import ensure_read_only
 from qb_mcp.responses import QueryResult, drop_payee_addresses, parse_response, payees_with_address
 from qb_mcp.transport import Transport
@@ -68,8 +68,10 @@ class QuickBooks:
 
     async def _vendors_or_customers(self, list_ids: set[str]) -> set[str]:
         """Which of `list_ids` QuickBooks confirms are Vendors or Customers (so their payee
-        address may be kept). One query per ListID and list, continuing past "not found"
-        errors; only ListIDs are asked for. Any failure confirms nothing (addresses dropped)."""
+        address may be kept). One query per ListID and list, continuing past failed ones; only
+        ListIDs are asked for. "Not found" (a warning) confirms nothing; any failure (transport,
+        malformed response, an error status) is recorded as the last error, like any other
+        Lookup's, and confirms nothing for that query (addresses dropped)."""
         requests = [
             qbxml.query(rq, qbxml.el("ListID", list_id), qbxml.el("IncludeRetElement", "ListID"))
             for list_id in sorted(list_ids)
@@ -78,11 +80,21 @@ class QuickBooks:
         try:
             request = qbxml.envelope(*requests, on_error="continueOnError")
             ensure_read_only(request)
-            root = ET.fromstring((await self.transport.send(request)).encode("utf-8"))
-        except (QBError, *MALFORMED):
-            log.warning("payee lookup failed; dropping payee addresses", exc_info=True)
+            try:
+                root = ET.fromstring((await self.transport.send(request)).encode("utf-8"))
+            except MALFORMED as e:
+                raise UnexpectedResponse(e) from e
+        except QBError as e:
+            log.warning("payee lookup failed; dropping payee addresses")
+            self._record(e)
             return set()
-        found = {e.text.strip() for ret in ("VendorRet", "CustomerRet") for e in root.iterfind(f".//{ret}/ListID") if e.text}
+        found: set[str] = set()
+        for rs in root.iterfind("./QBXMLMsgsRs/*"):
+            if rs.get("statusSeverity") == "Error":
+                request_type = rs.tag.removesuffix("Rs") + "Rq"
+                self._record(QuickBooksStatusError(request_type, int(rs.get("statusCode", "0")), rs.get("statusMessage", "")))
+                continue
+            found |= {e.text.strip() for e in rs.iterfind("./*/ListID") if e.text}
         return found & list_ids
 
     @contextmanager
