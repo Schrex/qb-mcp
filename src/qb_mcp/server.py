@@ -52,6 +52,13 @@ AccountType = Literal[
 ListStatus = Literal["active", "inactive", "all"]
 ACTIVE_STATUS = {"active": "ActiveOnly", "inactive": "InactiveOnly", "all": "All"}
 
+# QuickBooks' JobStatus values (qbXML `JobStatus`), snake_cased; "none" is QuickBooks' "None" (not set).
+JobStatus = Literal["pending", "awarded", "in_progress", "closed", "not_awarded", "none"]
+JOB_STATUS = {
+    "pending": "Pending", "awarded": "Awarded", "in_progress": "InProgress",
+    "closed": "Closed", "not_awarded": "NotAwarded", "none": "None",
+}
+
 Tool = Callable[..., Awaitable[Any]]
 RecordMapper = Callable[[str, dict[str, Any]], dict[str, Any]]
 
@@ -92,6 +99,15 @@ def build_server(transport: Transport) -> MCPServer:
         """The list tools' shared shape: name/status/limit filters -> capped, mapped records."""
         (rs,) = await qb.lookup(query(rq_type, *_list_filters(name_contains, status, limit), *extra_filters))
         return capped([to_output(tag, record) for tag, record in rs.rets], limit)
+
+    async def jobs_in(
+        job_status: list[JobStatus], name_contains: str | None, status: ListStatus
+    ) -> list[tuple[str, dict[str, Any]]]:
+        """Every customer/Customer:Job (tag, record) matching name and active status whose
+        JobStatus is one of `job_status`. Uncapped: QuickBooks can't filter by JobStatus."""
+        wanted = {JOB_STATUS[s] for s in job_status}
+        (rs,) = await qb.lookup(query("CustomerQueryRq", *_list_filters(name_contains, status, None)))
+        return [(tag, r) for tag, r in rs.rets if r.get("JobStatus", "None") in wanted]
 
     @mcp.tool()
     async def qb_status() -> dict[str, Any]:
@@ -189,13 +205,22 @@ def build_server(transport: Transport) -> MCPServer:
     @mcp.tool()
     @user_facing
     async def list_customer_jobs(
-        name_contains: str | None = None, status: ListStatus = "active", limit: int = DEFAULT_LIMIT
+        name_contains: str | None = None,
+        status: ListStatus = "active",
+        job_status: list[JobStatus] | None = None,
+        limit: int = DEFAULT_LIMIT,
     ) -> dict[str, Any]:
         """List customers and their Customer:Jobs. Each has its full `name` ("Customer:Job" for a job),
         `kind` ("customer" or "job"), `parent`, `job_status`, own `balance` and `total_balance`
         (including its Customer:Jobs). Optional: `name_contains` (case-insensitive substring),
-        `status` (default active), `limit` (default 100); if more match, `more_available` is true."""
-        return await list_lookup("CustomerQueryRq", records.customer_job, name_contains, status, limit)
+        `status` (default active), `job_status` (keep only these, e.g. ["awarded", "in_progress"];
+        combines with `status`), `limit` (default 100); if more match, `more_available` is true."""
+        if not job_status:
+            return await list_lookup("CustomerQueryRq", records.customer_job, name_contains, status, limit)
+        # QuickBooks can't filter by JobStatus, so fetch every name/status match and filter here;
+        # the cap then counts matching records, so `count`/`more_available` stay exact.
+        kept = [records.customer_job(tag, r) for tag, r in await jobs_in(job_status, name_contains, status)]
+        return capped(kept, limit) | {"filters": {"job_status": sorted(set(job_status))}}
 
     @mcp.tool()
     @user_facing
@@ -277,9 +302,11 @@ def _job_report_type(report: JobReport) -> str:
     return "".join(word.capitalize() for word in report.split("_"))
 
 
-def _list_filters(name_contains: str | None, status: ListStatus, limit: int) -> list[Any]:
-    """Shared list-query filter group, in schema order: MaxReturned, ActiveStatus, NameFilter."""
-    filters = [el("MaxReturned", fetch_limit(limit)), el("ActiveStatus", ACTIVE_STATUS[status])]
+def _list_filters(name_contains: str | None, status: ListStatus, limit: int | None) -> list[Any]:
+    """Shared list-query filter group, in schema order: MaxReturned (omitted when `limit` is
+    None: fetch all), ActiveStatus, NameFilter."""
+    filters = [el("MaxReturned", fetch_limit(limit))] if limit is not None else []
+    filters.append(el("ActiveStatus", ACTIVE_STATUS[status]))
     if name_contains:
         filters.append(el("NameFilter", None, el("MatchCriterion", "Contains"), el("Name", name_contains)))
     return filters
