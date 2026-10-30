@@ -5,12 +5,13 @@ import json
 import xml.etree.ElementTree as ET
 
 import pytest
+from conftest import tool_requests
 
 pytestmark = pytest.mark.anyio
 
 
 def _sent(replay, rq_type: str) -> ET.Element:
-    return ET.fromstring(replay.sent[-1].encode()).find(f"QBXMLMsgsRq/{rq_type}")
+    return ET.fromstring(tool_requests(replay)[-1].encode()).find(f"QBXMLMsgsRq/{rq_type}")
 
 
 # --- list_customer_jobs ---------------------------------------------------

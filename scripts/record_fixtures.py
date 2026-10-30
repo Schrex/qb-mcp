@@ -58,6 +58,8 @@ class ToolCall:
 
 
 # Every request type the tools send. get_company_info sends CompanyQueryRq, recorded via qb_status.
+# PreferencesQueryRq (the trust stamp's closing-date read, once per session, #26) is recorded with
+# the first call. Its `.closingdate`/`.noclosingdate` variants are hand-written, never recorded.
 TOOL_CALLS = [
     ToolCall("qb_status", {}),
     ToolCall("list_vendors", {"status": "all", "limit": LIMIT}),

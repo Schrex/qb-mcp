@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
 import pytest
+from conftest import tool_requests
 
 from qb_mcp.transports.replay import xsd_dir_from_env
 
@@ -28,7 +29,7 @@ async def test_run_query_sends_the_element_inside_the_servers_own_envelope(call,
         query='<InvoiceQueryRq requestID="99" metaData="NoMetaData"><RefNumber>A&amp;B</RefNumber></InvoiceQueryRq>',
     )
 
-    sent = ET.fromstring(replay.sent[-1].encode())
+    sent = ET.fromstring(tool_requests(replay)[-1].encode())
     msgs = sent.find("QBXMLMsgsRq")
     assert msgs.get("onError") == "stopOnError"
     (rq,) = list(msgs)

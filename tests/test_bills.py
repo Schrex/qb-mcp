@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
 import pytest
+from conftest import tool_requests
 
 pytestmark = pytest.mark.anyio
 
@@ -105,7 +106,7 @@ async def test_query_bills_flattens_item_group_lines(call, replay):
 
 
 def _sent_bill_query(replay) -> ET.Element:
-    return ET.fromstring(replay.sent[-1].encode()).find("QBXMLMsgsRq/BillQueryRq")
+    return ET.fromstring(tool_requests(replay)[-1].encode()).find("QBXMLMsgsRq/BillQueryRq")
 
 
 async def test_query_bills_sends_date_vendor_paid_filters_in_schema_order(call, replay):
@@ -289,7 +290,7 @@ async def test_query_bills_asks_quickbooks_for_linked_transactions(call, replay)
     await call("query_bills", ref_number="1001")
 
     assert _sent_bill_query(replay).findtext("IncludeLinkedTxns") == "true"
-    assert ET.fromstring(replay.sent[-2].encode()).findtext("QBXMLMsgsRq/BillQueryRq/IncludeLinkedTxns") == "true"
+    assert ET.fromstring(tool_requests(replay)[-2].encode()).findtext("QBXMLMsgsRq/BillQueryRq/IncludeLinkedTxns") == "true"
 
 
 async def test_query_bills_paid_status_follows_the_computed_open_balance(call, replay):

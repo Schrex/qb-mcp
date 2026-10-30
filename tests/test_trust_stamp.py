@@ -3,6 +3,8 @@
 
 import pytest
 
+from qb_mcp.errors import TransportError, TransportFailure
+
 pytestmark = pytest.mark.anyio
 
 INVOICES = "<InvoiceQueryRq><MaxReturned>50</MaxReturned></InvoiceQueryRq>"
@@ -115,3 +117,103 @@ async def test_each_capped_tool_names_its_own_way_to_narrow(call):
     assert invoices["stamp"]["cap_notice"] == (
         "Showing the first 1; more exist; totals incomplete. Narrow by date, Vendor or Customer:Job."
     )
+
+
+# --- closing date (#26) -------------------------------------------------------------------------
+# Hand-written Preferences fixtures: closing date 2024-06-30, and none set.
+CLOSING_DATE = "PreferencesQueryRq.closingdate.xml"
+NO_CLOSING_DATE = "PreferencesQueryRq.noclosingdate.xml"
+
+
+@pytest.mark.parametrize("tool", sorted(MINIMAL_ARGS))
+async def test_every_tool_result_carries_the_closing_date(call, replay, tool):
+    replay.respond_with("PreferencesQueryRq", CLOSING_DATE)
+
+    stamp = (await call(tool, **MINIMAL_ARGS[tool])).structured_content["stamp"]
+
+    assert stamp["closing_date"] == "2024-06-30"
+
+
+@pytest.mark.parametrize(
+    "from_date,to_date,period",
+    [
+        ("2024-01-01", "2024-03-31", "closed"),  # before the closing date
+        ("2024-01-01", "2024-06-30", "closed"),  # ends on it
+        ("2024-01-01", "2024-12-31", "may still change"),  # spans it
+        ("2024-07-01", "2024-12-31", "may still change"),  # after it
+    ],
+)
+async def test_stamp_says_whether_the_date_range_is_closed(call, replay, from_date, to_date, period):
+    replay.respond_with("PreferencesQueryRq", CLOSING_DATE)
+
+    bills = (await call("query_bills", from_date=from_date, to_date=to_date)).structured_content
+    report = (
+        await call("run_job_report", report="job_profitability_summary", from_date=from_date, to_date=to_date)
+    ).structured_content
+
+    assert bills["stamp"]["period"] == period
+    assert report["stamp"]["period"] == period
+
+
+@pytest.mark.parametrize("to_date,period", [("2024-05-31", "closed"), ("2024-07-31", "may still change")])
+async def test_run_query_stamp_says_whether_the_query_date_range_is_closed(call, replay, to_date, period):
+    replay.respond_with("PreferencesQueryRq", CLOSING_DATE)
+    query = (
+        "<InvoiceQueryRq><MaxReturned>50</MaxReturned><TxnDateRangeFilter>"
+        f"<FromTxnDate>2024-01-01</FromTxnDate><ToTxnDate>{to_date}</ToTxnDate></TxnDateRangeFilter></InvoiceQueryRq>"
+    )
+
+    out = (await call("run_query", query=query)).structured_content
+
+    assert out["stamp"]["period"] == period
+
+
+async def test_results_up_to_today_may_still_change(call, replay):
+    replay.respond_with("PreferencesQueryRq", CLOSING_DATE)
+
+    bills = (await call("query_bills", from_date="2024-01-01")).structured_content
+    vendors = (await call("list_vendors")).structured_content
+
+    assert bills["stamp"]["period"] == "may still change"
+    assert vendors["stamp"]["period"] == "may still change"
+
+
+async def test_stamp_says_closing_date_unknown_when_quickbooks_has_none(call, replay):
+    replay.respond_with("PreferencesQueryRq", NO_CLOSING_DATE)
+
+    stamp = (await call("query_bills", from_date="2024-01-01", to_date="2024-03-31")).structured_content["stamp"]
+
+    assert stamp["closing_date"] is None
+    assert stamp["period"] == "closing date unknown"
+
+
+async def test_closing_date_is_read_once_per_session(call, replay):
+    replay.respond_with("PreferencesQueryRq", CLOSING_DATE)
+
+    await call("list_vendors")
+    await call("query_bills", to_date="2024-03-31")
+    last = (await call("get_company_info")).structured_content["stamp"]
+
+    # A *QueryRq, so the read-only guard lets it through; the Replay transport schema-validates it
+    # (an invalid request would leave the closing date unknown).
+    assert sum("<PreferencesQueryRq" in rq for rq in replay.sent) == 1
+    assert last["closing_date"] == "2024-06-30"
+
+
+async def test_run_query_still_refuses_preferences_queries(call, replay):
+    result = await call("run_query", query="<PreferencesQueryRq></PreferencesQueryRq>")
+
+    assert result.is_error
+    assert replay.sent == []
+
+
+async def test_closing_date_is_read_again_after_quickbooks_was_unreachable(call, replay):
+    replay.respond_with("PreferencesQueryRq", CLOSING_DATE)
+    replay.fail_with(TransportError(TransportFailure.QB_NOT_RUNNING))
+    down = (await call("qb_status")).structured_content["stamp"]
+    replay.fail_with(None)
+
+    up = (await call("list_vendors")).structured_content["stamp"]
+
+    assert down["period"] == "closing date unknown"
+    assert up["closing_date"] == "2024-06-30"

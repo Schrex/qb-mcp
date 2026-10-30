@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
 import pytest
+from conftest import tool_requests
 
 pytestmark = pytest.mark.anyio
 
@@ -31,7 +32,7 @@ async def test_list_vendors_returns_name_active_balance_and_contact_basics(call)
 
 
 def _sent_vendor_query(replay) -> ET.Element:
-    return ET.fromstring(replay.sent[-1].encode()).find("QBXMLMsgsRq/VendorQueryRq")
+    return ET.fromstring(tool_requests(replay)[-1].encode()).find("QBXMLMsgsRq/VendorQueryRq")
 
 
 async def test_list_vendors_sends_name_filter_status_and_limit(call, replay):
