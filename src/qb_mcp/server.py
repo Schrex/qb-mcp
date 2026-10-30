@@ -202,7 +202,10 @@ def build_server(transport: Transport) -> MCPServer:
         Vendor credits linked to the Bill (0 if QuickBooks marks it paid). QuickBooks' own OpenAmount
         is not returned: it showed one Vendor-wide total on every Bill. Not yet verified against a real
         Company File; if a figure matters, check it against A/P Aging Detail.
-        `is_paid` means open_balance is 0, and `paid_status` returns only Bills that agree with it."""
+        `is_paid` means open_balance is 0, and `paid_status` returns only Bills that agree with it.
+        `is_void` marks a voided Bill: still listed, but left out of `totals` (sums of `amount` and
+        `open_balance`) and counted in the stamp's `voided_excluded`. No `totals` with `customer_job`
+        (a Bill's amount includes other Customer:Jobs' lines) or when capped."""
         if customer_job and not include_lines:
             raise ToolError("customer_job filters Bill lines, so it needs include_lines=true.")
         if ref_number:
@@ -220,8 +223,9 @@ def build_server(transport: Transport) -> MCPServer:
             out |= {"results": kept, "count": len(kept)}
         if customer_job:
             matched = bills.charged_to(out["results"], customer_job)
-            out |= {"results": matched, "count": len(matched)}
-        return out
+            # No totals: a Bill's amount includes its lines for other Customer:Jobs.
+            return out | {"results": matched, "count": len(matched)}
+        return out | {"totals": bills.totals(out["results"])}
 
     @tool(narrow_by="name_contains or status")
     async def list_customer_jobs(
@@ -332,7 +336,9 @@ Allowed query types: {", ".join(sorted(ALLOWED_QUERIES))}.
 Include MaxReturned (limit + 1) on transaction queries. Anything other than a single allowed query
 element is refused. Returns the `*Ret` records (sensitive fields removed), capped at `limit`.
 Invoices, ReceivePayments and CreditMemos also carry `ar_account`, the A/R account they post to
-(retainage receivable may be kept in its own A/R account)."""
+(retainage receivable may be kept in its own A/R account).
+Every transaction carries `posting` (false for Estimates, Purchase Orders and Sales Orders: never add
+them to posting transactions) and `is_void` (voided: zero amount, memo "VOID:"; leave out of any sum)."""
 
 
 def _job_report_type(report: JobReport) -> str:

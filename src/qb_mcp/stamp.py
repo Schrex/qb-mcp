@@ -7,6 +7,7 @@ what it can work out centrally:
   as they filter nothing; `NOT_FILTERS` are output options, not filters).
 - `complete` / `cap_notice`: from the result's `more_available` (see `output.capped`). A capped result
   gets a plain-words notice and loses any `totals`: no total is ever returned over a capped set.
+- `voided_excluded`: how many listed records are voided (`is_void`); no total includes them (#28).
 
 A tool adds facts only it knows by returning `Answer(result, stamp={...})`, whose keys override
 `TrustStamp` fields. New stamp facts (basis, dates, closing date, excluded counts, where to check in
@@ -32,6 +33,7 @@ class TrustStamp:
     filters: dict[str, Any] = field(default_factory=dict)
     complete: bool = True
     cap_notice: str | None = None
+    voided_excluded: int = 0
 
 
 @dataclass
@@ -60,6 +62,10 @@ def _applied_filters(arguments: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _voided(result: dict[str, Any]) -> int:
+    return sum(1 for r in result.get("results", []) if isinstance(r, dict) and r.get("is_void") is True)
+
+
 def stamped(narrow_by: str = DEFAULT_NARROW_BY) -> Callable[[Tool], Tool]:
     """Add `stamp` to the tool's result. `narrow_by` is the capped notice's hint."""
 
@@ -70,7 +76,7 @@ def stamped(narrow_by: str = DEFAULT_NARROW_BY) -> Callable[[Tool], Tool]:
             answer = out if isinstance(out, Answer) else Answer(out)
             result = dict(answer.result)
             arguments = _arguments(tool, args, kwargs)
-            stamp = TrustStamp(filters=_applied_filters(arguments))
+            stamp = TrustStamp(filters=_applied_filters(arguments), voided_excluded=_voided(result))
             if result.get("more_available"):
                 shown = arguments.get("limit", result.get("count"))
                 stamp = replace(stamp, complete=False, cap_notice=cap_notice(shown, narrow_by))
