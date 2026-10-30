@@ -85,6 +85,13 @@ async def test_run_query_description_steers_to_dedicated_tools(client):
     assert "bills" not in tool.description.lower()  # query_bills covers them
 
 
+async def test_run_query_description_lists_the_allowed_query_types(client):
+    tool = next(t for t in (await client.list_tools()).tools if t.name == "run_query")
+    for tag in ["InvoiceQueryRq", "CheckQueryRq", "PurchaseOrderQueryRq", "EstimateQueryRq", "SalesReceiptQueryRq"]:
+        assert tag in tool.description
+    assert "EmployeeQueryRq" not in tool.description
+
+
 # --- Refusals: nothing caller-supplied but one plain *QueryRq ever reaches QuickBooks ---
 
 XXE = (
@@ -147,4 +154,33 @@ async def test_run_query_refuses_anything_but_one_plain_query_element(call, repl
 
     assert result.is_error
     assert "Refused" in result.content[0].text
+    assert replay.sent == []
+
+
+# --- Allow-list: only query types the budgeting/job-cost use case needs (#12) ---
+
+OFF_LIST = [
+    "EmployeeQueryRq",
+    "EmployeeDefaultQueryRq",
+    "PaycheckQueryRq",
+    "PayrollItemWageQueryRq",
+    "PayrollItemQueryRq",
+    "PayrollSummaryReportQueryRq",
+    "CreditCardChargeQueryRq",
+    "CreditCardCreditQueryRq",
+    "BillQueryRq",  # query_bills covers it
+    "VendorQueryRq",  # list_vendors covers it
+    "TransactionQueryRq",  # lists paychecks
+    "GeneralDetailReportQueryRq",  # can list paychecks per employee
+]
+
+
+@pytest.mark.parametrize("tag", OFF_LIST)
+async def test_run_query_refuses_query_types_off_the_allow_list(call, replay, tag):
+    result = await call("run_query", query=f"<{tag}/>")
+
+    assert result.is_error
+    text = result.content[0].text
+    assert "Refused" in text and tag in text
+    assert "InvoiceQueryRq" in text  # names what is allowed
     assert replay.sent == []
