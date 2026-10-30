@@ -6,7 +6,7 @@
   (`QuickBooks.send`), so no tool (list, report, run_query) ever sees them.
   Report columns, whose values are attributes, are dropped by title
   (`reports.drop_sensitive_columns`). Payee addresses (`PAYEE_ADDRESS`) are dropped
-  on the same path unless the payee is confirmed a Vendor or Customer.
+  on the same path unless the payee is confirmed a Vendor, Customer or Other Name.
 - Result cap: ask QuickBooks for `fetch_limit(limit)` records (one more than
   `limit`), then `capped(records, limit)` keeps `limit` and says whether more exist.
 """
@@ -59,8 +59,8 @@ SENSITIVE_CHILDREN: dict[str, frozenset[str]] = {
 # Payee address fields, by record. A Check's payee may be an Employee (e.g. an expense
 # reimbursement), whose home address is personal data, but `PayeeEntityRef` holds only a
 # ListID and name, not the payee's type. So these are kept only for a payee QuickBooks
-# confirms is a Vendor or Customer (`QuickBooks.send` looks the payees up), and dropped
-# otherwise: Employees, Other Names, and any payee the lookup can't confirm (#30).
+# confirms is a Vendor, Customer or Other Name (`QuickBooks.send` looks the payees up), and
+# dropped otherwise: Employees, and any payee the lookup can't confirm (#30).
 PAYEE_ADDRESS: dict[str, frozenset[str]] = {
     "CheckRet": frozenset({"Address", "AddressBlock"}),
 }

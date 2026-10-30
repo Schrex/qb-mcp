@@ -24,6 +24,9 @@ log = logging.getLogger(__name__)
 # What reading a response that isn't the expected shape raises (ET.ParseError for non-XML).
 MALFORMED = (ET.ParseError, KeyError, IndexError, TypeError, ValueError, AttributeError)
 
+# Lists whose members' payee addresses are kept (`output.PAYEE_ADDRESS`): every payee list but Employees.
+PAYEES_WITH_KEPT_ADDRESS = ("VendorQueryRq", "CustomerQueryRq", "OtherNameQueryRq")
+
 # Warnings from the Lookups of the tool call in progress (per asyncio task), see `answering`.
 _call_warnings: ContextVar[list[str] | None] = ContextVar("call_warnings", default=None)
 
@@ -60,22 +63,22 @@ class QuickBooks:
             raise
         payees = payees_with_address(results)
         if payees:
-            drop_payee_addresses(results, keep_for=await self._vendors_or_customers(payees))
+            drop_payee_addresses(results, keep_for=await self._payees_not_employees(payees))
         warnings = _call_warnings.get()
         if warnings is not None:
             warnings.extend(r.warning for r in results if r.warning)
         return results
 
-    async def _vendors_or_customers(self, list_ids: set[str]) -> set[str]:
-        """Which of `list_ids` QuickBooks confirms are Vendors or Customers (so their payee
-        address may be kept). One query per ListID and list, continuing past failed ones; only
+    async def _payees_not_employees(self, list_ids: set[str]) -> set[str]:
+        """Which of `list_ids` QuickBooks confirms are Vendors, Customers or Other Names (so their
+        payee address may be kept; an Employee's is personal data). One query per ListID and list, continuing past failed ones; only
         ListIDs are asked for. "Not found" (a warning) confirms nothing; any failure (transport,
         malformed response, an error status) is recorded as the last error, like any other
         Lookup's, and confirms nothing for that query (addresses dropped)."""
         requests = [
             qbxml.query(rq, qbxml.el("ListID", list_id), qbxml.el("IncludeRetElement", "ListID"))
             for list_id in sorted(list_ids)
-            for rq in ("VendorQueryRq", "CustomerQueryRq")
+            for rq in PAYEES_WITH_KEPT_ADDRESS
         ]
         try:
             request = qbxml.envelope(*requests, on_error="continueOnError")

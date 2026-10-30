@@ -118,7 +118,7 @@ CHECKS = "<CheckQueryRq><MaxReturned>101</MaxReturned></CheckQueryRq>"
 
 
 # A Check's PayeeEntityRef doesn't say whether the payee is an Employee, so the payee is looked
-# up: the address is kept only for a payee found among Vendors or Customers (#30).
+# up: the address is kept only for a payee found among Vendors, Customers or Other Names (#30).
 async def test_run_query_check_to_an_employee_drops_the_payee_address(call, replay):
     replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
 
@@ -142,6 +142,26 @@ async def test_run_query_check_to_a_vendor_or_customer_keeps_the_payee_address(c
     assert checks["517"]["AddressBlock"]["Addr3"] == "Bayshore, CA 94326"
     assert checks["517"]["Memo"] == "Ticket 88123 culvert parts"
     assert checks["518"]["Address"]["Addr2"] == "5647 Cypress Hill Rd"
+
+
+async def test_run_query_check_to_an_other_name_keeps_the_payee_address(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+
+    checks = {c["RefNumber"]: c for c in (await call("run_query", query=CHECKS)).structured_content["results"]}
+
+    assert checks["520"]["Address"]["Addr2"] == "300 Harbor Blvd"
+    other_names = [rq for rq in replay.sent if "<OtherNameQueryRq" in rq]
+    assert other_names and all("<IncludeRetElement>ListID</IncludeRetElement>" in rq for rq in other_names)
+
+
+async def test_run_query_check_drops_an_other_name_payee_address_when_its_lookup_fails(call, replay):
+    replay.respond_with("CheckQueryRq", "CheckQueryRq.sensitive.xml")
+    replay.respond_with("OtherNameQueryRq", "OtherNameQueryRq.error3120.xml")
+
+    checks = {c["RefNumber"]: c for c in (await call("run_query", query=CHECKS)).structured_content["results"]}
+
+    assert "Address" not in checks["520"]
+    assert checks["517"]["Address"]["Addr2"] == "4872 County Rd"  # its Vendor lookup succeeded
 
 
 # Fail safe: a payee that can't be confirmed as a Vendor or Customer loses the address.
