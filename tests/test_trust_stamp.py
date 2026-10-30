@@ -461,3 +461,36 @@ async def test_date_macro_period_is_resolved_against_the_closing_date(closed_thr
     out = (await closed_through_last_month.call_tool("run_query", {"query": query})).structured_content
 
     assert out["stamp"]["period"] == period
+
+
+# --- aging reports: which A/P or A/R accounts they include ---------------------------------------
+
+AGING = "<AgingReportQueryRq><AgingReportType>{}</AgingReportType><ReportDateMacro>Today</ReportDateMacro>{}</AgingReportQueryRq>"
+
+
+@pytest.mark.parametrize(
+    "report_type,account_filter,accounts",
+    [
+        ("APAgingSummary", "", "all A/P accounts"),
+        ("APAgingDetail", "", "all A/P accounts"),
+        ("ARAgingSummary", "", "all A/R accounts"),
+        (
+            "APAgingSummary",
+            "<ReportAccountFilter><FullName>Accounts Payable - Retainage</FullName></ReportAccountFilter>",
+            "Accounts Payable - Retainage",
+        ),
+        (
+            "ARAgingDetail",
+            "<ReportAccountFilter><FullNameWithChildren>Accounts Receivable</FullNameWithChildren></ReportAccountFilter>",
+            "Accounts Receivable and its subaccounts",
+        ),
+    ],
+)
+async def test_aging_report_stamp_names_the_accounts_it_includes(call, report_type, account_filter, accounts):
+    out = (await call("run_query", query=AGING.format(report_type, account_filter))).structured_content
+
+    assert out["stamp"]["accounts"] == accounts
+
+
+async def test_other_answers_name_no_accounts(call):
+    assert (await call("query_bills")).structured_content["stamp"]["accounts"] is None

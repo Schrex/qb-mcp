@@ -64,6 +64,7 @@ class TrustStamp:
     # {"from", "to", "field"} for a date range (None = open-ended), {"as_of"} for balances, None if no dates apply.
     dates: dict[str, Any] | None = None
     check_in_quickbooks: str = ""  # a QuickBooks menu path (report or screen); every tool names one
+    accounts: str | None = None  # an aging report's A/P or A/R accounts (e.g. "all A/P accounts"); else None
 
 
 @dataclass

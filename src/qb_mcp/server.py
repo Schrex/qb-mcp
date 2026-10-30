@@ -368,6 +368,8 @@ def build_server(transport: Transport) -> MCPServer:
         }
         if element.tag.endswith("ReportQueryRq"):
             stamp["basis"] = _report_basis(parse_report(rs.records[0] if rs.records else None))
+        if element.tag == "AgingReportQueryRq":
+            stamp["accounts"] = _aging_accounts(element)
         return Answer(result, stamp=stamp)
 
     return mcp
@@ -406,6 +408,21 @@ def _query_filters(element: ET.Element) -> dict[str, Any]:
         for child in element
         if child.tag not in ("MaxReturned", "OwnerID", "ReportBasis") and not child.tag.startswith("Include")
     }
+
+
+def _aging_accounts(element: ET.Element) -> str:
+    """The A/P or A/R accounts an aging report includes: all of them, unless its ReportAccountFilter
+    names some (FullName/ListID, with or without subaccounts) or an account type."""
+    kind = "A/R" if (element.findtext("AgingReportType") or "").startswith("AR") else "A/P"
+    account_filter = element.find("ReportAccountFilter")
+    if account_filter is None or len(account_filter) == 0:
+        return f"all {kind} accounts"
+    names = [(child.text or "").strip() for child in account_filter]
+    tag = account_filter[0].tag
+    if tag == "AccountTypeFilter":
+        return f"all {names[0]} accounts"
+    named = ", ".join(f"ListID {n}" if tag.startswith("ListID") else n for n in names)
+    return f"{named} and its subaccounts" if tag.endswith("WithChildren") else named
 
 
 def _report_type(element: ET.Element) -> str | None:

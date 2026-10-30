@@ -43,6 +43,7 @@ async def test_qb_status_reports_quickbooks_and_company_file(call):
             "check_in_quickbooks": (
                 "Help > Product Information (press F2 in QuickBooks): product, version and Company File location"
             ),
+            "accounts": None,
         },
     }
 
@@ -72,6 +73,7 @@ async def test_get_company_info_returns_name_address_and_fiscal_year_start(call)
             "basis": "not a report; basis does not apply",
             "dates": None,
             "check_in_quickbooks": "Company > My Company",
+            "accounts": None,
         },
     }
 

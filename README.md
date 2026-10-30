@@ -130,6 +130,7 @@ With Jeri, on her live Company File: check the server's answers against QuickBoo
 | `closing_date` / `period` | `closing_date` is QuickBooks' closing date (above); `period` is `closed` for the closed month's P&L. `closing date unknown` (the read failed) is a fail; `no closing date set; may still change` is right only if QuickBooks has none set. |
 | `filters` | Only the filters you asked for (job, Vendor, `paid_status`...), nothing extra or missing. |
 | `voided_excluded` | Plausible: voided Bills show in QuickBooks with a 0 amount and memo `VOID:`. Note the count. |
+| `accounts` | Aging reports only: `all A/P accounts` (or A/R) unless the query filtered an account; QuickBooks' aging report must include the same accounts (e.g. a separate retainage A/P account). |
 | `complete` / `cap_notice` | `complete: true` before comparing any total. If `cap_notice` is shown there are no totals: narrow (date range, Vendor) or ask with a bigger `limit`, then ask again. |
 | `check_in_quickbooks` | Opens the report you are comparing against (check A). |
 
