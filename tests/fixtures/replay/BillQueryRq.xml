@@ -33,6 +33,30 @@
 <FullName>Net 30</FullName>
 </TermsRef>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>3684-1071520443</TxnID>
+<TxnType>PurchaseOrder</TxnType>
+<TxnDate>2026-11-26</TxnDate>
+<RefNumber>6225</RefNumber>
+<LinkType>QUANTYPE</LinkType>
+<Amount>0.00</Amount>
+</LinkedTxn>
+<LinkedTxn>
+<TxnID>36AD-1071520917</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2026-12-05</TxnDate>
+<RefNumber>484</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-5000.00</Amount>
+</LinkedTxn>
+<LinkedTxn>
+<TxnID>9E4C-1182131999</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-01-31</TxnDate>
+<RefNumber>115</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-8695.00</Amount>
+</LinkedTxn>
 <ItemLineRet>
 <TxnLineID>3693-1071520776</TxnLineID>
 <ItemRef>
@@ -127,6 +151,14 @@
 <FullName>Net 30</FullName>
 </TermsRef>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>9E42-1182131999</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-01-31</TxnDate>
+<RefNumber>113</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-532.00</Amount>
+</LinkedTxn>
 <ExpenseLineRet>
 <TxnLineID>5CAD-1197713763</TxnLineID>
 <AccountRef>
@@ -177,6 +209,14 @@
 <FullName>Net 30</FullName>
 </TermsRef>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>9E4C-1182131999</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-01-31</TxnDate>
+<RefNumber>115</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-5064.00</Amount>
+</LinkedTxn>
 <ItemLineRet>
 <TxnLineID>5C85-1197713503</TxnLineID>
 <ItemRef>
@@ -351,6 +391,14 @@
 <FullName>Net 30</FullName>
 </TermsRef>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>9E47-1182131999</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-01-31</TxnDate>
+<RefNumber>114</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-623.00</Amount>
+</LinkedTxn>
 <ExpenseLineRet>
 <TxnLineID>5CB0-1197713803</TxnLineID>
 <AccountRef>
@@ -401,6 +449,14 @@
 <FullName>Net 30</FullName>
 </TermsRef>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>9E3D-1182131998</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-01-31</TxnDate>
+<RefNumber>112</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-205.00</Amount>
+</LinkedTxn>
 <ExpenseLineRet>
 <TxnLineID>5CB3-1197713940</TxnLineID>
 <AccountRef>
@@ -453,6 +509,22 @@
 <FullName>Net 60</FullName>
 </TermsRef>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>69ED-1197780121</TxnID>
+<TxnType>PurchaseOrder</TxnType>
+<TxnDate>2026-01-04</TxnDate>
+<RefNumber>6201</RefNumber>
+<LinkType>QUANTYPE</LinkType>
+<Amount>0.00</Amount>
+</LinkedTxn>
+<LinkedTxn>
+<TxnID>9E72-1182132247</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-03-31</TxnDate>
+<RefNumber>135</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-435.00</Amount>
+</LinkedTxn>
 <ItemLineRet>
 <TxnLineID>69F3-1197780158</TxnLineID>
 <ItemRef>
@@ -523,6 +595,14 @@
 </TermsRef>
 <Memo>Monthly Truck Payment</Memo>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>3A09-1071529982</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-01-11</TxnDate>
+<RefNumber>101</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-532.97</Amount>
+</LinkedTxn>
 <ExpenseLineRet>
 <TxnLineID>38AC-1071513625</TxnLineID>
 <AccountRef>
@@ -590,6 +670,14 @@
 </TermsRef>
 <Memo>Quarterly Premium - Auto</Memo>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>3E5D-1071498699</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-01-21</TxnDate>
+<RefNumber>110</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-712.56</Amount>
+</LinkedTxn>
 <ExpenseLineRet>
 <TxnLineID>3E44-1071498278</TxnLineID>
 <AccountRef>
@@ -641,6 +729,22 @@
 </TermsRef>
 <Memo>For Vetter Basement Remodel</Memo>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>69D1-1197779848</TxnID>
+<TxnType>PurchaseOrder</TxnType>
+<TxnDate>2024-12-01</TxnDate>
+<RefNumber>6001</RefNumber>
+<LinkType>QUANTYPE</LinkType>
+<Amount>0.00</Amount>
+</LinkedTxn>
+<LinkedTxn>
+<TxnID>9E63-1182132109</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-02-28</TxnDate>
+<RefNumber>124</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-2050.00</Amount>
+</LinkedTxn>
 <ItemLineRet>
 <TxnLineID>69DB-1197779895</TxnLineID>
 <ItemRef>
@@ -791,6 +895,14 @@
 </TermsRef>
 <Memo>Monthly Truck Payment</Memo>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>3A10-1071529997</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-02-11</TxnDate>
+<RefNumber>120</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-532.97</Amount>
+</LinkedTxn>
 <ExpenseLineRet>
 <TxnLineID>38B0-1071513939</TxnLineID>
 <AccountRef>
@@ -856,6 +968,14 @@
 <FullName>Net 30</FullName>
 </TermsRef>
 <IsPaid>true</IsPaid>
+<LinkedTxn>
+<TxnID>4271-1071523732</TxnID>
+<TxnType>BillPaymentCheck</TxnType>
+<TxnDate>2025-04-17</TxnDate>
+<RefNumber>144</RefNumber>
+<LinkType>AMTTYPE</LinkType>
+<Amount>-714.00</Amount>
+</LinkedTxn>
 <ExpenseLineRet>
 <TxnLineID>40E8-1071515353</TxnLineID>
 <AccountRef>

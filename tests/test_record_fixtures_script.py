@@ -17,6 +17,7 @@ SAMPLE_FILE = r"C:\Users\Public\Documents\Intuit\QuickBooks\Sample Rock Castle C
 LIVE_FILE = r"C:\QB\Schreiber Excavating.QBW"
 
 # One fixture per request type the tools send, plus a variant per extra job report.
+# The recorder writes all but HAND_WRITTEN_BASE, which it keeps.
 EXPECTED_FILES = {
     "HostQueryRq.xml",
     "CompanyQueryRq.xml",
@@ -34,6 +35,9 @@ EXPECTED_FILES = {
     "JobReportQueryRq.estimates_detail.xml",
     "PreferencesQueryRq.xml",  # the trust stamp's closing-date read (#26)
 }
+HAND_WRITTEN_BASE = set(record_fixtures.HAND_WRITTEN_BASE)
+RECORDED_FILES = EXPECTED_FILES - HAND_WRITTEN_BASE
+assert HAND_WRITTEN_BASE < EXPECTED_FILES
 
 
 @pytest.fixture
@@ -55,8 +59,10 @@ async def test_dry_run_lists_every_fixture_it_would_write_and_writes_nothing(cle
 
     printed = capsys.readouterr().out
     assert code == 0
-    for name in EXPECTED_FILES:
+    for name in RECORDED_FILES:
         assert f"WOULD WRITE {name}" in printed
+    for name in HAND_WRITTEN_BASE:
+        assert f"KEPT {name}" in printed
     assert not out.exists() or not any(out.iterdir())
 
 
@@ -64,12 +70,30 @@ async def test_writes_one_replayable_fixture_per_request_type(clean_quickbooks, 
     code = await record_fixtures.run(clean_quickbooks, out)
 
     assert code == 0
-    assert {p.name for p in out.iterdir()} == EXPECTED_FILES
+    assert {p.name for p in out.iterdir()} == RECORDED_FILES
     vendors = ET.parse(out / "VendorQueryRq.xml").getroot().find("QBXMLMsgsRs/VendorQueryRs")
     assert [v.findtext("Name") for v in vendors] == ["Patton Hardware Supplies", "Timberloft Lumber"]
-    # The recordings answer the tools just as QuickBooks did.
+    # The recordings, with the kept hand-written fixtures beside them, answer the tools just as
+    # QuickBooks did.
+    for name in HAND_WRITTEN_BASE:
+        shutil.copy(clean_quickbooks.fixtures_dir / name, out / name)
     replayed = await record_fixtures.run(ReplayTransport(out, company_file=SAMPLE_FILE), out, dry_run=True)
     assert replayed == 0
+
+
+async def test_keeps_hand_written_base_fixtures_whatever_quickbooks_answers(clean_quickbooks, capsys):
+    out = clean_quickbooks.fixtures_dir
+    before = {name: (out / name).read_bytes() for name in HAND_WRITTEN_BASE}
+    # The sample file has no closing date; the hand-written base fixture has one the stamp tests need.
+    clean_quickbooks.respond_with("PreferencesQueryRq", "PreferencesQueryRq.noclosingdate.xml")
+
+    code = await record_fixtures.run(clean_quickbooks, out)
+
+    printed = capsys.readouterr().out
+    assert code == 0
+    for name in HAND_WRITTEN_BASE:
+        assert f"KEPT {name}" in printed and f"WROTE {out / name}" not in printed
+    assert {name: (out / name).read_bytes() for name in HAND_WRITTEN_BASE} == before
 
 
 async def test_refuses_a_fixture_with_a_vendor_account_number_and_never_prints_it(clean_quickbooks, out, capsys):

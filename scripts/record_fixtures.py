@@ -19,7 +19,10 @@ Safety:
 - Writes only `<RequestType>.xml` and the variants named in TOOL_CALLS, never a
   `*.sensitive.xml` fixture: those are hand-written and hold the made-up sensitive values
   the stripping tests need. Other hand-written variants are left untouched.
-Exit code 0 only if every fixture was written (or would be, with `--dry-run`).
+- Keeps the hand-written base fixtures in HAND_WRITTEN_BASE as they are (prints `KEPT`):
+  tests pin their contents to things the sample file can't supply, so a recording would
+  break them.
+Exit code 0 only if every fixture was written or kept (or would be, with `--dry-run`).
 """
 
 import argparse
@@ -49,6 +52,14 @@ REPORT_PERIOD = {"from_date": "2000-01-01", "to_date": "2030-12-31"}
 DETAIL_JOB = {**REPORT_PERIOD, "customer_job": "Abercrombie, Kristy:Remodel Bathroom"}
 LIMIT = 25
 HAND_WRITTEN_ONLY = "sensitive"  # variant never recorded: `<RequestType>.sensitive.xml`
+# Base fixtures written by hand and pinned by tests; a recording from Rock Castle would break
+# them, so they are kept (never overwritten). Fixture name -> why it is hand-written.
+HAND_WRITTEN_BASE = {
+    "PreferencesQueryRq.xml": "closing date 2023-12-31 for the trust stamp (#26); the sample file has none",
+    "AccountQueryRq.xml": "three accounts with descriptions the list_accounts tests assert on",
+    "CreditCardChargeQueryRq.xml": "two charges the run_query tests assert on (#29)",
+    "CreditCardCreditQueryRq.xml": "one credit (#29); the sample file has no credit card credits",
+}
 
 
 @dataclass(frozen=True)
@@ -167,9 +178,11 @@ async def run(
         if name.endswith(f".{HAND_WRITTEN_ONLY}.xml"):
             print(f"REFUSED {name}: *.{HAND_WRITTEN_ONLY}.xml fixtures are hand-written, never recorded")
             failed = True
-        elif findings:
+        elif findings:  # reported even for a kept fixture: the sample file shouldn't hold these
             print(f"REFUSED {name}: sensitive values found: {'; '.join(findings)}")
             failed = True
+        elif name in HAND_WRITTEN_BASE:
+            print(f"KEPT {name}: hand-written, {HAND_WRITTEN_BASE[name]}")
         elif dry_run:
             print(f"WOULD WRITE {name}")
         else:

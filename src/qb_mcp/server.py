@@ -154,7 +154,9 @@ def build_server(transport: Transport) -> MCPServer:
         """Every customer/Customer:Job (tag, record) matching name and active status whose
         JobStatus is one of `job_status`. Uncapped: QuickBooks can't filter by JobStatus."""
         wanted = {JOB_STATUS[s] for s in job_status}
-        (rs,) = await qb.lookup(query("CustomerQueryRq", *_list_filters(name_contains, status, None)))
+        (rs,) = await qb.lookup(
+            query("CustomerQueryRq", *_list_filters(name_contains, status, None), *_customer_includes())
+        )
         return [(tag, r) for tag, r in rs.rets if r.get("JobStatus", "None") in wanted]
 
     @tool(check_in.QB_STATUS, errors=False)
@@ -273,7 +275,9 @@ def build_server(transport: Transport) -> MCPServer:
         `status` (default active), `job_status` (keep only these, e.g. ["awarded", "in_progress"];
         combines with `status`), `limit` (default 100); if more match, `more_available` is true."""
         if not job_status:
-            return await list_lookup("CustomerQueryRq", records.customer_job, name_contains, status, limit)
+            return await list_lookup(
+                "CustomerQueryRq", records.customer_job, name_contains, status, limit, *_customer_includes()
+            )
         # QuickBooks can't filter by JobStatus, so fetch every name/status match and filter here;
         # the cap then counts matching records, so `count`/`more_available` stay exact.
         kept = [records.customer_job(tag, r) for tag, r in await jobs_in(job_status, name_contains, status)]
@@ -459,6 +463,19 @@ def _list_filters(name_contains: str | None, status: ListStatus, limit: int | No
     return filters
 
 
+# What `records.customer_job` reads from a CustomerRet, asked for by name: without
+# IncludeRetElement, QuickBooks leaves Contact (and ShipToAddress, ContactsRet, ...) out of a
+# CustomerQueryRq that has no FullName or NameFilter, so an unfiltered list_customer_jobs
+# came back with no contact at all (Enterprise 24 against Rock Castle, 2026-10-30).
+CUSTOMER_RET_ELEMENTS = (
+    "ListID", "Name", "FullName", "IsActive", "ParentRef", "JobStatus", "JobDesc",
+    "Contact", "Phone", "Email", "BillAddress", "Balance", "TotalBalance",
+)
+
+
+def _customer_includes() -> list[Any]:
+    """IncludeRetElement for each of CUSTOMER_RET_ELEMENTS, in the schema's place: after the filters."""
+    return [el("IncludeRetElement", name) for name in CUSTOMER_RET_ELEMENTS]
 
 
 def default_transport() -> Transport:
