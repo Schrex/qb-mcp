@@ -16,9 +16,9 @@ Terms (Company File, Vendor, Customer:Job, Item, Bill, Attachment, Lookup) follo
 | `list_customer_jobs` | Customers and their Customer:Jobs with parent, job status, balance, total balance. Same filters. |
 | `list_items` | Items of every kind with full name, kind, purchase description, cost, expense account. Same filters. |
 | `list_accounts` | Chart-of-accounts Accounts with type, number, balance, total balance. Filters: `account_type`, `name_contains`, `status`, `limit`. |
-| `query_bills` | Bills by date range, Vendor, ref number, paid status, Customer:Job; with item and expense lines (default on). |
+| `query_bills` | Bills by date range, Vendor, ref number, paid status, Customer:Job; each with its A/P account and open balance, and item and expense lines (default on). |
 | `run_job_report` | Job profitability or job estimates-vs-actuals (summary or detail) for a date range, optionally one Customer:Job. |
-| `run_query` | One raw qbXML `*QueryRq` element for anything the other tools don't cover (invoices, checks, purchase orders...). |
+| `run_query` | One raw qbXML `*QueryRq` element for anything the other tools don't cover (invoices, checks, purchase orders...). Invoices, payments received and credit memos also name their A/R account (`ar_account`). |
 
 List and query tools return at most `limit` (default 100) results and set `more_available` (plus a `note`) when more exist.
 
@@ -131,7 +131,7 @@ Messages Claude may show, and what to do:
 
 **Log file:** `%LOCALAPPDATA%\qb-mcp\logs\qb-mcp.log` (paste that into Explorer's address bar). Rolls over at 1 MB, keeps 3 old files (`qb-mcp.log.1`..`.3`). Logs request types and errors only, never QuickBooks data. Set `QB_MCP_LOG_DIR` to log elsewhere.
 
-**Known issue: Bill open amounts (#14).** QuickBooks' own `OpenAmount` on a Bill turned out to be one Vendor-wide figure repeated on every Bill, so `query_bills` ignores it and works out each Bill's `open_amount` itself: the Bill amount less the bill payments and Vendor credits linked to it (0 if QuickBooks marks the Bill paid); `paid_status` and `is_paid` follow that figure. Verified to the cent against A/P Aging Detail on the Enterprise 2024 sample (28 unpaid Bills, 0 mismatches, incl. a partly paid Bill); the live file, which may have discounts and credits the sample doesn't, is still to confirm at the install visit. To sanity-check: ask Claude for one Vendor's unpaid Bills and compare each `open_amount` with the Open Balance column of **Reports > Vendors & Payables > A/P Aging Detail** in QuickBooks. If they differ (especially Bills with a credit or discount applied), tell Sumanth which Bill.
+**Known issue: Bill open balances (#14).** QuickBooks' own `OpenAmount` on a Bill turned out to be one Vendor-wide figure repeated on every Bill, so `query_bills` ignores it and works out each Bill's `open_balance` itself: the Bill amount less the bill payments and Vendor credits linked to it (0 if QuickBooks marks the Bill paid); `paid_status` and `is_paid` follow that figure. Verified to the cent against A/P Aging Detail on the Enterprise 2024 sample (28 unpaid Bills, 0 mismatches, incl. a partly paid Bill); the live file, which may have discounts and credits the sample doesn't, is still to confirm at the install visit. To sanity-check: ask Claude for one Vendor's unpaid Bills and compare each `open_balance` with the Open Balance column of **Reports > Vendors & Payables > A/P Aging Detail** in QuickBooks. If they differ (especially Bills with a credit or discount applied), tell Sumanth which Bill.
 
 **What to send Sumanth:** the `qb-mcp.log` file(s), the full `run qb status` output from Claude, the exact error message, and roughly when it happened.
 
